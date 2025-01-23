@@ -1,5 +1,5 @@
 {
-  "name": "ccl-nettango-blockly",
+  "name": "custom-generator-codelab",
   "version": "1.0.0",
   "description": "A sample app using Blockly",
   "main": "index.js",

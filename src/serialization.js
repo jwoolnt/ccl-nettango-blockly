@@ -6,7 +6,7 @@
 
 import * as Blockly from 'blockly/core';
 
-const storageKey = 'mainWorkspace';
+const storageKey = 'nettango-workspace';
 
 /**
  * Saves the state of the workspace to browser's local storage.
