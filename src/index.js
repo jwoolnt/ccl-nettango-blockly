@@ -7,7 +7,7 @@
 import * as Blockly from 'blockly';
 // import {blocks} from './blocks/text';
 // import {forBlock} from './generators/javascript';
-// import {javascriptGenerator} from 'blockly/javascript';
+import {javascriptGenerator} from 'blockly/javascript';
 import {blocks} from './blocks/json';
 import {jsonGenerator} from './generators/json';
 

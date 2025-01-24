@@ -16,31 +16,52 @@ export const toolbox = {
   'contents': [
     {
       'kind': 'block',
-      'type': 'object'
+      'type': 'setup_block'
     },
     {
       'kind': 'block',
-      'type': 'member'
+      'type': 'go_block'
     },
     {
       'kind': 'block',
-      'type': 'math_number'
+      'type': 'ask_block'
     },
     {
       'kind': 'block',
-      'type': 'text'
-    },
-    {
-      'kind': 'block',
-      'type': 'logic_boolean'
-    },
-    {
-      'kind': 'block',
-      'type': 'logic_null'
-    },
-    {
-      'kind': 'block',
-      'type': 'lists_create_with'
-    },
+      'type': 'if_block'
+    }
   ]
-}
+};
+// export const toolbox = {
+//   'kind': 'flyoutToolbox',
+//   'contents': [
+//     {
+//       'kind': 'block',
+//       'type': 'object'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'member'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'math_number'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'text'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'logic_boolean'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'logic_null'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'lists_create_with'
+//     },
+//   ]
+// }
