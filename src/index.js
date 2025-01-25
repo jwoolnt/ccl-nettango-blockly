@@ -17,7 +17,10 @@ Blockly.common.defineBlocks(test_blocks);
 // Set up UI elements and inject Blockly
 const codeDiv = document.getElementById('generatedCode').firstChild;
 // const blocklyDiv = document.getElementById('blocklyDiv');
-const ws = Blockly.inject(blocklyDiv, { toolbox });
+const ws = Blockly.inject(blocklyDiv, {
+  renderer: 'thrasos',
+  toolbox
+});
 
 // This function resets the code and output divs, shows the
 // generated code from the workspace, and evals the code.

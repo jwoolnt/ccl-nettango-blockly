@@ -19,6 +19,9 @@ export const toolbox = {
     name: 'Test',
     contents: [{
       kind: 'block',
+      type: 'big_test',
+    }, {
+      kind: 'block',
       type: 'test',
     }],
   }],

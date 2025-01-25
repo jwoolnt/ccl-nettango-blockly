@@ -20,9 +20,25 @@ const test = {
   helpUrl: '',
 };
 
+const big_test = {
+  type: 'big_test',
+  message0: 'Big Test Block %1',
+  args0: [
+    {
+      "type": "input_statement",
+      "name": "inside"
+    }
+  ],
+  previousStatement: null,
+  nextStatement: null,
+  colour: 160,
+  tooltip: 'This is a big test Block.',
+  helpUrl: '',
+};
+
 // Create the block definitions for the JSON-only blocks.
 // This does not register their definitions with Blockly.
 // This file has no side effects!
 export const blocks = Blockly.common.createBlockDefinitionsFromJsonArray([
-  test,
+  test, big_test
 ]);
