@@ -23,7 +23,22 @@ Blockly.common.defineBlocks(blocks);
 const codeDiv = document.getElementById('generatedCode').firstChild;
 // const outputDiv = document.getElementById('output');
 const blocklyDiv = document.getElementById('blocklyDiv');
-const ws = Blockly.inject(blocklyDiv, {toolbox});
+// const ws = Blockly.inject(blocklyDiv, {toolbox});
+const ws = Blockly.inject(blocklyDiv, {
+  toolbox,
+  toolboxPosition: 'start', // Keeps toolbox on the left
+  trashcan: true, 
+  scrollbars: true, 
+  grid: { spacing: 20, length: 3, colour: '#ccc', snap: true }, 
+  zoom: {
+    controls: true,
+    wheel: true,
+    startScale: 1.0,
+    maxScale: 2.0,
+    minScale: 0.5,
+    scaleSpeed: 1.2,
+  },
+});
 
 // This function resets the code div and shows the
 // generated code from the workspace.
