@@ -11,27 +11,60 @@ You probably don't need every single block, and should consider either rewriting
 your toolbox from scratch, or carefully choosing whether you need each block
 listed here.
 */
+
 export const toolbox = {
-  'kind': 'flyoutToolbox',
-  'contents': [
+  kind: 'categoryToolbox',
+  contents: [
     {
-      'kind': 'block',
-      'type': 'setup_block'
+      kind: 'category',
+      name: 'Turtles',
+      categorystyle: 'netlogo_category',
+      contents: [
+        {
+          kind: 'block',
+          type: 'setup_block',
+        },
+        {
+          kind: 'block',
+          type: 'go_block',
+        },
+        {
+          kind: 'block',
+          type: 'ask_block',
+        },
+        {
+          kind: 'block',
+          type: 'if_block',
+        },
+      ],
     },
-    {
-      'kind': 'block',
-      'type': 'go_block'
-    },
-    {
-      'kind': 'block',
-      'type': 'ask_block'
-    },
-    {
-      'kind': 'block',
-      'type': 'if_block'
-    }
-  ]
+  ],
 };
+
+/* working testing codeblocks */
+
+// export const toolbox = {
+//   'kind': 'flyoutToolbox',
+//   'contents': [
+//     {
+//       'kind': 'block',
+//       'type': 'setup_block'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'go_block'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'ask_block'
+//     },
+//     {
+//       'kind': 'block',
+//       'type': 'if_block'
+//     }
+//   ]
+// };
+
 // export const toolbox = {
 //   'kind': 'flyoutToolbox',
 //   'contents': [
