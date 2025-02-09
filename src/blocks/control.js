@@ -58,33 +58,34 @@ const if_block = {
   helpUrl: "",
 };
 
-// const if_else_block = {
-//     type: "if_else_block",
-//     message0: "if %1 [ %2 ] else [ %3 ]",
-//     args0: [
-//         {
-//         type: "field_input",
-//         name: "CONDITION",
-//         text: "condition",
-//         },
-//         {
-//         type: "input_statement",
-//         name: "DO_IF",
-//         },
-//         {
-//         type: "input_statement",
-//         name: "DO_ELSE",
-//         },
-//     ],
-//     previousStatement: null,
-//     nextStatement: null,
-//     tooltip: "Defines an if/else conditional statement in NetLogo.",
-//     helpUrl: "",
-//     };
+const if_else_block = {
+    type: "if_else_block",
+    message0: "if %1 [ %2 ] else [ %3 ]",
+    args0: [
+      {
+        type: "field_input",
+        name: "CONDITION",
+        text: "condition",
+      },
+      {
+        type: "input_statement",
+        name: "DO_IF",
+      },
+      {
+        type: "input_statement",
+        name: "DO_ELSE",
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+    tooltip: "Defines an if/else conditional statement in NetLogo.",
+    helpUrl: "",
+  };
 
 export default common.createBlockDefinitionsFromJsonArray([
   setup_block,
   go_block,
   ask_block,
   if_block,
+  if_else_block,
 ]);

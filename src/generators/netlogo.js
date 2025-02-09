@@ -51,13 +51,13 @@ forBlock["go_block"] = () => "go";
 forBlock["if_block"] = function (block, generator) {
 	const condition = block.getFieldValue("CONDITION");
 	const commands = generator.statementToCode(block, 'DO');
-	return `if ${condition} [\n${commands}\n]`
+	return `if ${condition} [${commands}]`
 }
 
-// // if_else_block
-// forBlock["if_else_block"] = function (block, generator) {
-// 	const condition = block.getFieldValue("CONDITION");
-// 	const commands = generator.statementToCode(block, 'DO');
-// 	const elseCommands = generator.statementToCode(block, 'ELSE');
-// 	return `if ${condition} [\n${commands}\n] else [\n${elseCommands}\n]`
-// }
+// if_else_block
+forBlock["if_else_block"] = function (block, generator) {
+	const condition = block.getFieldValue("CONDITION");
+	const commands = generator.statementToCode(block, 'DO_IF');
+	const elseCommands = generator.statementToCode(block, 'DO_ELSE');
+	return `ifelse ${condition} [${commands}] [${elseCommands}]`
+}
