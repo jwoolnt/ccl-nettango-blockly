@@ -33,7 +33,7 @@ forBlock["create_breeds"] = function (block, generator) {
 
 	return code;
 }
-// ask_agent_set
+
 forBlock["ask_agent_set"] = function (block, generator) {
 	const agentSet = block.getFieldValue("AGENT_SET");
 	const commands = generator.statementToCode(block, 'COMMANDS');
@@ -41,17 +41,11 @@ forBlock["ask_agent_set"] = function (block, generator) {
 }
 
 // ==========`Control` blocks=========
-// setup_block
-forBlock["setup_block"] = () => "setup";
-
-// go_block
-forBlock["go_block"] = () => "go";
-
 // if_block
 forBlock["if_block"] = function (block, generator) {
 	const condition = block.getFieldValue("CONDITION");
 	const commands = generator.statementToCode(block, 'DO');
-	return `if ${condition} [${commands}]`
+	return `if ${condition} [\n${commands}\n]`
 }
 
 // if_else_block
@@ -59,5 +53,66 @@ forBlock["if_else_block"] = function (block, generator) {
 	const condition = block.getFieldValue("CONDITION");
 	const commands = generator.statementToCode(block, 'DO_IF');
 	const elseCommands = generator.statementToCode(block, 'DO_ELSE');
-	return `ifelse ${condition} [${commands}] [${elseCommands}]`
+	return `ifelse ${condition} [\n${commands}\n] [\n${elseCommands}\n]`
 }
+
+// ==========`Operators` blocks=========
+// Helper function for binary operators
+function generateBinaryOperator(block, generator, operator, order) {
+    const a = generator.valueToCode(block, "A", generator.ORDER_ATOMIC) || "0";
+    const b = generator.valueToCode(block, "B", generator.ORDER_ATOMIC) || "0";
+    return [`(${a} ${operator} ${b})`, order];
+}
+
+// Helper function for unary operators
+function generateUnaryOperator(block, generator, operator, order) {
+    const a = generator.valueToCode(block, "A", generator.ORDER_ATOMIC) || "false";
+    return [`(${operator} ${a})`, order];
+}
+
+
+forBlock["operator_equals"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "=", generator.ORDER_RELATIONAL);
+};
+
+forBlock["operator_not_equals"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "!=", generator.ORDER_RELATIONAL);
+};
+
+forBlock["operator_greater_than"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, ">", generator.ORDER_RELATIONAL);
+};
+
+forBlock["operator_less_than"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "<", generator.ORDER_RELATIONAL);
+};
+
+// =========`Logical Operators`=========
+forBlock["operator_and"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "and", generator.ORDER_LOGICAL_AND);
+};
+
+forBlock["operator_or"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "or", generator.ORDER_LOGICAL_OR);
+};
+
+forBlock["operator_not"] = function (block, generator) {
+    return generateUnaryOperator(block, generator, "not", generator.ORDER_LOGICAL_NOT);
+};
+
+// === `Arithmetic Operators` ===
+forBlock["operator_add"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "+", generator.ORDER_ADDITIVE);
+};
+
+forBlock["operator_subtract"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "-", generator.ORDER_ADDITIVE);
+};
+
+forBlock["operator_multiply"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "*", generator.ORDER_MULTIPLICATIVE);
+};
+
+forBlock["operator_divide"] = function (block, generator) {
+    return generateBinaryOperator(block, generator, "/", generator.ORDER_MULTIPLICATIVE);
+};
