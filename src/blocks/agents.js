@@ -1,7 +1,6 @@
 import { common } from 'blockly/core';
 import { agentSets, breedPlurals, defineBasicBlock } from './define';
 
-
 const create_breeds = {
 	type: "create_breeds",
 	message0: "create-%1 %2\n %3",

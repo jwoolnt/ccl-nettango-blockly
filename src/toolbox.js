@@ -13,49 +13,95 @@ listed here.
 */
 
 export const toolbox = {
-  "kind": "categoryToolbox",
-  "contents": [
-    {
-      "kind": "category",
-      "name": "NetLogo",
-      "colour": "#5CA65C",
-      "contents": [
-        { "kind": "block", "type": "setup_block" },
-        { "kind": "block", "type": "go_block" },
-        { "kind": "block", "type": "ask_block" },
-        { "kind": "block", "type": "if_block" },
-        { "kind": "block", "type": "move_block" }
-      ]
-    },
-    {
-      "kind": "category",
-      "name": "Observer",
-      "colour": "#5C81A6",
-      contents: [{
-        kind: 'block',
-        type: 'clear_all',
-      }, {
-        kind: 'block',
-        type: 'reset_ticks',
-      }],
-    },
-    {
-      "kind": "category",
-      "name": "Agent",
-      "colour": "#5CA68D",
-      contents: [{
-        kind: 'block',
-        type: 'create_breeds',
-      }, {
-        kind: 'block',
-        type: 'ask_agent_set',
-      }, {
-        kind: 'block',
-        type: 'die',
-      }],
-    },
+  kind: 'categoryToolbox',
+  contents: [{
+    kind: 'category',
+    name: 'Observer',
+    contents: [{
+      kind: 'block',
+      type: 'clear_all',
+    }, {
+      kind: 'block',
+      type: 'reset_ticks',
+    }],
+  }, {
+    kind: 'category',
+    name: 'Agent',
+    contents: [{
+      kind: 'block',
+      type: 'create_breeds',
+    }, {
+      kind: 'block',
+      type: 'ask_agent_set',
+    }, {
+      kind: 'block',
+      type: 'die',
+    }],
+  }, {
+    kind: 'category',
+    name: 'Control',
+    contents: [{
+      kind: 'block',
+      type: 'setup_block',
+    }, {
+      kind: 'block',
+      type: 'go_block',
+    }, {
+      kind: 'block',
+      type: 'if_block',
+    }, 
+    // { 
+    //   kind: 'block',
+    //   type: 'if_else_block',
+    // }
   ],
+  }],
 };
+
+// export const toolbox = {
+//   "kind": "categoryToolbox",
+//   "contents": [
+//     {
+//       "kind": "category",
+//       "name": "NetLogo",
+//       "colour": "#5CA65C",
+//       "contents": [
+//         { "kind": "block", "type": "setup_block" },
+//         { "kind": "block", "type": "go_block" },
+//         { "kind": "block", "type": "ask_block" },
+//         { "kind": "block", "type": "if_block" },
+//         { "kind": "block", "type": "move_block" }
+//       ]
+//     },
+//     {
+//       "kind": "category",
+//       "name": "Observer",
+//       "colour": "#5C81A6",
+//       contents: [{
+//         kind: 'block',
+//         type: 'clear_all',
+//       }, {
+//         kind: 'block',
+//         type: 'reset_ticks',
+//       }],
+//     },
+//     {
+//       "kind": "category",
+//       "name": "Agent",
+//       "colour": "#5CA68D",
+//       contents: [{
+//         kind: 'block',
+//         type: 'create_breeds',
+//       }, {
+//         kind: 'block',
+//         type: 'ask_agent_set',
+//       }, {
+//         kind: 'block',
+//         type: 'die',
+//       }],
+//     },
+//   ],
+// };
 
 
 // ============================
