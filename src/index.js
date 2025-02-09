@@ -1,42 +1,42 @@
-/**
- * @license
- * Copyright 2023 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import * as Blockly from 'blockly';
-import { blocks as test_blocks } from './blocks/test';
+import observer_blocks from './blocks/observer';
+import agent_blocks from './blocks/agents';
 import { netlogoGenerator } from './generators/netlogo';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import './index.css';
 
 // Register the blocks and generator with Blockly
-Blockly.common.defineBlocks(test_blocks);
+Blockly.common.defineBlocks({
+  ...observer_blocks,
+  ...agent_blocks
+});
 
 // Set up UI elements and inject Blockly
 const codeDiv = document.getElementById('generatedCode').firstChild;
-// const blocklyDiv = document.getElementById('blocklyDiv');
+const blocklyDiv = document.getElementById('blocklyDiv');
 const ws = Blockly.inject(blocklyDiv, {
   renderer: 'thrasos',
   toolbox
 });
 
-// This function resets the code and output divs, shows the
-// generated code from the workspace, and evals the code.
-// In a real application, you probably shouldn't use `eval`.
-const runCode = () => {
+// This function resets the code and output divs, and shows the
+// generated code from the workspace.
+const generateCode = () => {
   const code = netlogoGenerator.workspaceToCode(ws);
   codeDiv.innerText = code;
-
-  // outputDiv.innerHTML = '';
-
-  // eval(code); Don't eval code, since it is NetLogo code.
 };
 
 // Load the initial state from storage and run the code.
-load(ws);
-runCode();
+try {
+  load(ws);
+} catch (e) {
+  alert("Error loading workspace");
+  localStorage.clear();
+  load(ws);
+} finally {
+  generateCode();
+}
 
 // Every time the workspace changes state, save the changes to storage.
 ws.addChangeListener((e) => {
@@ -46,7 +46,7 @@ ws.addChangeListener((e) => {
   save(ws);
 });
 
-// Whenever the workspace changes meaningfully, run the code again.
+// Whenever the workspace changes meaningfully, generate the code again.
 ws.addChangeListener((e) => {
   // Don't run the code when the workspace finishes loading; we're
   // already running it once when the application starts.
@@ -58,5 +58,5 @@ ws.addChangeListener((e) => {
   ) {
     return;
   }
-  runCode();
+  generateCode();
 });

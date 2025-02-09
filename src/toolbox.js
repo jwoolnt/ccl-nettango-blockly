@@ -16,13 +16,26 @@ export const toolbox = {
   kind: 'categoryToolbox',
   contents: [{
     kind: 'category',
-    name: 'Test',
+    name: 'Observer',
     contents: [{
       kind: 'block',
-      type: 'big_test',
+      type: 'clear_all',
     }, {
       kind: 'block',
-      type: 'test',
+      type: 'reset_ticks',
+    }],
+  }, {
+    kind: 'category',
+    name: 'Agent',
+    contents: [{
+      kind: 'block',
+      type: 'create_breeds',
+    }, {
+      kind: 'block',
+      type: 'ask_agent_set',
+    }, {
+      kind: 'block',
+      type: 'die',
     }],
   }],
 };

@@ -1,29 +1,40 @@
-/**
- * @license
- * Copyright 2023 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
+import { Generator } from "blockly";
 
-import * as Blockly from 'blockly';
+export const netlogoGenerator = new Generator('NetLogo');
 
-export const netlogoGenerator = new Blockly.Generator('NetLogo');
 
 netlogoGenerator.scrub_ = function (block, code, thisOnly) {
 	const nextBlock =
 		block.nextConnection && block.nextConnection.targetBlock();
 	if (nextBlock && !thisOnly) {
-		return code + ',\n' + netlogoGenerator.blockToCode(nextBlock);
+		return code + '\n' + netlogoGenerator.blockToCode(nextBlock);
 	}
 	return code;
 };
 
+
 const { forBlock } = netlogoGenerator;
 
-forBlock['test'] = function (block) {
-	return `"test${Math.random() * 100}"`;
-};
 
-forBlock['big_test'] = function (block, generator) {
-	const statement = generator.statementToCode(block, 'inside');
-	return `big [\n${statement}\n] test`;
-};
+["clear_all", "reset_ticks", "die"].forEach(type =>
+	forBlock[type] = () => type.replace("_", "-")
+);
+
+forBlock["create_breeds"] = function (block, generator) {
+	const breed = block.getFieldValue("BREED");
+	const number = block.getFieldValue("NUMBER") ?? 0;
+	const setup = generator.statementToCode(block, 'SETUP');
+
+	let code = `create-${breed} ${number}`;
+	if (setup) {
+		code += ` [\n${setup}\n]`;
+	}
+
+	return code;
+}
+
+forBlock["ask_agent_set"] = function (block, generator) {
+	const agentSet = block.getFieldValue("AGENT_SET");
+	const commands = generator.statementToCode(block, 'COMMANDS');
+	return `ask ${agentSet} [\n${commands}\n]`
+}
