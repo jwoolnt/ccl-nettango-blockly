@@ -29,85 +29,34 @@ export const toolbox = {
     },
     {
       "kind": "category",
-      "name": "Logic",
+      "name": "Observer",
       "colour": "#5C81A6",
-      "contents": [
-        { "kind": "block", "type": "controls_if" },
-        { "kind": "block", "type": "logic_compare" },
-        { "kind": "block", "type": "logic_operation" },
-        { "kind": "block", "type": "logic_negate" },
-        { "kind": "block", "type": "logic_boolean" }
-      ]
+      contents: [{
+        kind: 'block',
+        type: 'clear_all',
+      }, {
+        kind: 'block',
+        type: 'reset_ticks',
+      }],
     },
     {
       "kind": "category",
-      "name": "Loops",
+      "name": "Agent",
       "colour": "#5CA68D",
-      "contents": [
-        { "kind": "block", "type": "controls_repeat_ext" },
-        { "kind": "block", "type": "controls_whileUntil" },
-        { "kind": "block", "type": "controls_for" }
-      ]
+      contents: [{
+        kind: 'block',
+        type: 'create_breeds',
+      }, {
+        kind: 'block',
+        type: 'ask_agent_set',
+      }, {
+        kind: 'block',
+        type: 'die',
+      }],
     },
-    {
-      "kind": "category",
-      "name": "Math",
-      "colour": "#5C68A6",
-      "contents": [
-        { "kind": "block", "type": "math_number" },
-        { "kind": "block", "type": "math_arithmetic" },
-        { "kind": "block", "type": "math_single" },
-        { "kind": "block", "type": "math_trig" },
-        { "kind": "block", "type": "math_round" }
-      ]
-    },
-    {
-      "kind": "category",
-      "name": "Text",
-      "colour": "#A65C81",
-      "contents": [
-        { "kind": "block", "type": "text" },
-        { "kind": "block", "type": "text_length" },
-        { "kind": "block", "type": "text_join" }
-      ]
-    },
-    {
-      "kind": "category",
-      "name": "Variables",
-      "custom": "VARIABLE",
-      "colour": "#A65C5C"
-    },
-  ]
+  ],
 };
 
-// export const toolbox = {
-//   kind: 'categoryToolbox',
-//   contents: [
-//     {
-//       kind: 'category',
-//       name: 'Turtles',
-//       categorystyle: 'netlogo_category',
-//       contents: [
-//         {
-//           kind: 'block',
-//           type: 'setup_block',
-//         },
-//         {
-//           kind: 'block',
-//           type: 'go_block',
-//         },
-//         {
-//           kind: 'block',
-//           type: 'ask_block',
-//         },
-//         {
-//           kind: 'block',
-//           type: 'if_block',
-//         },
-//       ],
-//     },
-//   ],
-// };
 
 // ============================
 // export const toolbox = {
