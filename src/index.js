@@ -14,7 +14,7 @@ Blockly.common.defineBlocks({
   ...observer_blocks,
   ...agent_blocks,
   ...control_blocks,
-  // ...operator_blocks,
+  ...operator_blocks,
 });
 
 // Set up UI elements and inject Blockly

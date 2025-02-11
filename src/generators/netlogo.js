@@ -41,78 +41,94 @@ forBlock["ask_agent_set"] = function (block, generator) {
 }
 
 // ==========`Control` blocks=========
-// if_block
+// if_block with operator condition handling
 forBlock["if_block"] = function (block, generator) {
-	const condition = block.getFieldValue("CONDITION");
-	const commands = generator.statementToCode(block, 'DO');
-	return `if ${condition} [\n${commands}\n]`
-}
+    const condition = generator.valueToCode(block, "CONDITION", 0); // Get condition dynamically
+    const commands = generator.statementToCode(block, 'DO'); // Get commands to run if the condition is true
 
-// if_else_block
+    return `if ${condition} [\n${commands}\n]`;
+};
+
+// if_else_block with operator condition handling
 forBlock["if_else_block"] = function (block, generator) {
-	const condition = block.getFieldValue("CONDITION");
-	const commands = generator.statementToCode(block, 'DO_IF');
-	const elseCommands = generator.statementToCode(block, 'DO_ELSE');
-	return `ifelse ${condition} [\n${commands}\n] [\n${elseCommands}\n]`
+    const condition = generator.valueToCode(block, "CONDITION", 0); // Get condition dynamically
+    const commands = generator.statementToCode(block, 'DO_IF'); // Get commands for 'if' part
+    const elseCommands = generator.statementToCode(block, 'DO_ELSE'); // Get commands for 'else' part
+
+    return `ifelse ${condition} [\n${commands}\n] [\n${elseCommands}\n]`;
+};
+
+// ==========`Operators` blocks=========
+// helper function to create operator blocks dynamically
+function createOperatorBlock(operatorType) {
+    return { kind: 'block', type: operatorType };
 }
 
-// // ==========`Operators` blocks=========
-// // Helper function for binary operators
-// function generateBinaryOperator(block, generator, operator, order) {
-//     const a = generator.valueToCode(block, "A", generator.ORDER_ATOMIC) || "0";
-//     const b = generator.valueToCode(block, "B", generator.ORDER_ATOMIC) || "0";
-//     return [`(${a} ${operator} ${b})`, order];
-// }
+// list of all operator blocks (comparison, logical, and arithmetic)
+const operatorTypes = [
+    // Comparison Operators
+    'operator_equals',
+    'operator_not_equals',
+    'operator_greater_than',
+    'operator_less_than',
+    
+    // Logical Operators
+    'operator_and',
+    'operator_or',
+    'operator_not',
 
-// // Helper function for unary operators
-// function generateUnaryOperator(block, generator, operator, order) {
-//     const a = generator.valueToCode(block, "A", generator.ORDER_ATOMIC) || "false";
-//     return [`(${operator} ${a})`, order];
-// }
+    // Arithmetic Operators
+    'operator_add',
+    'operator_subtract',
+    'operator_multiply',
+    'operator_divide'
+];
 
+// generate all operator blocks
+const operators = operatorTypes.map(createOperatorBlock);
 
-// forBlock["operator_equals"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "=", generator.ORDER_RELATIONAL);
-// };
+// helper function to generate the corresponding code for each operator
+function createOperatorGenerationCode(operatorType) {
+    return function (block, generator) {
+        const a = generator.valueToCode(block, 'A', 0); // First operand
+        const b = generator.valueToCode(block, 'B', 0); // Second operand
+        
+        switch (operatorType) {
+            // Arithmetic Operators
+            case 'operator_add':
+                return `${a} + ${b}`;
+            case 'operator_subtract':
+                return `${a} - ${b}`;
+            case 'operator_multiply':
+                return `${a} * ${b}`;
+            case 'operator_divide':
+                return `${a} / ${b}`;
+            
+            // Comparison Operators
+            case 'operator_equals':
+                return `${a} == ${b}`;
+            case 'operator_not_equals':
+                return `${a} != ${b}`;
+            case 'operator_greater_than':
+                return `${a} > ${b}`;
+            case 'operator_less_than':
+                return `${a} < ${b}`;
+            
+            // Logical Operators
+            case 'operator_and':
+                return `${a} && ${b}`;
+            case 'operator_or':
+                return `${a} || ${b}`;
+            case 'operator_not':
+                return `!${a}`;
+            
+            default:
+                throw new Error(`Unknown operator type: ${operatorType}`);
+        }
+    };
+}
 
-// forBlock["operator_not_equals"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "!=", generator.ORDER_RELATIONAL);
-// };
-
-// forBlock["operator_greater_than"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, ">", generator.ORDER_RELATIONAL);
-// };
-
-// forBlock["operator_less_than"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "<", generator.ORDER_RELATIONAL);
-// };
-
-// // =========`Logical Operators`=========
-// forBlock["operator_and"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "and", generator.ORDER_LOGICAL_AND);
-// };
-
-// forBlock["operator_or"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "or", generator.ORDER_LOGICAL_OR);
-// };
-
-// forBlock["operator_not"] = function (block, generator) {
-//     return generateUnaryOperator(block, generator, "not", generator.ORDER_LOGICAL_NOT);
-// };
-
-// // === `Arithmetic Operators` ===
-// forBlock["operator_add"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "+", generator.ORDER_ADDITIVE);
-// };
-
-// forBlock["operator_subtract"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "-", generator.ORDER_ADDITIVE);
-// };
-
-// forBlock["operator_multiply"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "*", generator.ORDER_MULTIPLICATIVE);
-// };
-
-// forBlock["operator_divide"] = function (block, generator) {
-//     return generateBinaryOperator(block, generator, "/", generator.ORDER_MULTIPLICATIVE);
-// };
+// generate dynamically for all operators
+operatorTypes.forEach(type => {
+    forBlock[type] = createOperatorGenerationCode(type);
+});
