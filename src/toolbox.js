@@ -94,6 +94,9 @@ export const toolbox = {
       },
       { kind: 'block', 
         type: 'operator_divide' 
+      },
+      { kind: 'block', 
+        type: 'operator_random' 
       }
     ],
   }
