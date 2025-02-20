@@ -1,25 +1,25 @@
-const turtleBreeds = [
+let turtleBreeds = [
 	["turtles", "turtle"]
-]
+];
 
-const undirectedLinkBreeds = []
+let undirectedLinkBreeds = [];
 
-const directedLinkBreeds = []
+let directedLinkBreeds = [];
 
-const linkBreeds = [
+let linkBreeds = [
 	["links", "link"],
 	...undirectedLinkBreeds,
 	...directedLinkBreeds
-]
+];
 
-const breeds = [
+let breeds = [
 	...turtleBreeds,
 	...linkBreeds
 ];
 
-export const breedPlurals = toPluralArray(breeds);
+export let breedPlurals = toPluralArray(breeds);
 
-export const agentSets = toPluralArray([
+export let agentSets = toPluralArray([
 	["patches", "patch"],
 	...turtleBreeds,
 	...linkBreeds
@@ -27,6 +27,63 @@ export const agentSets = toPluralArray([
 
 function toPluralArray(array) {
 	return array.map(([plural,]) => plural);
+}
+
+function refreshBreeds() {
+	breeds = [
+		...turtleBreeds,
+		...linkBreeds
+	];
+	breedPlurals = toPluralArray(breeds);
+	agentSets = toPluralArray([
+		["patches", "patch"],
+		...turtleBreeds,
+		...linkBreeds
+	]);
+}
+
+export function resetBreeds() {
+	turtleBreeds = [
+		["turtles", "turtle"]
+	];
+	undirectedLinkBreeds = [];
+	directedLinkBreeds = [];
+	linkBreeds = [
+		["links", "link"],
+		...undirectedLinkBreeds,
+		...directedLinkBreeds
+	];
+	refreshBreeds();
+}
+
+export function addBreed(type, breedInfo) {
+	switch (type) {
+		case "turtle":
+			turtleBreeds.push(breedInfo);
+			break;
+		case "ulink":
+		case "undirected-link":
+			undirectedLinkBreeds.push(breedInfo);
+			break;
+		case "dlink":
+		case "directed-link":
+			directedLinkBreeds.push(breedInfo);
+			break;
+		default:
+			alert(`unsupported breed type: ${type}`);
+			break;
+	}
+
+	linkBreeds = [
+		["links", "link"],
+		...undirectedLinkBreeds,
+		...directedLinkBreeds
+	];
+	breeds = [
+		...turtleBreeds,
+		...linkBreeds
+	];
+	refreshBreeds();
 }
 
 export function defineBasicBlock(type) {

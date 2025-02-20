@@ -8,8 +8,8 @@ const create_breeds = {
 	args0: [{
 		type: "field_dropdown",
 		name: "BREED",
-		options: breedPlurals.map(
-			(breedPlural, i) => [breedPlural, breedPlural]
+		options: () => breedPlurals.map(
+			(breedPlural) => [breedPlural, breedPlural]
 		)
 	}, {
 		type: "input_value",
@@ -29,8 +29,8 @@ const ask_agent_set = {
 	args0: [{
 		type: "field_dropdown",
 		name: "AGENT_SET",
-		options: agentSets.map(
-			(agentSet, i) => [agentSet, agentSet]
+		options: () => agentSets.map(
+			(agentSet) => [agentSet, agentSet]
 		)
 	}, {
 		type: "input_statement",

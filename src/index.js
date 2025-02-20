@@ -5,6 +5,7 @@ import { netlogoGenerator } from './generators/netlogo';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import './index.css';
+import { addBreed, resetBreeds } from './blocks/define';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks({
@@ -59,4 +60,20 @@ ws.addChangeListener((e) => {
     return;
   }
   generateCode();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && !e.repeat) {
+    if (e.key == "b") {
+      let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
+      if (type == null) return;
+      let plural = prompt("what is the breeds plural name?");
+      if (plural == null) return;
+      let singular = prompt("what is the breeds singular name?");
+      if (singular == null) return;
+      addBreed(type, [plural, singular]);
+    } else if (e.key == "r") {
+      resetBreeds();
+    }
+  }
 });
