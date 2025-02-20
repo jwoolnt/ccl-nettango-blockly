@@ -58,34 +58,34 @@ forBlock["if_else_block"] = function (block, generator) {
     return `ifelse (${condition}) [\n${commands}\n] [\n${elseCommands}\n]`;
 };
 
-// ==========`Operators` blocks=========
-// helper function to create operator blocks dynamically
-function createOperatorBlock(operatorType) {
-    return { kind: 'block', type: operatorType };
-}
+// // ==========`Operators` blocks=========
+// // helper function to create operator blocks dynamically
+// function createOperatorBlock(operatorType) {
+//     return { kind: 'block', type: operatorType };
+// }
 
-// list of all operator blocks (comparison, logical, and arithmetic)
-const operatorTypes = [
-    // Comparison Operators
-    'operator_equals',
-    'operator_not_equals',
-    'operator_greater_than',
-    'operator_less_than',
+// // list of all operator blocks (comparison, logical, and arithmetic)
+// const operatorTypes = [
+//     // Comparison Operators
+//     'operator_equals',
+//     'operator_not_equals',
+//     'operator_greater_than',
+//     'operator_less_than',
     
-    // Logical Operators
-    'operator_and',
-    'operator_or',
-    'operator_not',
+//     // Logical Operators
+//     'operator_and',
+//     'operator_or',
+//     'operator_not',
 
-    // Arithmetic Operators
-    'operator_add',
-    'operator_subtract',
-    'operator_multiply',
-    'operator_divide'
-];
+//     // Arithmetic Operators
+//     'operator_add',
+//     'operator_subtract',
+//     'operator_multiply',
+//     'operator_divide'
+// ];
 
-// generate all operator blocks
-const operators = operatorTypes.map(createOperatorBlock);
+// // generate all operator blocks
+// const operators = operatorTypes.map(createOperatorBlock);
 
 // helper function to generate the corresponding code for each operator
 function createOperatorGenerationCode(operatorType) {
@@ -122,11 +122,11 @@ function createOperatorGenerationCode(operatorType) {
             case 'operator_not':
                 return `(!${a})`;
             
-            default:
-                throw new Error(`Unknown operator type: ${operatorType}`);
-        }
-    };
-}
+//             default:
+//                 throw new Error(`Unknown operator type: ${operatorType}`);
+//         }
+//     };
+// }
 
 // generate dynamically for all operators
 operators.forEach(type => {
