@@ -5,7 +5,7 @@ import control_blocks from './blocks/control';
 import operator_blocks from './blocks/operators';
 
 import { netlogoGenerator } from './generators/netlogo';
-import { save, load } from './serialization.js';
+import { save, load } from './serialization';
 import { toolbox } from './toolbox';
 import './index.css';
 
@@ -14,7 +14,7 @@ Blockly.common.defineBlocks({
   ...observer_blocks,
   ...agent_blocks,
   ...control_blocks,
-  // ...operator_blocks,
+  ...operator_blocks,
 });
 
 // Set up UI elements and inject Blockly

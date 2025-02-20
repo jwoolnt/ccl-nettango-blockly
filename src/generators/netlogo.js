@@ -15,12 +15,11 @@ netlogoGenerator.scrub_ = function (block, code, thisOnly) {
 
 const { forBlock } = netlogoGenerator;
 
-// clear commands
+
 ["clear_all", "reset_ticks", "die"].forEach(type =>
 	forBlock[type] = () => type.replace("_", "-")
 );
 
-// create_breeds
 forBlock["create_breeds"] = function (block, generator) {
 	const breed = block.getFieldValue("BREED");
 	const number = block.getFieldValue("NUMBER") ?? 0;
@@ -40,95 +39,44 @@ forBlock["ask_agent_set"] = function (block, generator) {
 	return `ask ${agentSet} [\n${commands}\n]`
 }
 
-// ==========`Control` blocks=========
-// if_block
+// if_block with operator condition handling
 forBlock["if_block"] = function (block, generator) {
     const condition = generator.valueToCode(block, "CONDITION", 0); // Get condition dynamically
     const commands = generator.statementToCode(block, 'DO'); // Get commands to run if the condition is true
 
-    return `if ${condition} [\n${commands}\n]`;
+    return `if (${condition}) [\n${commands}\n]`;
 };
 
-// if_else_block
+// if_else_block with operator condition handling
 forBlock["if_else_block"] = function (block, generator) {
     const condition = generator.valueToCode(block, "CONDITION", 0); // Get condition dynamically
     const commands = generator.statementToCode(block, 'DO_IF'); // Get commands for 'if' part
     const elseCommands = generator.statementToCode(block, 'DO_ELSE'); // Get commands for 'else' part
 
-    return `ifelse ${condition} [\n${commands}\n] [\n${elseCommands}\n]`;
+    return `ifelse (${condition}) [\n${commands}\n] [\n${elseCommands}\n]`;
 };
 
-// ==========`Operators` blocks=========
-// helper function to create operator blocks dynamically
-function createOperatorBlock(operatorType) {
-    return { kind: 'block', type: operatorType };
-}
+// // Operator blocks
+// forBlock["operator_equals"] = function (block, generator) {
+//     const argument0 = generator.valueToCode(block, 'A', 0) || '0';
+//     const argument1 = generator.valueToCode(block, 'B', 0) || '0';
+//     return [`(${argument0} = ${argument1})`, 0];
+// };
 
-// list of all operator blocks (comparison, logical, and arithmetic)
-const operatorTypes = [
-    // Comparison Operators
-    'operator_equals',
-    'operator_not_equals',
-    'operator_greater_than',
-    'operator_less_than',
-    
-    // Logical Operators
-    'operator_and',
-    'operator_or',
-    'operator_not',
+// forBlock["operator_not_equals"] = function (block, generator) {
+//     const argument0 = generator.valueToCode(block, 'A', 0) || '0';
+//     const argument1 = generator.valueToCode(block, 'B', 0) || '0';
+//     return [`(${argument0} != ${argument1})`, 0];
+// };
 
-    // Arithmetic Operators
-    'operator_add',
-    'operator_subtract',
-    'operator_multiply',
-    'operator_divide'
-];
+// forBlock["operator_and"] = function (block, generator) {
+//     const argument0 = generator.valueToCode(block, 'A', 0) || 'false';
+//     const argument1 = generator.valueToCode(block, 'B', 0) || 'false';
+//     return [`(${argument0} and ${argument1})`, 0];
+// };
 
-// generate all operator blocks
-const operators = operatorTypes.map(createOperatorBlock);
-
-// helper function to generate the corresponding code for each operator
-function createOperatorGenerationCode(operatorType) {
-    return function (block, generator) {
-        const a = generator.valueToCode(block, 'A', 0); // First operand
-        const b = generator.valueToCode(block, 'B', 0); // Second operand
-        
-        switch (operatorType) {
-            // Arithmetic Operators
-            case 'operator_add':
-                return `${a} + ${b}`;
-            case 'operator_subtract':
-                return `${a} - ${b}`;
-            case 'operator_multiply':
-                return `${a} * ${b}`;
-            case 'operator_divide':
-                return `${a} / ${b}`;
-            
-            // Comparison Operators
-            case 'operator_equals':
-                return `${a} == ${b}`;
-            case 'operator_not_equals':
-                return `${a} != ${b}`;
-            case 'operator_greater_than':
-                return `${a} > ${b}`;
-            case 'operator_less_than':
-                return `${a} < ${b}`;
-            
-            // Logical Operators
-            case 'operator_and':
-                return `${a} && ${b}`;
-            case 'operator_or':
-                return `${a} || ${b}`;
-            case 'operator_not':
-                return `!${a}`;
-            
-            default:
-                throw new Error(`Unknown operator type: ${operatorType}`);
-        }
-    };
-}
-
-// generate dynamically for all operators
-operatorTypes.forEach(type => {
-    forBlock[type] = createOperatorGenerationCode(type);
-});
+// forBlock["operator_or"] = function (block, generator) {
+//     const argument0 = generator.valueToCode(block, 'A', 0) || 'false';
+//     const argument1 = generator.valueToCode(block, 'B', 0) || 'false';
+//     return [`(${argument0} or ${argument1})`, 0];
+// };
