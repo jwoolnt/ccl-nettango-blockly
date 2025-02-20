@@ -3,7 +3,7 @@ import observer_blocks from './blocks/observer';
 import agent_blocks from './blocks/agents';
 import control_blocks from './blocks/control';
 import operator_blocks from './blocks/operators';
-
+import looks_blocks from './blocks/looks';
 import { netlogoGenerator } from './generators/netlogo';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
@@ -15,6 +15,7 @@ Blockly.common.defineBlocks({
   ...agent_blocks,
   ...control_blocks,
   ...operator_blocks,
+  ...looks_blocks,
 });
 
 // Set up UI elements and inject Blockly

@@ -105,3 +105,10 @@ forBlock["operator_random"] = function (block, generator) {
     const to = block.getFieldValue('TO') || '10';
     return [`random(${from}, ${to})`, 6]; 
 };
+
+// Color block
+forBlock["set_color"] = function (block, generator) {
+	const property = block.getFieldValue("PROPERTY");
+	const value = block.getFieldValue("VALUE");
+	return `set ${property} ${value}\n`;
+}

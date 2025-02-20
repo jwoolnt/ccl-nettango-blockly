@@ -103,7 +103,16 @@ export const toolbox = {
       "type": "operator_less_than"
     },
   ],
-
+  },
+  {
+    kind: 'category',
+    name: 'Looks',
+    contents: [
+    {
+      kind: 'block',
+      type: 'set_color',
+    }
+  ],
   }
 ],
 };
