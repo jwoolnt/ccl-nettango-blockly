@@ -50,37 +50,37 @@ export const toolbox = {
     }
   ],
   }, 
-  {
-    kind: 'category',
-    name: 'Operators',
-    contents: [
-      // Comparison Operators
-      { kind: 'block', 
-        type: 'operator_equals' 
-      },
-      { kind: 'block', 
-        type: 'operator_not_equals' 
-      },
-      { kind: 'block', 
-        type: 'operator_greater_than' 
-      },
-      { kind: 'block', 
-        type: 'operator_less_than' 
-      },
+  // {
+  //   kind: 'category',
+  //   name: 'Operators',
+  //   contents: [
+  //     // Comparison Operators
+  //     { kind: 'block', 
+  //       type: 'operator_equals' 
+  //     },
+  //     { kind: 'block', 
+  //       type: 'operator_not_equals' 
+  //     },
+  //     { kind: 'block', 
+  //       type: 'operator_greater_than' 
+  //     },
+  //     { kind: 'block', 
+  //       type: 'operator_less_than' 
+  //     },
 
-      // Logical Operators
-      {
-        kind: 'block', 
-        type: 'operator_and' 
-      },
-      { 
-        kind: 'block', 
-        type: 'operator_or' 
-      },
-      { 
-        kind: 'block', 
-        type: 'operator_not' 
-      },
+  //     // Logical Operators
+  //     {
+  //       kind: 'block', 
+  //       type: 'operator_and' 
+  //     },
+  //     { 
+  //       kind: 'block', 
+  //       type: 'operator_or' 
+  //     },
+  //     { 
+  //       kind: 'block', 
+  //       type: 'operator_not' 
+  //     },
 
       // Arithmetic Operators
       { kind: 'block', 
@@ -94,9 +94,6 @@ export const toolbox = {
       },
       { kind: 'block', 
         type: 'operator_divide' 
-      },
-      { kind: 'block', 
-        type: 'operator_random' 
       }
     ],
   }

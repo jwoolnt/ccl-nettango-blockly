@@ -21,7 +21,6 @@ export const breedPlurals = toPluralArray(breeds);
 
 export const agentSets = toPluralArray([
 	["patches", "patch"],
-	["teachers", "teacher"],
 	...turtleBreeds,
 	...linkBreeds
 ]);
