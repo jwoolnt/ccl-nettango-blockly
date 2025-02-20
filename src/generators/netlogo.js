@@ -44,7 +44,7 @@ forBlock["if_block"] = function (block, generator) {
     const condition = generator.valueToCode(block, "CONDITION", 0); // Get condition dynamically
     const commands = generator.statementToCode(block, 'DO'); // Get commands to run if the condition is true
 
-    return `if (${condition}) [\n${commands}\n]`;
+    return `if ${condition} [\n${commands}\n]`;
 };
 
 // if_else_block with operator condition handling
@@ -53,30 +53,55 @@ forBlock["if_else_block"] = function (block, generator) {
     const commands = generator.statementToCode(block, 'DO_IF'); // Get commands for 'if' part
     const elseCommands = generator.statementToCode(block, 'DO_ELSE'); // Get commands for 'else' part
 
-    return `ifelse (${condition}) [\n${commands}\n] [\n${elseCommands}\n]`;
+    return `ifelse ${condition} [\n${commands}\n] [\n${elseCommands}\n]`;
 };
 
-// // Operator blocks
-// forBlock["operator_equals"] = function (block, generator) {
-//     const argument0 = generator.valueToCode(block, 'A', 0) || '0';
-//     const argument1 = generator.valueToCode(block, 'B', 0) || '0';
-//     return [`(${argument0} = ${argument1})`, 0];
-// };
+// Operator blocks
+function generateComparisonBlock(operator) {
+    return function (block, generator) {
+        const argument0 = block.getFieldValue('A') || '0';
+        const argument1 = block.getFieldValue('B') || '0';
+        return [`(${argument0} ${operator} ${argument1})`, 6]; // 6 is the precedence level for comparison
+    };
+}
 
-// forBlock["operator_not_equals"] = function (block, generator) {
-//     const argument0 = generator.valueToCode(block, 'A', 0) || '0';
-//     const argument1 = generator.valueToCode(block, 'B', 0) || '0';
-//     return [`(${argument0} != ${argument1})`, 0];
-// };
+forBlock["operator_equals"] = generateComparisonBlock("==");
+forBlock["operator_not_equals"] = generateComparisonBlock("!=");
+forBlock["operator_greater_than"] = generateComparisonBlock(">");
+forBlock["operator_less_than"] = generateComparisonBlock("<");
+forBlock["operator_add"] = generateComparisonBlock("+");
+forBlock["operator_subtract"] = generateComparisonBlock("-");
+forBlock["operator_multiply"] = generateComparisonBlock("*");
+forBlock["operator_divide"] = generateComparisonBlock("/");
 
-// forBlock["operator_and"] = function (block, generator) {
-//     const argument0 = generator.valueToCode(block, 'A', 0) || 'false';
-//     const argument1 = generator.valueToCode(block, 'B', 0) || 'false';
-//     return [`(${argument0} and ${argument1})`, 0];
-// };
+// Logical operator blocks
+function generateLogicalOperator(block, generator, operator) {
+    const argument0 = generator.valueToCode(block, 'A', 0) || 'false';
 
-// forBlock["operator_or"] = function (block, generator) {
-//     const argument0 = generator.valueToCode(block, 'A', 0) || 'false';
-//     const argument1 = generator.valueToCode(block, 'B', 0) || 'false';
-//     return [`(${argument0} or ${argument1})`, 0];
-// };
+    if (operator === 'not') {
+        return [`not ${argument0}`, 6];
+    }
+
+    const argument1 = generator.valueToCode(block, 'B', 0) || 'false';
+    return [`(${argument0} ${operator} ${argument1})`, 6];
+}
+
+// Logical operators
+forBlock["operator_and"] = function (block, generator) {
+    return generateLogicalOperator(block, generator, 'and');
+};
+
+forBlock["operator_or"] = function (block, generator) {
+    return generateLogicalOperator(block, generator, 'or');
+};
+
+forBlock["operator_not"] = function (block, generator) {
+    return generateLogicalOperator(block, generator, 'not');
+};
+
+// Random number block
+forBlock["operator_random"] = function (block, generator) {
+    const from = block.getFieldValue('FROM') || '0';
+    const to = block.getFieldValue('TO') || '10';
+    return [`random(${from}, ${to})`, 6]; 
+};
