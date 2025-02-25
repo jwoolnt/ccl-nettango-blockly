@@ -107,8 +107,11 @@ forBlock["operator_random"] = function (block, generator) {
 };
 
 // Color block
-forBlock["set_color"] = function (block, generator) {
-	const property = block.getFieldValue("PROPERTY");
-	const value = block.getFieldValue("VALUE");
-	return `set ${property} ${value}\n`;
+forBlock["set_turtle_color"] = function (block, generator) {
+    const color = block.getFieldValue("VALUE");
+    return `set color ${color}\n`;
+}
+forBlock["set_patch_color"] = function (block, generator) {
+    const color = block.getFieldValue("VALUE");
+    return `set pcolor ${color}\n`;
 }

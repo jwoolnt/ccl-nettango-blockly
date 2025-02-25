@@ -107,11 +107,21 @@ export const toolbox = {
   },
   {
     kind: 'category',
-    name: 'Looks',
+    name: 'Turtles',
     contents: [
     {
       kind: 'block',
-      type: 'set_color',
+      type: 'set_turtle_color',
+    }
+  ],
+  },
+  {
+    kind: 'category',
+    name: 'Patches',
+    contents: [
+    {
+      kind: 'block',
+      type: 'set_patch_color',
     }
   ],
   }

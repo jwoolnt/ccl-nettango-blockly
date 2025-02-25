@@ -12,28 +12,33 @@ const netlogoColors = [
     ["Violet", "105"],
     ["Pink", "125"]
 ];
-
-const set_property_block = {
-    type: "set_color",
-    message0: "set %1 to %2",
+const set_turtle_color = {
+    type: "set_turtle_color",
+    message0: "set color %1",
     args0: [{
-        type: "field_dropdown",
-        name: "PROPERTY",
-        options: [
-            ["color", "color"],  // turtles: the first is label shown in the dropdown, the second is the actual value
-            ["pcolor", "pcolor"]  // patches
-        ]
-    }, {
         type: "field_dropdown",
         name: "VALUE",
         options: netlogoColors
     }],
     previousStatement: null,
     nextStatement: null,
-    // colour: 230  //
+};
+
+const set_patch_color = {
+    type: "set_patch_color",
+    message0: "set pcolor %1",
+    args0: [{
+        type: "field_dropdown",
+        name: "VALUE",
+        options: netlogoColors
+    }],
+    previousStatement: null,
+    nextStatement: null,
 };
 
 // Register the block in Blockly
 export default common.createBlockDefinitionsFromJsonArray([
-    set_property_block,
+    set_turtle_color,
+    set_patch_color,
+    
 ]);
