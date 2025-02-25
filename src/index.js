@@ -7,6 +7,7 @@ import looks_blocks from './blocks/looks';
 import { netlogoGenerator } from './generators/netlogo';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
+import { addBreed, resetBreeds } from './blocks/define';
 import 'blockly/blocks'; // Load default blocks (variables, lists, etc.)
 import './index.css';
 
@@ -66,4 +67,20 @@ ws.addChangeListener((e) => {
     return;
   }
   generateCode();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.altKey && !e.repeat) {
+    if (e.key == "b") {
+      let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
+      if (type == null) return;
+      let plural = prompt("what is the breeds plural name?");
+      if (plural == null) return;
+      let singular = prompt("what is the breeds singular name?");
+      if (singular == null) return;
+      addBreed(type, [plural, singular]);
+    } else if (e.key == "d") {
+      resetBreeds();
+    }
+  }
 });
