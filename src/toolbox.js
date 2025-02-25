@@ -48,7 +48,8 @@ export const toolbox = {
     { 
       kind: 'block',
       type: 'if_else_block',
-    }],
+    },
+  ],
   },
   {
     kind: 'category',
@@ -61,6 +62,14 @@ export const toolbox = {
     {
       "kind": "block",
       "type": "operator_not_equals"
+    },
+    {
+      "kind": "block",
+      "type": "operator_greater_than"
+    },
+    {
+      "kind": "block",
+      "type": "operator_less_than"
     },
     {
       "kind": "block",
@@ -93,14 +102,6 @@ export const toolbox = {
     {
       "kind": "block",
       "type": "operator_random"
-    },
-    {
-      "kind": "block",
-      "type": "operator_greater_than"
-    },
-    {
-      "kind": "block",
-      "type": "operator_less_than"
     },
   ],
   },

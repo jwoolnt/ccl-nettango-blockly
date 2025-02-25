@@ -30,7 +30,7 @@ const set_property_block = {
     }],
     previousStatement: null,
     nextStatement: null,
-    colour: 230  //
+    // colour: 230  //
 };
 
 // Register the block in Blockly
