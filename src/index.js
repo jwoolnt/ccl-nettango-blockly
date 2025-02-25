@@ -7,6 +7,7 @@ import looks_blocks from './blocks/looks';
 import { netlogoGenerator } from './generators/netlogo';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
+import 'blockly/blocks'; // Load default blocks (variables, lists, etc.)
 import './index.css';
 
 // Register the blocks and generator with Blockly
