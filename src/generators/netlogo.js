@@ -4,12 +4,12 @@ export const netlogoGenerator = new Generator('NetLogo');
 
 
 netlogoGenerator.scrub_ = function (block, code, thisOnly) {
-	const nextBlock =
-		block.nextConnection && block.nextConnection.targetBlock();
-	if (nextBlock && !thisOnly) {
-		return code + '\n' + netlogoGenerator.blockToCode(nextBlock);
-	}
-	return code;
+    const nextBlock =
+        block.nextConnection && block.nextConnection.targetBlock();
+    if (nextBlock && !thisOnly) {
+        return code + '\n' + netlogoGenerator.blockToCode(nextBlock);
+    }
+    return code;
 };
 
 
@@ -17,26 +17,42 @@ const { forBlock } = netlogoGenerator;
 
 
 ["clear_all", "reset_ticks", "die"].forEach(type =>
-	forBlock[type] = () => type.replace("_", "-")
+    forBlock[type] = () => type.replace("_", "-")
 );
 
 forBlock["create_breeds"] = function (block, generator) {
-	const breed = block.getFieldValue("BREED");
-	const number = block.getFieldValue("NUMBER") ?? 0;
-	const setup = generator.statementToCode(block, 'SETUP');
+    const breed = block.getFieldValue("BREED");
+    const number = block.getFieldValue("NUMBER") ?? 0;
+    const setup = generator.statementToCode(block, 'SETUP');
 
-	let code = `create-${breed} ${number}`;
-	if (setup) {
-		code += ` [\n${setup}\n]`;
-	}
+    let code = `create-${breed} ${number}`;
+    if (setup) {
+        code += ` [\n${setup}\n]`;
+    }
 
-	return code;
+    return code;
+}
+
+forBlock["to"] = function (block, generator) {
+    const name = block.getFieldValue("NAME");
+    const code = generator.statementToCode(block, "CODE") ?? "";
+    return name ? `to ${name}\n${code}\nend` : "";
+}
+
+forBlock["setup"] = function (block, generator) {
+    const code = generator.statementToCode(block, "CODE") ?? "";
+    return `to setup\n${code}\nend`;
+}
+
+forBlock["go"] = function (block, generator) {
+    const code = generator.statementToCode(block, "CODE") ?? "";
+    return `to go\n${code}\nend`;
 }
 
 forBlock["ask_agent_set"] = function (block, generator) {
-	const agentSet = block.getFieldValue("AGENT_SET");
-	const commands = generator.statementToCode(block, 'COMMANDS');
-	return `ask ${agentSet} [\n${commands}\n]`
+    const agentSet = block.getFieldValue("AGENT_SET");
+    const commands = generator.statementToCode(block, 'COMMANDS');
+    return `ask ${agentSet} [\n${commands}\n]`
 }
 
 // if_block with operator condition handling
@@ -103,7 +119,7 @@ forBlock["operator_not"] = function (block, generator) {
 forBlock["operator_random"] = function (block, generator) {
     const from = block.getFieldValue('FROM') || '0';
     const to = block.getFieldValue('TO') || '10';
-    return [`random(${from}, ${to})`, 6]; 
+    return [`random(${from}, ${to})`, 6];
 };
 
 // Color block
