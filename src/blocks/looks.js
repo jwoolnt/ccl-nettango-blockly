@@ -1,17 +1,18 @@
 import { common } from 'blockly/core';
 
 const netlogoColors = [
-    ["Black", "0"],
-    ["Gray", "5"],
-    ["White", "9.9"],
-    ["Red", "15"],
-    ["Orange", "25"],
-    ["Yellow", "45"],
-    ["Green", "55"],
-    ["Blue", "95"],
-    ["Violet", "105"],
-    ["Pink", "125"]
+    ["black", "0"],
+    ["gray", "5"],
+    ["white", "9.9"],
+    ["red", "15"],
+    ["orange", "25"],
+    ["yellow", "45"],
+    ["green", "55"],
+    ["blue", "95"],
+    ["violet", "105"],
+    ["pink", "125"]
 ];
+
 const set_turtle_color = {
     type: "set_turtle_color",
     message0: "set color %1",
@@ -36,9 +37,44 @@ const set_patch_color = {
     nextStatement: null,
 };
 
-// Register the block in Blockly
+const one_of_block = {
+    type: "one_of",
+    message0: "one-of %1",
+    args0: [{
+        type: "input_value",
+        name: "LIST",
+        check: "Array" // Ensures it only accepts an array input
+    }],
+    output: "Color", // Specifies that this block returns a color
+};
+
+const create_list = {
+    type: "create_list",
+    message0: "create list %1 %2 %3",
+    args0: [
+      {
+        type: "input_value",
+        name: "ITEM0"
+      },
+      {
+        type: "input_value",
+        name: "ITEM1"
+      },
+      {
+        type: "input_value",
+        name: "ITEM2"
+      }
+    ],
+    output: "Array",
+    style: "list_blocks",
+    tooltip: "Create a list with three items for NetLogo.",
+    helpUrl: ""
+};
+
+// Register both blocks in Blockly
 export default common.createBlockDefinitionsFromJsonArray([
     set_turtle_color,
     set_patch_color,
-    
+    one_of_block,
+    create_list
 ]);

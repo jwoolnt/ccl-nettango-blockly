@@ -115,3 +115,17 @@ forBlock["set_patch_color"] = function (block, generator) {
     const color = block.getFieldValue("VALUE");
     return `set pcolor ${color}\n`;
 }
+
+// One-of block
+forBlock["one_of"] = function (block, generator) {
+    const list = generator.valueToCode(block, "LIST", 0);
+    return `one-of ${list}`;
+}
+
+// Create list block
+forBlock["create_list"] = function (block, generator) {
+    const item0 = generator.valueToCode(block, "ITEM0", 0) || 'null';
+    const item1 = generator.valueToCode(block, "ITEM1", 0) || 'null';
+    const item2 = generator.valueToCode(block, "ITEM2", 0) || 'null';
+    return `[${item0}, ${item1}, ${item2}]`;
+}

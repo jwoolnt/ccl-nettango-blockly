@@ -40,6 +40,30 @@ export const toolbox = {
   },
   {
     kind: 'category',
+    name: 'Turtles',
+    contents: [
+    {
+      kind: 'block',
+      type: 'set_turtle_color',
+    }
+  ],
+  },
+  {
+    kind: 'category',
+    name: 'Patches',
+    contents: [
+    {
+      kind: 'block',
+      type: 'set_patch_color',
+    },
+    {
+      kind: 'block',
+      type: 'one_of',
+    }
+  ],
+  },
+  {
+    kind: 'category',
     name: 'Control',
     contents: [{
       kind: 'block',
@@ -112,6 +136,14 @@ export const toolbox = {
     {
       kind: 'block',
       type: 'set_turtle_color',
+    },
+    {
+      kind: 'block',
+      type: 'create_list',
+    },
+    {
+      kind: 'block',
+      type: 'one_of',
     }
   ],
   },
