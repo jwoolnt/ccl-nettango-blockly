@@ -1,16 +1,23 @@
 import * as Blockly from 'blockly';
 import observer_blocks from './blocks/observer';
 import agent_blocks from './blocks/agents';
+import control_blocks from './blocks/control';
+import operator_blocks from './blocks/operators';
+import looks_blocks from './blocks/looks';
 import { netlogoGenerator } from './generators/netlogo';
 import { save, load } from './serialization';
 import { toolbox } from './toolbox';
-import './index.css';
 import { addBreed, resetBreeds } from './blocks/define';
+import 'blockly/blocks'; // Load default blocks (variables, lists, etc.)
+import './index.css';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks({
   ...observer_blocks,
-  ...agent_blocks
+  ...agent_blocks,
+  ...control_blocks,
+  ...operator_blocks,
+  ...looks_blocks,
 });
 
 // Set up UI elements and inject Blockly
@@ -63,7 +70,7 @@ ws.addChangeListener((e) => {
 });
 
 document.addEventListener("keydown", e => {
-  if (e.ctrlKey && !e.repeat) {
+  if (e.ctrlKey && e.altKey && !e.repeat) {
     if (e.key == "b") {
       let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
       if (type == null) return;
@@ -72,7 +79,7 @@ document.addEventListener("keydown", e => {
       let singular = prompt("what is the breeds singular name?");
       if (singular == null) return;
       addBreed(type, [plural, singular]);
-    } else if (e.key == "r") {
+    } else if (e.key == "d") {
       resetBreeds();
     }
   }
