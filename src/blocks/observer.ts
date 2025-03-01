@@ -1,7 +1,7 @@
 import { common } from 'blockly/core';
 import { defineBasicBlocks } from './define';
 
-interface BlockDefinition {
+interface observerDefinition {
 	type: string;
 	message0: string;
 	args0: Array<{
@@ -11,7 +11,7 @@ interface BlockDefinition {
 	}>;
 }
 
-const to: BlockDefinition = {
+const to: observerDefinition = {
 	type: "to",
 	message0: "to %1\n %2",
 	args0: [
@@ -27,7 +27,7 @@ const to: BlockDefinition = {
 	]
 };
 
-const setup: BlockDefinition = {
+const setup: observerDefinition = {
 	type: "setup",
 	message0: "to setup\n %1",
 	args0: [
@@ -38,7 +38,7 @@ const setup: BlockDefinition = {
 	]
 };
 
-const go: BlockDefinition = {
+const go: observerDefinition = {
 	type: "go",
 	message0: "to go\n %1",
 	args0: [

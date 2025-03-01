@@ -1,5 +1,5 @@
 import { common } from 'blockly/core';
-import { agentSets, breedPlurals, defineBasicBlock } from './define';
+import { agentSets, breedPlurals, defineBasicBlock } from '../define';
 
 
 const create_breeds = {

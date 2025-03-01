@@ -1,5 +1,5 @@
 import { common } from 'blockly/core';
-import { defineBasicBlocks } from './define';
+import { defineBasicBlocks } from '../define';
 
 
 const to = {

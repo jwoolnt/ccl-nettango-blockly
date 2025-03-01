@@ -1,7 +1,7 @@
 import { common } from 'blockly/core';
 import { agentSets, breedPlurals, defineBasicBlock } from './define';
 
-interface BlockDefinition {
+interface agentDefinition {
 	type: string;
 	message0: string;
 	args0: Array<any>;
@@ -9,7 +9,7 @@ interface BlockDefinition {
 	nextStatement: string | null;
 }
 
-const create_breeds: BlockDefinition = {
+const create_breeds: agentDefinition = {
 	type: "create_breeds",
 	message0: "create-%1 %2\n %3",
 	args0: [
@@ -34,7 +34,7 @@ const create_breeds: BlockDefinition = {
 	nextStatement: null
 };
 
-const ask_agent_set: BlockDefinition = {
+const ask_agent_set: agentDefinition = {
 	type: "ask_agent_set",
 	message0: "ask %1\n %2",
 	args0: [
