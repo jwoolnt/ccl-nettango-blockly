@@ -4,11 +4,13 @@ import agent_blocks from './blocks/agents';
 import control_blocks from './blocks/control';
 import operator_blocks from './blocks/operators';
 import looks_blocks from './blocks/looks';
+import data_blocks from './blocks/data';
 import { netlogoGenerator } from './generators/netlogo';
 import { save, load } from './serialization';
 import { toolbox } from './blocks/toolbox';
 import { addBreed, resetBreeds } from './blocks/define';
 import './index.css';
+import data from './blocks/data';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks({
@@ -17,6 +19,7 @@ Blockly.common.defineBlocks({
   ...control_blocks,
   ...operator_blocks,
   ...looks_blocks,
+  ...data_blocks,
 });
 
 // Set up UI elements and inject Blockly

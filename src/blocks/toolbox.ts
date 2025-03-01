@@ -77,6 +77,15 @@ export const toolbox: Toolbox = {
                 { kind: 'block', type: 'operator_divide' },
                 { kind: 'block', type: 'operator_random' }
             ],
+        },
+        {
+            kind: 'category',
+            name: 'Data',
+            contents: [
+                { kind: 'block', type: 'array_block' },
+                { kind: 'block', type: 'number_variable' },
+                { kind: 'block', type: 'string_variable' },
+            ],
         }
     ],
 };

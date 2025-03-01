@@ -137,3 +137,21 @@ forBlock["one_of"] = function (block, generator) {
     const list = generator.valueToCode(block, "LIST", 0);
     return `one-of ${list}`;
 }
+
+// list block
+forBlock["array_block"] = function (block, generator) {
+    const ele1 = generator.valueToCode(block, "ELEMENT1", 0);
+    const ele2 = generator.valueToCode(block, "ELEMENT2", 0);
+    const ele3 = generator.valueToCode(block, "ELEMENT3", 0);
+    return `[ ${ele1}, ${ele2}, ${ele3}]`;
+}
+// variable blocks
+forBlock["number_variable"] = function (block) {
+    const value = block.getFieldValue("VALUE") || '0';
+    return [value, 6];
+};
+
+forBlock["string_variable"] = function (block) {
+    const value = block.getFieldValue("VALUE") || '""';
+    return [`"${value}"`, 6];
+};
