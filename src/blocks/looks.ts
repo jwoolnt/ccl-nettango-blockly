@@ -30,12 +30,6 @@ const looksBlocks = [
         nextStatement: null
     },
     {
-        type: "color_list",
-        message0: "list of colors %1",
-        args0: [{ type: "input_statement", name: "COLOR_ITEMS", options: undefined, check: undefined }],
-        output: "Array"
-    },
-    {
         type: "one_of",
         message0: "one-of %1",
         args0: [{ type: "input_value", name: "LIST", check: "Array", options: undefined }],
