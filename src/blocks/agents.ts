@@ -1,5 +1,5 @@
 import { common } from 'blockly/core';
-import { agentSets, breedPlurals, defineBasicBlock } from './define';
+import { getBreeds, getAgentSets, getBreedPlurals } from "../data/breeds";
 
 
 const create_breeds = {
@@ -8,9 +8,7 @@ const create_breeds = {
 	args0: [{
 		type: "field_dropdown",
 		name: "BREED",
-		options: () => breedPlurals.map(
-			(breedPlural) => [breedPlural, breedPlural]
-		)
+		options: () => getBreedPlurals(getBreeds())
 	}, {
 		type: "input_value",
 		name: "NUMBER",
@@ -29,9 +27,7 @@ const ask_agent_set = {
 	args0: [{
 		type: "field_dropdown",
 		name: "AGENT_SET",
-		options: () => agentSets.map(
-			(agentSet) => [agentSet, agentSet]
-		)
+		options: getBreedPlurals(getAgentSets())
 	}, {
 		type: "input_statement",
 		name: "COMMANDS"
@@ -40,8 +36,13 @@ const ask_agent_set = {
 	nextStatement: null
 }
 
+const die = {
+	type: "die",
+	message0: "die"
+}
+
 export default common.createBlockDefinitionsFromJsonArray([
 	create_breeds,
 	ask_agent_set,
-	defineBasicBlock("die")
+	die
 ]);

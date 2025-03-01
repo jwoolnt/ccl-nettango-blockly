@@ -1,5 +1,4 @@
 import { common } from 'blockly/core';
-import { defineBasicBlocks } from './define';
 
 
 const to = {
@@ -33,9 +32,16 @@ const go = {
 	}]
 }
 
+const clear_all = {
+	type: "clear_all",
+	message0: "clear-all"
+}
+
+const reset_ticks = {
+	type: "reset_ticks",
+	message0: "reset-ticks"
+}
+
 export default common.createBlockDefinitionsFromJsonArray(
-	[...defineBasicBlocks(
-		"clear_all",
-		"reset_ticks"
-	), to, setup, go]
+	[clear_all, reset_ticks, to, setup, go]
 );
