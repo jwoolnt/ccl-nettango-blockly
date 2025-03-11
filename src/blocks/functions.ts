@@ -33,7 +33,7 @@ const blockFunctions: Record<string, BlockFunction> = {
         const code = generator.statementToCode(block, "CODE") ?? "";
         return `to go\n${code}\nend`;
     },
-    ask: function (block, generator) {
+    ask_agent_set: function (block, generator) {
         const agentSet = block.getFieldValue("AGENT_SET");
         const commands = generator.statementToCode(block, 'COMMANDS');
         return `ask ${agentSet} [\n${commands}\n]`

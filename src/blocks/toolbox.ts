@@ -12,7 +12,7 @@ your toolbox from scratch, or carefully choosing whether you need each block
 listed here.
 */
 
-export const toolbox = {
+const toolbox = {
   kind: 'categoryToolbox',
   contents: [{
     kind: 'category',
@@ -150,3 +150,5 @@ export const toolbox = {
     // },
   ],
 };
+
+export default toolbox;

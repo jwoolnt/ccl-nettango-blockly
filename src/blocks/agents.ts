@@ -1,5 +1,6 @@
 import { common } from 'blockly/core';
-import { getBreeds, getAgentSets, getBreedPlurals } from "../data/breeds";
+import { getAgentSets, getBreeds, getBreedPlurals } from "../data/breeds";
+import { dynamicOptions } from './utilities';
 
 
 const create_breeds = {
@@ -8,7 +9,7 @@ const create_breeds = {
 	args0: [{
 		type: "field_dropdown",
 		name: "BREED",
-		options: () => getBreedPlurals(getBreeds())
+		options: dynamicOptions(getBreedPlurals(getBreeds()))
 	}, {
 		type: "input_value",
 		name: "NUMBER",
@@ -27,7 +28,7 @@ const ask_agent_set = {
 	args0: [{
 		type: "field_dropdown",
 		name: "AGENT_SET",
-		options: getBreedPlurals(getAgentSets())
+		options: dynamicOptions(getBreedPlurals(getAgentSets()))
 	}, {
 		type: "input_statement",
 		name: "COMMANDS"

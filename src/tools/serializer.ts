@@ -13,8 +13,12 @@ export function load(workspace: WorkspaceSvg) {
   const data = window.localStorage?.getItem(storageKey);
   if (!data) return;
 
-  // Don't emit events during loading.
   Events.disable();
-  serialization.workspaces.load(JSON.parse(data), workspace, { recordUndo: false });
+  try {
+    serialization.workspaces.load(JSON.parse(data), workspace, { recordUndo: false });
+  }
+  catch (e) {
+    localStorage.clear();
+  }
   Events.enable();
 };
