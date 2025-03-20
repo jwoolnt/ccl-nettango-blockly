@@ -155,3 +155,16 @@ forBlock["string_variable"] = function (block) {
     const value = block.getFieldValue("VALUE") || '""';
     return [`"${value}"`, 6];
 };
+
+// make variable block
+forBlock['variables_get'] = function (block, generator) {
+    const var_name = block.getFieldValue('VAR'); 
+    return [var_name, 6];
+};
+
+forBlock['variables_set'] = function (block, generator) {
+    const var_name = block.getFieldValue('VAR'); 
+    const value = generator.valueToCode(block, 'VALUE', 0) || "0";
+    return `set ${var_name} to ${value}\n`;
+};
+
