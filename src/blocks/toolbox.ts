@@ -85,6 +85,8 @@ export const toolbox: Toolbox = {
                 { kind: 'block', type: 'array_block' },
                 { kind: 'block', type: 'number_variable' },
                 { kind: 'block', type: 'string_variable' },
+                { kind: 'block', type: 'variables_set' },
+                { kind: 'block', type: 'variables_get' } 
             ],
         }
     ],

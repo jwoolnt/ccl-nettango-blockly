@@ -10,7 +10,6 @@ import { save, load } from './serialization';
 import { toolbox } from './blocks/toolbox';
 import { addBreed, resetBreeds } from './blocks/define';
 import './index.css';
-import data from './blocks/data';
 
 // Register the blocks and generator with Blockly
 Blockly.common.defineBlocks({
@@ -27,8 +26,14 @@ const codeDiv = document.getElementById('generatedCode').firstChild;
 const blocklyDiv = document.getElementById('blocklyDiv');
 const ws = Blockly.inject(blocklyDiv, {
   renderer: 'thrasos',
-  toolbox
+  toolbox,
+  zoom: { controls: true }, // Enable zoom controls
+  move: { scrollbars: true, drag: true, wheel: true }, // Enable workspace movement
 });
+// Enable variable management
+document.getElementById('variableButton').onclick = () => {
+  Blockly.Variables.createVariableButtonHandler(ws);
+};
 
 // This function resets the code and output divs, and shows the
 // generated code from the workspace.
