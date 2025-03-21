@@ -158,12 +158,12 @@ forBlock["string_variable"] = function (block) {
 
 // make variable block
 forBlock['variables_get'] = function (block, generator) {
-    const var_name = block.getFieldValue('VAR'); 
+    const var_name = block.getFieldValue('VAR').variable.name;
     return [var_name, 6];
 };
 
 forBlock['variables_set'] = function (block, generator) {
-    const var_name = block.getFieldValue('VAR'); 
+    const var_name = block.getField('VAR').variable.name;
     const value = generator.valueToCode(block, 'VALUE', 0) || "0";
     return `set ${var_name} to ${value}\n`;
 };
