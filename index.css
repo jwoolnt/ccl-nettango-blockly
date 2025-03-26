@@ -11,7 +11,7 @@ body {
   background-color: lightyellow;
 }
 
-.subgrid {
+.sub-grid {
   grid-column: span 2;
   display: grid;
   grid-template-columns: subgrid;
@@ -31,7 +31,7 @@ menu {
   list-style-type: none;
 }
 
-.variableButton {
+.variable-button {
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
@@ -39,7 +39,7 @@ menu {
   cursor: pointer;
 }
 
-.variableButton:hover {
+.variable-button:hover {
   background-color: lightsteelblue;
 }
 
@@ -47,15 +47,9 @@ menu {
   padding: 10px;
   border-radius: 10px;
   box-shadow: 0px 0px 5px grey;
-}
-
-.blockEditor {
-  background-color: white;
-}
-
-pre,
-code,
-.outputDiv {
-  overflow: auto;
   background-color: ghostwhite;
+}
+
+.output {
+  overflow: auto;
 }
