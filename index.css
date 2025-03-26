@@ -7,32 +7,46 @@ body {
   display: grid;
   grid-template-columns: 3fr minmax(300px, 1fr);
   grid-template-rows: 50px 1fr;
-  gap: 10px;
-  background-color: aliceblue;
+  gap: 20px;
+  background-color: lightyellow;
 }
 
-.menuBar {
+.subgrid {
   grid-column: span 2;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  justify-self: center;
+  align-self: center;
+}
+
+menu {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  list-style-type: none;
 }
 
 .variableButton {
   padding: 8px 12px;
   border: none;
   border-radius: 5px;
-  background-color: lavender;
+  background-color: aliceblue;
   cursor: pointer;
 }
 
 .variableButton:hover {
-  background-color: plum;
+  background-color: lightsteelblue;
 }
 
 .pane {
   padding: 10px;
   border-radius: 10px;
+  box-shadow: 0px 0px 5px grey;
 }
 
 .blockEditor {

@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>NetTango (Blockly Re-Write)</title>
+	<title>NetTango Editor</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" type="text/css" href="index.css" />
 	<script defer type="module" src="src/main.ts"></script>
 </head>
 <body>
-	<div class="menuBar">
-		<button class="variableButton">Make a Variable</button>
-	</div>
-	<div class="blockEditor pane"></div>
-	<div class="outputDiv pane">
-		<pre class="generatedCode"><code></code></pre>
-	</div>
+	<header class="subgrid">
+		<menu>
+			<li><button class="variableButton">Make a Variable</button></li>
+		</menu>
+		<h1>NetTango Editor</h1>
+	</header>
+	<main class="subgrid">
+		<div class="blockEditor pane"></div>
+		<div class="outputDiv pane">
+			<pre class="generatedCode"><code></code></pre>
+		</div>
+	</main>
 </body>
 </html>
