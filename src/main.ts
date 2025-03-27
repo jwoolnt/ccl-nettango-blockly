@@ -1,6 +1,6 @@
 import * as Blockly from "blockly";
-import { save, load } from "./utilities/serializer";
-import netlogoGenerator from "./utilities/generator";
+import { save, load } from "./services/serializer";
+import netlogoGenerator from "./services/generator";
 import { addBreed, resetBreeds } from "./data/breeds";
 
 
