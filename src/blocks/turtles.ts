@@ -1,6 +1,6 @@
 import { getTurtleBreeds, specifyPlurality } from "../data/breeds";
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, dynamicOptions, orDefault, Order } from "./definition/utilities";
+import { createBasicBlock, dynamicOptions, Order } from "./definition/utilities";
 
 
 const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
@@ -19,7 +19,7 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 	}],
 	for: (block, generator) => {
 		const breed = block.getFieldValue("BREED");
-		const count = orDefault(generator.valueToCode(block, "COUNT", Order.NONE), 0);
+		const count = generator.valueToCode(block, "COUNT", Order.NONE);
 		const setup = generator.statementToCode(block, "COMMANDS");
 
 		let code = `create-${breed} ${count}`;

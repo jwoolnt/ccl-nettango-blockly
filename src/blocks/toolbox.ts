@@ -1,13 +1,28 @@
+type PresetBlockData = {
+	type: string;
+	fields?: Record<string, any>;
+};
+
+type PreconnectedBlock = {
+	"block": PresetBlockData
+};
+
+type ShadowBlock = {
+	"shadow": PresetBlockData
+};
+
+type PresetBlock = PreconnectedBlock | ShadowBlock;
+
+type PresetBlocks = Record<string, PresetBlock>;
+
+type PresetFields = Record<string, any>;
+
 interface Block {
 	kind: 'block';
 	type: string;
-	inputs?: Record<string, {
-		"block": {
-			type: string;
-			fields?: Record<string, any>;
-		}
-	}>;
-	fields?: Record<string, any>;
+	disabled?: boolean;
+	inputs?: PresetBlocks;
+	fields?: PresetFields;
 }
 
 interface Category {
@@ -64,7 +79,7 @@ const toolbox: Toolbox = {
 					type: "create_breeds",
 					inputs: {
 						"COUNT": {
-							"block": {
+							"shadow": {
 								type: "number",
 								fields: {
 									"NUMBER": 0
@@ -101,19 +116,83 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "block",
-					type: "and"
+					type: "and",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "true"
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "true"
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "or"
+					type: "or",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "true"
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "true"
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "not"
+					type: "not",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "true"
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "xor"
+					type: "xor",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "false"
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "false"
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
@@ -121,11 +200,31 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "block",
-					type: "if_"
+					type: "if_",
+					inputs: {
+						"CONDITION": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "true"
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "ifelse"
+					type: "ifelse",
+					inputs: {
+						"CONDITION": {
+							"shadow": {
+								type: "boolean",
+								fields: {
+									"BOOLEAN": "true"
+								}
+							}
+						}
+					}
 				}
 			]
 		},
@@ -140,7 +239,7 @@ const toolbox: Toolbox = {
 				type: "exponentiation",
 				inputs: {
 					"A": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 1
@@ -148,7 +247,7 @@ const toolbox: Toolbox = {
 						}
 					},
 					"B": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 1
@@ -161,7 +260,7 @@ const toolbox: Toolbox = {
 				type: "multiplication",
 				inputs: {
 					"A": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 1
@@ -169,7 +268,7 @@ const toolbox: Toolbox = {
 						}
 					},
 					"B": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 1
@@ -182,7 +281,7 @@ const toolbox: Toolbox = {
 				type: "division",
 				inputs: {
 					"A": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 1
@@ -190,7 +289,7 @@ const toolbox: Toolbox = {
 						}
 					},
 					"B": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 1
@@ -203,7 +302,7 @@ const toolbox: Toolbox = {
 				type: "addition",
 				inputs: {
 					"A": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 0
@@ -211,7 +310,7 @@ const toolbox: Toolbox = {
 						}
 					},
 					"B": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 0
@@ -224,7 +323,7 @@ const toolbox: Toolbox = {
 				type: "subtraction",
 				inputs: {
 					"A": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 0
@@ -232,7 +331,7 @@ const toolbox: Toolbox = {
 						}
 					},
 					"B": {
-						"block": {
+						"shadow": {
 							type: "number",
 							fields: {
 								"NUMBER": 0

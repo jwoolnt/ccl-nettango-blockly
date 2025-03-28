@@ -13,11 +13,6 @@ export enum Order {
 }
 
 
-export function orDefault<T>(generatedValue: string, defaultValue: T) {
-	return generatedValue !== "" && generatedValue !== null ? generatedValue : defaultValue;
-}
-
-
 export function staticOptions(options: string[]): StaticDropdownFieldOptions {
 	return options.map(option => [option, option]);
 }
@@ -92,9 +87,8 @@ export function createMathOperatorBlock(
 		inputsInline: true,
 		for: (block, generator) => {
 			const order = binaryOrder(symbol);
-			const defaultValue = type == "addition" || type == "subtraction" ? 0 : 1;
-			const A = orDefault(generator.valueToCode(block, "A", order), defaultValue);
-			const B = orDefault(generator.valueToCode(block, "B", order), defaultValue);
+			const A = generator.valueToCode(block, "A", order);
+			const B = generator.valueToCode(block, "B", order);
 			return [`${A} ${symbol} ${B}`, order];
 		},
 		...overrides,
@@ -121,9 +115,8 @@ export function createLogicalOperatorBlock(
 		inputsInline: true,
 		for: (block, generator) => {
 			const order = Order.LOGICAL;
-			const defaultValue = true;
-			const A = orDefault(generator.valueToCode(block, "A", order), defaultValue);
-			const B = orDefault(generator.valueToCode(block, "B", order), defaultValue);
+			const A = generator.valueToCode(block, "A", order);
+			const B = generator.valueToCode(block, "B", order);
 			return [`${A} ${type} ${B}`, order];
 		},
 		...overrides,

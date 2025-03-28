@@ -1,5 +1,5 @@
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, createLogicalOperatorBlock, createValueBlock, orDefault, Order, staticOptions } from "./definition/utilities";
+import { createBasicBlock, createLogicalOperatorBlock, createValueBlock, Order, staticOptions } from "./definition/utilities";
 
 
 const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
@@ -10,7 +10,7 @@ const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
 		options: staticOptions(["true", "false"])
 	}],
 	for: (block) => {
-		const boolean = orDefault(block.getFieldValue("BOOLEAN"), "true");
+		const boolean = block.getFieldValue("BOOLEAN");
 		return [`${boolean}`, Order.ATOMIC];
 	}
 });
@@ -28,7 +28,7 @@ const not: BlockDefinition = createLogicalOperatorBlock("not", {
 	}],
 	for: (block, generator) => {
 		const order = Order.LOGICAL;
-		const A = orDefault(generator.valueToCode(block, "A", order), true);
+		const A = generator.valueToCode(block, "A", order);
 		return [`not ${A}`, order];
 	}
 });
@@ -46,7 +46,7 @@ const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 		name: "COMMANDS"
 	}],
 	for: (block, generator) => {
-		const agentSet = orDefault(generator.valueToCode(block, "AGENTSET", Order.NONE), "no-turtles"); // TODO: update with agenset
+		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE) || "no-turtles"; // TODO: update with agenset
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `ask ${agentSet} [\n${commands}\n]`
 	}
@@ -63,7 +63,7 @@ const if_: BlockDefinition = createBasicBlock("if_", {
 		name: "COMMANDS"
 	}],
 	for: (block, generator) => {
-		const condition = orDefault(generator.valueToCode(block, "CONDITION", Order.NONE), false);
+		const condition = generator.valueToCode(block, "CONDITION", Order.NONE);
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `if ${condition} [\n${commands}\n]`;
 	}
@@ -83,7 +83,7 @@ const ifelse: BlockDefinition = createBasicBlock("ifelse", { // TODO: support mu
 		name: "ELSE_COMMANDS"
 	}],
 	for: (block, generator) => {
-		const condition = orDefault(generator.valueToCode(block, "CONDITION", Order.NONE), false);
+		const condition = generator.valueToCode(block, "CONDITION", Order.NONE);
 		const ifCommands = generator.statementToCode(block, "IF_COMMANDS");
 		const elseCommands = generator.statementToCode(block, "ELSE_COMMANDS");
 		return `ifelse ${condition} [\n${ifCommands}\n] [\n${elseCommands}\n]`;
