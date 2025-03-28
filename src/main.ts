@@ -45,6 +45,10 @@ if (blockEditor && codeOutput) {
 		resetBreeds();
 	});
 
+	actionButtons[3].addEventListener("click", () => {
+		ws.clear();
+	});
+
 
 	ws.addChangeListener((e) => {
 		if (
