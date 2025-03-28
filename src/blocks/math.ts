@@ -14,6 +14,8 @@ const number: BlockDefinition = createValueBlock("number", "Number", {
 	}
 });
 
+const negation: BlockDefinition = createMathOperatorBlock("negation", "-", false);
+
 const exponentiation: BlockDefinition = createMathOperatorBlock("exponentiation", "^");
 
 const multiplication: BlockDefinition = createMathOperatorBlock("multiplication", "*");
@@ -40,6 +42,7 @@ const random: BlockDefinition = createValueBlock("random", "Number", {
 
 const mathBlocks: BlockDefinition[] = [
 	number,
+	negation,
 	exponentiation,
 	multiplication,
 	division,

@@ -1,9 +1,9 @@
 import { getTurtleBreeds, specifyPlurality } from "../data/breeds";
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, dynamicOptions, Order } from "./definition/utilities";
+import { createStatementBlock, dynamicOptions, Order } from "./definition/utilities";
 
 
-const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
+const create_breeds: BlockDefinition = createStatementBlock("create_breeds", {
 	message0: "create-%1 %2\n %3",
 	args0: [{
 		type: "field_dropdown",
@@ -31,7 +31,7 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 	}
 });
 
-const die: BlockDefinition = createBasicBlock("die");
+const die: BlockDefinition = createStatementBlock("die");
 
 
 const turtleBlocks: BlockDefinition[] = [

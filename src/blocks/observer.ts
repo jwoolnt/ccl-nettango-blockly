@@ -1,10 +1,10 @@
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock } from "./definition/utilities";
+import { createStatementBlock } from "./definition/utilities";
 
 
-const clear_all: BlockDefinition = createBasicBlock("clear_all");
+const clear_all: BlockDefinition = createStatementBlock("clear_all");
 
-const reset_ticks: BlockDefinition = createBasicBlock("reset_ticks");
+const reset_ticks: BlockDefinition = createStatementBlock("reset_ticks");
 
 
 const observerBlocks: BlockDefinition[] = [

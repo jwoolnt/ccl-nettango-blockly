@@ -196,45 +196,77 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "block",
-					type: "ask_agent_set",
-					inputs: {
-						"AGENTSET": {
-							"shadow": {
-								type: "agentset",
-								fields: {
-									"AGENTSET": "turtles"
-								}
-							}
-						}
-					}
+					type: "equal"
 				},
 				{
 					kind: "block",
-					type: "if_",
-					inputs: {
-						"CONDITION": {
-							"shadow": {
-								type: "boolean",
-								fields: {
-									"BOOLEAN": "true"
-								}
-							}
-						}
-					}
+					type: "not_equal"
 				},
 				{
 					kind: "block",
-					type: "ifelse",
-					inputs: {
-						"CONDITION": {
-							"shadow": {
-								type: "boolean",
-								fields: {
-									"BOOLEAN": "true"
+					type: "less_than"
+				},
+				{
+					kind: "block",
+					type: "less_than_or_equal_to"
+				},
+				{
+					kind: "block",
+					type: "greater_than"
+				},
+				{
+					kind: "block",
+					type: "greater_than_or_equal_to"
+				},
+				{
+					kind: "category",
+					name: "Variables"
+				},
+				{
+					kind: "category",
+					name: "Control Flow",
+					contents: [{
+						kind: "block",
+						type: "ask_agent_set",
+						inputs: {
+							"AGENTSET": {
+								"shadow": {
+									type: "agentset",
+									fields: {
+										"AGENTSET": "turtles"
+									}
 								}
 							}
 						}
-					}
+					},
+					{
+						kind: "block",
+						type: "if_",
+						inputs: {
+							"CONDITION": {
+								"shadow": {
+									type: "boolean",
+									fields: {
+										"BOOLEAN": "true"
+									}
+								}
+							}
+						}
+					},
+					{
+						kind: "block",
+						type: "ifelse",
+						inputs: {
+							"CONDITION": {
+								"shadow": {
+									type: "boolean",
+									fields: {
+										"BOOLEAN": "true"
+									}
+								}
+							}
+						}
+					}]
 				}
 			]
 		},
@@ -244,6 +276,19 @@ const toolbox: Toolbox = {
 			contents: [{
 				kind: "block",
 				type: "number"
+			}, {
+				kind: "block",
+				type: "negation",
+				inputs: {
+					"A": {
+						"shadow": {
+							type: "number",
+							fields: {
+								"NUMBER": 0
+							}
+						}
+					}
+				}
 			}, {
 				kind: "block",
 				type: "exponentiation",

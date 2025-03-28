@@ -1,5 +1,5 @@
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, createLogicalOperatorBlock, createValueBlock, Order, staticOptions } from "./definition/utilities";
+import { createStatementBlock, createComparisonOperatorBlock, createLogicalOperatorBlock, createValueBlock, Order, staticOptions } from "./definition/utilities";
 
 
 const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
@@ -19,23 +19,23 @@ const and: BlockDefinition = createLogicalOperatorBlock("and");
 
 const or: BlockDefinition = createLogicalOperatorBlock("or");
 
-const not: BlockDefinition = createLogicalOperatorBlock("not", {
-	message0: "not %1",
-	args0: [{
-		type: "input_value",
-		name: "A",
-		check: "Boolean"
-	}],
-	for: (block, generator) => {
-		const order = Order.LOGICAL;
-		const A = generator.valueToCode(block, "A", order);
-		return [`not ${A}`, order];
-	}
-});
+const not: BlockDefinition = createLogicalOperatorBlock("not", false);
 
 const xor: BlockDefinition = createLogicalOperatorBlock("xor");
 
-const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
+const equal: BlockDefinition = createComparisonOperatorBlock("equal", "=");
+
+const not_equal: BlockDefinition = createComparisonOperatorBlock("not_equal", "!=");
+
+const less_than: BlockDefinition = createComparisonOperatorBlock("less_than", "<");
+
+const less_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock("less_than_or_equal_to", "<=");
+
+const greater_than: BlockDefinition = createComparisonOperatorBlock("greater_than", ">");
+
+const greater_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock("greater_than_or_equal_to", ">=");
+
+const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
 	message0: "ask %1\n %2",
 	args0: [{
 		type: "input_value",
@@ -52,7 +52,7 @@ const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 	}
 });
 
-const if_: BlockDefinition = createBasicBlock("if_", {
+const if_: BlockDefinition = createStatementBlock("if_", {
 	message0: "if %1\n %2",
 	args0: [{
 		type: "input_value",
@@ -69,7 +69,7 @@ const if_: BlockDefinition = createBasicBlock("if_", {
 	}
 });
 
-const ifelse: BlockDefinition = createBasicBlock("ifelse", { // TODO: support multiple if's
+const ifelse: BlockDefinition = createStatementBlock("ifelse", { // TODO: support multiple if's
 	message0: "ifelse %1\n %2\n %3",
 	args0: [{
 		type: "input_value",
@@ -97,6 +97,12 @@ const logicBlocks: BlockDefinition[] = [
 	or,
 	not,
 	xor,
+	equal,
+	not_equal,
+	less_than,
+	less_than_or_equal_to,
+	greater_than,
+	greater_than_or_equal_to,
 	ask_agent_set,
 	if_,
 	ifelse

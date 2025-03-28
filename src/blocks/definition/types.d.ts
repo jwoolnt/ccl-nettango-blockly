@@ -7,6 +7,7 @@ export type ValueType =
 	| "Color"
 	| "String"
 	| "List"
+	| "Agent"
 	| "Agentset";
 
 export type CheckValue = null | ValueType | ValueType[];
@@ -77,8 +78,8 @@ export type NumberField = ArgumentBase<"field_number"> & {
 
 export type VariableField = ArgumentBase<"field_variable"> & {
 	variable?: string;
-	variableTypes?: Type[];
-	defaultType?: Type;
+	variableTypes?: ValueType[];
+	defaultType?: ValueType;
 };
 
 export type ImageField = ArgumentBase<"field_image"> & Image & {
@@ -110,7 +111,7 @@ export interface BlockDefinition {
 	inputsInline?: boolean;
 	nextStatement?: CheckStatement;
 	previousStatement?: CheckStatement;
-	output?: null | Type;
+	output?: null | ValueType;
 	tooltip?: string;
 	helpUrl?: string;
 	colour?: number;
