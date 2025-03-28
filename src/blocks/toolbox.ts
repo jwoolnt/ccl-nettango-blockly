@@ -65,6 +65,18 @@ const toolbox: Toolbox = {
 		},
 		{
 			kind: "category",
+			name: "Patches",
+		},
+		{
+			kind: "category",
+			name: "Links",
+		},
+		{
+			kind: "category",
+			name: "Colors",
+		},
+		{
+			kind: "category",
 			name: "Logic",
 			contents: [
 				{
@@ -80,6 +92,58 @@ const toolbox: Toolbox = {
 					type: "ifelse"
 				}
 			]
+		},
+		{
+			kind: "category",
+			name: "Data",
+			contents: [{
+				kind: "category",
+				name: "Operators",
+			},
+			{
+				kind: "category",
+				name: "Math",
+			},
+			{
+				kind: "category",
+				name: "Strings",
+			},
+			{
+				kind: "category",
+				name: "Agentsets",
+			},
+			{
+				kind: "category",
+				name: "Lists",
+			}]
+		},
+		{
+			kind: "category",
+			name: "Other",
+			contents: [{
+				kind: "category",
+				name: "Plotting",
+			},
+			{
+				kind: "category",
+				name: "Input/Output",
+			},
+			{
+				kind: "category",
+				name: "Behaviour Space",
+			},
+			{
+				kind: "category",
+				name: "System",
+			},
+			{
+				kind: "category",
+				name: "File",
+			},
+			{
+				kind: "category",
+				name: "Hubnet",
+			}]
 		}
 	]
 };
