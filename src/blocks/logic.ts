@@ -1,20 +1,18 @@
-import { getAgentSets, specifyPlurality } from "../data/breeds";
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, dynamicOptions, Order } from "./definition/utilities";
+import { createBasicBlock, Order } from "./definition/utilities";
 
 
 const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 	message0: "ask %1\n %2",
 	args0: [{
-		type: "field_dropdown",
-		name: "AGENT_SET",
-		options: dynamicOptions(() => specifyPlurality(getAgentSets(), true))
+		type: "input_value",
+		name: "AGENT_SET"
 	}, {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
 	for: function (block, generator) {
-		const agentSet = block.getFieldValue("AGENT_SET");
+		const agentSet = generator.valueToCode(block, "AGENT_SET", Order.NONE) || "no-turtles";
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `ask ${agentSet} [\n${commands}\n]`
 	}
@@ -31,7 +29,7 @@ const if_: BlockDefinition = createBasicBlock("if_", {
 		name: "COMMANDS"
 	}],
 	for: function (block, generator) {
-		const condition = generator.valueToCode(block, "CONDITION", 0) || false;
+		const condition = generator.valueToCode(block, "CONDITION", Order.NONE) || false;
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `if ${condition} [\n${commands}\n]`;
 	}

@@ -3,12 +3,14 @@ import { BlockDefinition, BlockFunction } from './definition/types';
 import observerBlocks from './observer';
 import turtleBlocks from "./turtles";
 import logicBlocks from "./logic";
+import mathBlocks from "./math";
 
 
 const allBlocks: BlockDefinition[] = [
 	...observerBlocks,
 	...turtleBlocks,
-	...logicBlocks
+	...logicBlocks,
+	...mathBlocks
 ]
 
 const activeBlocks = common.createBlockDefinitionsFromJsonArray(allBlocks);

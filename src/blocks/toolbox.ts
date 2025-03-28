@@ -103,6 +103,10 @@ const toolbox: Toolbox = {
 			{
 				kind: "category",
 				name: "Math",
+				contents: [{
+					kind: "block",
+					type: "random"
+				}]
 			},
 			{
 				kind: "category",
