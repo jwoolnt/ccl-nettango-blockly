@@ -8,7 +8,7 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 	args0: [{
 		type: "field_dropdown",
 		name: "BREED",
-		options: dynamicOptions(getAgentSets)
+		options: dynamicOptions(getAgentSets) // TODO: change to turtleBreeds
 	}, {
 		type: "field_number",
 		name: "NUMBER",
@@ -31,9 +31,12 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 	}
 });
 
+const die = createBasicBlock("die");
+
 
 const turtleBlocks: BlockDefinition[] = [
-	create_breeds
+	create_breeds,
+	die
 ];
 
 

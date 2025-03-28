@@ -34,6 +34,21 @@ type Toolbox = FlyoutToolbox | CategoryToolbox
 const toolbox: Toolbox = {
 	kind: 'categoryToolbox',
 	contents: [
+
+		{
+			kind: "category",
+			name: "Observer",
+			contents: [
+				{
+					kind: "block",
+					type: "clear_all"
+				},
+				{
+					kind: "block",
+					type: "reset_ticks"
+				}
+			]
+		},
 		{
 			kind: "category",
 			name: "Turtles",
@@ -41,6 +56,20 @@ const toolbox: Toolbox = {
 				{
 					kind: "block",
 					type: "create_breeds"
+				},
+				{
+					kind: "block",
+					type: "die"
+				}
+			]
+		},
+		{
+			kind: "category",
+			name: "Logic",
+			contents: [
+				{
+					kind: "block",
+					type: "ask_agent_set"
 				}
 			]
 		}
