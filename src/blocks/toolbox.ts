@@ -245,10 +245,7 @@ const toolbox: Toolbox = {
 						inputs: {
 							"CONDITION": {
 								"shadow": {
-									type: "boolean",
-									fields: {
-										"BOOLEAN": "true"
-									}
+									type: "boolean"
 								}
 							}
 						}
@@ -259,10 +256,7 @@ const toolbox: Toolbox = {
 						inputs: {
 							"CONDITION": {
 								"shadow": {
-									type: "boolean",
-									fields: {
-										"BOOLEAN": "true"
-									}
+									type: "boolean"
 								}
 							}
 						}
