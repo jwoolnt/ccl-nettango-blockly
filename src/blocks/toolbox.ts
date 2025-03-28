@@ -70,6 +70,14 @@ const toolbox: Toolbox = {
 				{
 					kind: "block",
 					type: "ask_agent_set"
+				},
+				{
+					kind: "block",
+					type: "if_"
+				},
+				{
+					kind: "block",
+					type: "ifelse"
 				}
 			]
 		}

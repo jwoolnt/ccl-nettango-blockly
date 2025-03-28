@@ -9,7 +9,7 @@ export type ValueType =
 	| "List"
 	| "Agentset";
 
-export type CheckString = ValueType | string;
+export type CheckString = ValueType;
 
 export type CheckValue = null | CheckString | CheckString[]
 

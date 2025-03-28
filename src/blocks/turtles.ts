@@ -10,19 +10,19 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 		name: "BREED",
 		options: dynamicOptions(() => specifyPlurality(getTurtleBreeds(), true))
 	}, {
-		type: "field_number",
-		name: "NUMBER",
-		min: 0
+		type: "input_value",
+		name: "COUNT",
+		check: "Number"
 	}, {
 		type: "input_statement",
-		name: "SETUP"
+		name: "COMMANDS"
 	}],
 	for: function (block, generator) {
 		const breed = block.getFieldValue("BREED");
-		const number = block.getFieldValue("NUMBER");
-		const setup = generator.statementToCode(block, 'SETUP');
+		const count = block.getFieldValue("COUNT") || 0;
+		const setup = generator.statementToCode(block, "COMMANDS");
 
-		let code = `create-${breed} ${number}`;
+		let code = `create-${breed} ${count}`;
 		if (setup) {
 			code += ` [\n${setup}\n]`;
 		}
@@ -31,7 +31,7 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 	}
 });
 
-const die = createBasicBlock("die");
+const die: BlockDefinition = createBasicBlock("die");
 
 
 const turtleBlocks: BlockDefinition[] = [
