@@ -46,7 +46,7 @@ const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 		name: "COMMANDS"
 	}],
 	for: (block, generator) => {
-		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE) || "no-turtles"; // TODO: update with agenset
+		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE);
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `ask ${agentSet} [\n${commands}\n]`
 	}

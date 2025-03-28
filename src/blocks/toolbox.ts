@@ -196,7 +196,17 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "block",
-					type: "ask_agent_set" // TODO: add default block value
+					type: "ask_agent_set",
+					inputs: {
+						"AGENTSET": {
+							"shadow": {
+								type: "agentset",
+								fields: {
+									"AGENTSET": "turtles"
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
@@ -351,6 +361,10 @@ const toolbox: Toolbox = {
 		{
 			kind: "category",
 			name: "Agentsets",
+			contents: [{
+				kind: "block",
+				type: "agentset"
+			}]
 		},
 		{
 			kind: "category",
