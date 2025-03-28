@@ -28,7 +28,8 @@ const random: BlockDefinition = createValueBlock("random", "Number", {
 	message0: "random %1",
 	args0: [{
 		type: "field_number",
-		name: "NUMBER"
+		name: "NUMBER",
+		precision: 1
 	}],
 	for: (block) => {
 		const number = block.getFieldValue("NUMBER");
