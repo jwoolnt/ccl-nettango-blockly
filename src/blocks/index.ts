@@ -4,13 +4,15 @@ import observerBlocks from './observer';
 import turtleBlocks from "./turtles";
 import logicBlocks from "./logic";
 import mathBlocks from "./math";
+import operatorBlocks from "./operators";
 
 
 const allBlocks: BlockDefinition[] = [
 	...observerBlocks,
 	...turtleBlocks,
 	...logicBlocks,
-	...mathBlocks
+	...mathBlocks,
+	...operatorBlocks
 ]
 
 const activeBlocks = common.createBlockDefinitionsFromJsonArray(allBlocks);

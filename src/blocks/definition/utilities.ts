@@ -1,4 +1,4 @@
-import { BlockDefinition, DynamicDropdownFieldOptions, StaticDropdownFieldOptions, ValueType } from "./types";
+import { BlockDefinition, CheckValue, DynamicDropdownFieldOptions, StaticDropdownFieldOptions, ValueType } from "./types";
 
 
 export enum Order {
@@ -45,6 +45,32 @@ export function createValueBlock(type: string, output: ValueType, overrides?: Pa
 		for: () => command,
 		...overrides,
 		output,
+		type
+	};
+}
+
+export function createOperatorBlock(
+	type: string,
+	symbol: string,
+	check: CheckValue,
+	overrides?: Partial<BlockDefinition>
+): BlockDefinition {
+	return {
+		message0: `%1 ${symbol} %2`,
+		args0: [{
+			type: "input_value",
+			name: "A",
+			check
+		}, {
+			type: "input_value",
+			name: "B",
+			check
+		}]
+		for: (block, generator) => {
+
+		},
+		...overrides,
+		output: check,
 		type
 	};
 }

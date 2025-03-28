@@ -9,7 +9,7 @@ const random: BlockDefinition = createValueBlock("random", "Number", {
 		type: "field_number",
 		name: "NUMBER"
 	}],
-	for: function (block) {
+	for: (block) => {
 		const number = block.getFieldValue("NUMBER");
 		return [`random ${number}`, Order.FUNCTION_CALL];
 	}

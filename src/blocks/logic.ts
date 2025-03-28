@@ -11,7 +11,7 @@ const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
-	for: function (block, generator) {
+	for: (block, generator) => {
 		const agentSet = generator.valueToCode(block, "AGENT_SET", Order.NONE) || "no-turtles";
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `ask ${agentSet} [\n${commands}\n]`
@@ -28,7 +28,7 @@ const if_: BlockDefinition = createBasicBlock("if_", {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
-	for: function (block, generator) {
+	for: (block, generator) => {
 		const condition = generator.valueToCode(block, "CONDITION", Order.NONE) || false;
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `if ${condition} [\n${commands}\n]`;
@@ -48,7 +48,7 @@ const ifelse: BlockDefinition = createBasicBlock("ifelse", { // TODO: support mu
 		type: "input_statement",
 		name: "ELSE_COMMANDS"
 	}],
-	for: function (block, generator) {
+	for: (block, generator) => {
 		const condition = generator.valueToCode(block, "CONDITION", Order.NONE) || false;
 		const ifCommands = generator.statementToCode(block, "IF_COMMANDS");
 		const elseCommands = generator.statementToCode(block, "ELSE_COMMANDS");

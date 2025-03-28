@@ -17,7 +17,7 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
-	for: function (block, generator) {
+	for: (block, generator) => {
 		const breed = block.getFieldValue("BREED");
 		const count = generator.valueToCode(block, "COUNT", Order.NONE) || 0;
 		const setup = generator.statementToCode(block, "COMMANDS");
