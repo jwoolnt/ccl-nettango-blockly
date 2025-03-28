@@ -80,15 +80,6 @@ export function createMathOperatorBlock(
 ): BlockDefinition {
 	return {
 		message0: `%1 ${symbol} %2`,
-		inputsInline: true,
-		for: (block, generator) => {
-			const order = binaryOrder(symbol);
-			const defaultValue = type == "addition" || type == "subtraction" ? 0 : 1;
-			const A = orDefault(generator.valueToCode(block, "A", order), defaultValue);
-			const B = orDefault(generator.valueToCode(block, "B", order), defaultValue);
-			return [`${A} ${symbol} ${B}`, order];
-		},
-		...overrides,
 		args0: [{
 			type: "input_value",
 			name: "A",
@@ -98,7 +89,45 @@ export function createMathOperatorBlock(
 			name: "B",
 			check: "Number"
 		}],
+		inputsInline: true,
+		for: (block, generator) => {
+			const order = binaryOrder(symbol);
+			const defaultValue = type == "addition" || type == "subtraction" ? 0 : 1;
+			const A = orDefault(generator.valueToCode(block, "A", order), defaultValue);
+			const B = orDefault(generator.valueToCode(block, "B", order), defaultValue);
+			return [`${A} ${symbol} ${B}`, order];
+		},
+		...overrides,
 		output: "Number",
+		type
+	};
+}
+
+export function createLogicalOperatorBlock(
+	type: string,
+	overrides?: Partial<BlockDefinition>
+): BlockDefinition {
+	return {
+		message0: `%1 ${type} %2`,
+		args0: [{
+			type: "input_value",
+			name: "A",
+			check: "Boolean"
+		}, {
+			type: "input_value",
+			name: "B",
+			check: "Boolean"
+		}],
+		inputsInline: true,
+		for: (block, generator) => {
+			const order = Order.LOGICAL;
+			const defaultValue = true;
+			const A = orDefault(generator.valueToCode(block, "A", order), defaultValue);
+			const B = orDefault(generator.valueToCode(block, "B", order), defaultValue);
+			return [`${A} ${type} ${B}`, order];
+		},
+		...overrides,
+		output: "Boolean",
 		type
 	};
 }

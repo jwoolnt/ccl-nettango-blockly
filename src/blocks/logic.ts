@@ -1,5 +1,5 @@
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, createValueBlock, orDefault, Order, staticOptions } from "./definition/utilities";
+import { createBasicBlock, createLogicalOperatorBlock, createValueBlock, orDefault, Order, staticOptions } from "./definition/utilities";
 
 
 const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
@@ -14,6 +14,26 @@ const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
 		return [`${boolean}`, Order.ATOMIC];
 	}
 });
+
+const and: BlockDefinition = createLogicalOperatorBlock("and");
+
+const or: BlockDefinition = createLogicalOperatorBlock("or");
+
+const not: BlockDefinition = createLogicalOperatorBlock("not", {
+	message0: "not %1",
+	args0: [{
+		type: "input_value",
+		name: "A",
+		check: "Boolean"
+	}],
+	for: (block, generator) => {
+		const order = Order.LOGICAL;
+		const A = orDefault(generator.valueToCode(block, "A", order), true);
+		return [`not ${A}`, order];
+	}
+});
+
+const xor: BlockDefinition = createLogicalOperatorBlock("xor");
 
 const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 	message0: "ask %1\n %2",
@@ -73,6 +93,10 @@ const ifelse: BlockDefinition = createBasicBlock("ifelse", { // TODO: support mu
 
 const logicBlocks: BlockDefinition[] = [
 	boolean,
+	and,
+	or,
+	not,
+	xor,
 	ask_agent_set,
 	if_,
 	ifelse

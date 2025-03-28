@@ -101,6 +101,22 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "block",
+					type: "and"
+				},
+				{
+					kind: "block",
+					type: "or"
+				},
+				{
+					kind: "block",
+					type: "not"
+				},
+				{
+					kind: "block",
+					type: "xor"
+				},
+				{
+					kind: "block",
 					type: "ask_agent_set" // TODO: add default block value
 				},
 				{
