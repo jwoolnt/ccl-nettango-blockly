@@ -1,4 +1,4 @@
-import { getAgentSets } from "../data/breeds";
+import { getTurtleBreeds, specifyPlurality } from "../data/breeds";
 import { BlockDefinition } from "./definition/types";
 import { createBasicBlock, dynamicOptions } from "./definition/utilities";
 
@@ -8,7 +8,7 @@ const create_breeds: BlockDefinition = createBasicBlock("create_breeds", {
 	args0: [{
 		type: "field_dropdown",
 		name: "BREED",
-		options: dynamicOptions(getAgentSets) // TODO: change to turtleBreeds
+		options: dynamicOptions(() => specifyPlurality(getTurtleBreeds(), true))
 	}, {
 		type: "field_number",
 		name: "NUMBER",

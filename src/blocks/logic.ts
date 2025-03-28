@@ -1,4 +1,4 @@
-import { getAgentSets } from "../data/breeds";
+import { getAgentSets, specifyPlurality } from "../data/breeds";
 import { BlockDefinition } from "./definition/types";
 import { createBasicBlock, dynamicOptions } from "./definition/utilities";
 
@@ -8,7 +8,7 @@ const ask_agent_set = createBasicBlock("ask_agent_set", {
 	args0: [{
 		type: "field_dropdown",
 		name: "AGENT_SET",
-		options: dynamicOptions(getAgentSets)
+		options: dynamicOptions(() => specifyPlurality(getAgentSets(), true))
 	}, {
 		type: "input_statement",
 		name: "COMMANDS"

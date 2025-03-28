@@ -28,15 +28,19 @@ export function getBreeds(): Breed[] {
 	];
 }
 
-export function getAgentSets(): string[] {
+export function getAgentSets(): Breed[] {
 	return [
-		"patches",
-		...getBreedPlurals(getBreeds())
+		["patches", "patch"],
+		...getBreeds()
 	];
 }
 
-export function getBreedPlurals(breeds: Breed[]): string[] {
-	return breeds.map(([plural,]) => plural);
+export function specifyPlurality(breeds: Breed[], plural: boolean): string[] {
+	if (plural) {
+		return breeds.map(([plural,]) => plural);
+	} else {
+		return breeds.map(([, singular]) => singular);
+	}
 }
 
 export function addBreed(type: string, breed: Breed) {
