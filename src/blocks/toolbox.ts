@@ -95,59 +95,27 @@ const toolbox: Toolbox = {
 		},
 		{
 			kind: "category",
-			name: "Data",
+			name: "Operators",
+		},
+		{
+			kind: "category",
+			name: "Math",
 			contents: [{
-				kind: "category",
-				name: "Operators",
-			},
-			{
-				kind: "category",
-				name: "Math",
-				contents: [{
-					kind: "block",
-					type: "random"
-				}]
-			},
-			{
-				kind: "category",
-				name: "Strings",
-			},
-			{
-				kind: "category",
-				name: "Agentsets",
-			},
-			{
-				kind: "category",
-				name: "Lists",
+				kind: "block",
+				type: "random"
 			}]
 		},
 		{
 			kind: "category",
-			name: "Other",
-			contents: [{
-				kind: "category",
-				name: "Plotting",
-			},
-			{
-				kind: "category",
-				name: "Input/Output",
-			},
-			{
-				kind: "category",
-				name: "Behaviour Space",
-			},
-			{
-				kind: "category",
-				name: "System",
-			},
-			{
-				kind: "category",
-				name: "File",
-			},
-			{
-				kind: "category",
-				name: "Hubnet",
-			}]
+			name: "Strings",
+		},
+		{
+			kind: "category",
+			name: "Agentsets",
+		},
+		{
+			kind: "category",
+			name: "Lists",
 		}
 	]
 };
