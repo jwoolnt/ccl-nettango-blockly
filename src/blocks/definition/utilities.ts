@@ -1,4 +1,4 @@
-import { BlockDefinition, CheckValue, DynamicDropdownFieldOptions, StaticDropdownFieldOptions, ValueType } from "./types";
+import { BlockDefinition, DynamicDropdownFieldOptions, StaticDropdownFieldOptions, ValueType } from "./types";
 
 
 export enum Order {
@@ -49,28 +49,51 @@ export function createValueBlock(type: string, output: ValueType, overrides?: Pa
 	};
 }
 
-export function createOperatorBlock(
+
+function binaryOrder(symbol: string): Order {
+	switch (symbol) {
+		case "^":
+			return Order.EXPONENTIATION;
+		case "*":
+		case "/":
+			return Order.MULTIPLICATIVE;
+		case "+":
+		case "-":
+			return Order.ADDITIVE;
+		case "and":
+		case "or":
+			return Order.LOGICAL;
+		default:
+			return Order.ATOMIC;
+	}
+}
+
+export function createMathOperatorBlock(
 	type: string,
 	symbol: string,
-	check: CheckValue,
 	overrides?: Partial<BlockDefinition>
 ): BlockDefinition {
 	return {
 		message0: `%1 ${symbol} %2`,
+		inputsInline: true,
+		for: (block, generator) => {
+			const order = binaryOrder(symbol);
+			const defaultValue = type == "addition" || type == "subtraction" ? 0 : 1;
+			const A = generator.valueToCode(block, "A", order) || defaultValue;
+			const B = generator.valueToCode(block, "B", order) || defaultValue;
+			return [`${A} ${symbol} ${B}`, order];
+		},
+		...overrides,
 		args0: [{
 			type: "input_value",
 			name: "A",
-			check
+			check: "Number"
 		}, {
 			type: "input_value",
 			name: "B",
-			check
-		}]
-		for: (block, generator) => {
-
-		},
-		...overrides,
-		output: check,
+			check: "Number"
+		}],
+		output: "Number",
 		type
 	};
 }

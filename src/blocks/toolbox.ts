@@ -102,7 +102,19 @@ const toolbox: Toolbox = {
 			name: "Math",
 			contents: [{
 				kind: "block",
-				type: "random"
+				type: "exponentiation"
+			}, {
+				kind: "block",
+				type: "multiplication"
+			}, {
+				kind: "block",
+				type: "division"
+			}, {
+				kind: "block",
+				type: "addition"
+			}, {
+				kind: "block",
+				type: "subtraction"
 			}]
 		},
 		{
