@@ -357,6 +357,10 @@ const toolbox: Toolbox = {
 		{
 			kind: "category",
 			name: "Strings",
+			contents: [{
+				kind: "block",
+				type: "string"
+			}]
 		},
 		{
 			kind: "category",
