@@ -1,5 +1,6 @@
 import * as Blockly from "blockly";
-import { save, load } from "./services/serializer";
+import toolbox from "./blocks/toolbox";
+import { save, load } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
 import { addBreed, resetBreeds } from "./data/breeds";
 
@@ -11,9 +12,9 @@ const actionButtons = document.getElementsByClassName("action-button");
 if (blockEditor && codeOutput) {
 	const ws = Blockly.inject(blockEditor, {
 		renderer: 'thrasos',
-		// toolbox,
-		// zoom: { controls: true }
-		// move: { scrollbars: true, drag: true, wheel: true }
+		toolbox,
+		zoom: { controls: true },
+		move: { scrollbars: false, drag: true, wheel: true }
 	});
 
 	const generateCode = () =>
