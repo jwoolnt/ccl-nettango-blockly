@@ -9,9 +9,9 @@ export type ValueType =
 	| "List"
 	| "Agentset";
 
-export type CheckString = ValueType;
+export type CheckValue = null | ValueType | ValueType[];
 
-export type CheckValue = null | CheckString | CheckString[]
+export type CheckStatement = null | string | string[];
 
 export type Image = {
 	src: string;
@@ -108,8 +108,8 @@ export interface BlockDefinition {
 	// [key: `args${number}`]: Field[]; // supports args0...argsN
 	// [key: `implicitAlign${number}`]: "LEFT" | "CENTRE" | "RIGHT"; // supports implicitAlign0...implicitAlignN
 	inputsInline?: boolean;
-	nextStatement?: CheckValue;
-	previousStatement?: CheckValue;
+	nextStatement?: CheckStatement;
+	previousStatement?: CheckStatement;
 	output?: null | Type;
 	tooltip?: string;
 	helpUrl?: string;
