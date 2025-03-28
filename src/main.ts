@@ -1,9 +1,12 @@
 import * as Blockly from "blockly";
 import toolbox from "./blocks/toolbox";
+import activeBlocks from "./blocks";
 import { save, load } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
 import { addBreed, resetBreeds } from "./data/breeds";
 
+
+Blockly.common.defineBlocks({ ...activeBlocks });
 
 const blockEditor = document.getElementsByClassName("block-editor")[0];
 const codeOutput = document.getElementsByClassName("generated-code")[0];

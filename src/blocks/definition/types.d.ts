@@ -1,3 +1,6 @@
+import { Block, CodeGenerator } from "blockly";
+
+
 export type ValueType =
 	| "Boolean"
 	| "Number"
@@ -30,49 +33,57 @@ export type ArgumentType =
 	| "field_variable"
 	| "field_image";
 
-type ArgumentBase<T extends ArgumentType, S = {}> = {
+interface ArgumentBase<T extends ArgumentType> {
 	type: T;
 	check?: CheckValue;
 	name?: string;
 	alt?: Argument;
-} & S
+}
 
 
-export type ValueInput = ArgumentBase<"input_value", {
+export type ValueInput = ArgumentBase<"input_value"> & {
 	value?: string;
-}>;
+};
 
 export type StatementInput = ArgumentBase<"input_statement">;
 
-export type TextField = ArgumentBase<"field_input", {
+export type TextField = ArgumentBase<"field_input"> & {
 	text?: string;
 	spellcheck?: boolean;
-}>;
+};
 
-export type DropdownField = ArgumentBase<"field_dropdown", {
-	options: Array<[string | Image, string]>;
-}>;
+export type DropdownFieldOption = [string | Image, string];
 
-export type CheckboxField = ArgumentBase<"field_checkbox", {
+export type StaticDropdownFieldOptions = DropdownFieldOption[]
+
+export type DynamicDropdownFieldOptions = () => DropdownFieldOption[];
+
+export type DropdownFieldOptions = StaticDropdownFieldOptions | DynamicDropdownFieldOptions
+
+export type DropdownField = ArgumentBase<"field_dropdown"> & {
+	options: DropdownFieldOptions;
+};
+
+export type CheckboxField = ArgumentBase<"field_checkbox"> & {
 	checked?: boolean;
-}>;
+};
 
-export type NumberField = ArgumentBase<"field_number", {
+export type NumberField = ArgumentBase<"field_number"> & {
 	value?: number;
 	min?: number;
 	max?: number;
 	precision?: number;
-}>;
+};
 
-export type VariableField = ArgumentBase<"field_variable", {
+export type VariableField = ArgumentBase<"field_variable"> & {
 	variable?: string;
 	variableTypes?: Type[];
 	defaultType?: Type;
-}>;
+};
 
-export type ImageField = ArgumentBase<"field_image", Image & {
+export type ImageField = ArgumentBase<"field_image"> & Image & {
 	flipRtl?: boolean;
-}>;
+};
 
 
 export type Argument =
@@ -86,7 +97,7 @@ export type Argument =
 	| ImageField;
 
 
-export type BlockFunction = (block: Block, generator: Generator) => string | [string, number];
+export type BlockFunction = (block: Block, generator: CodeGenerator) => string | [string, number] | null;
 
 export interface BlockDefinition {
 	type: string;
@@ -104,5 +115,5 @@ export interface BlockDefinition {
 	helpUrl?: string;
 	mutator?: string;
 	// custom properties
-	for?: BlockDefinition;
+	for: BlockFunction;
 }

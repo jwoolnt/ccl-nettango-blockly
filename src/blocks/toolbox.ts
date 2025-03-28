@@ -11,6 +11,8 @@ interface Category {
 }
 
 type ToolboxItem = Block | Category
+// TODO: add https://developers.google.com/blockly/guides/configure/web/toolboxes/separators
+// TODO: add https://developers.google.com/blockly/guides/configure/web/toolboxes/buttons
 
 
 type ToolboxType = "flyoutToolbox" | "categoryToolbox"
@@ -31,7 +33,18 @@ type Toolbox = FlyoutToolbox | CategoryToolbox
 
 const toolbox: Toolbox = {
 	kind: 'categoryToolbox',
-	contents: []
+	contents: [
+		{
+			kind: "category",
+			name: "Turtles",
+			contents: [
+				{
+					kind: "block",
+					type: "create_breeds"
+				}
+			]
+		}
+	]
 };
 
 
