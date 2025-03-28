@@ -1,6 +1,12 @@
 interface Block {
 	kind: 'block';
 	type: string;
+	inputs?: Record<string, {
+		"block": {
+			type: string;
+			fields?: Record<string, any>;
+		}
+	}>;
 	fields?: Record<string, any>;
 }
 
@@ -55,7 +61,17 @@ const toolbox: Toolbox = {
 			contents: [
 				{
 					kind: "block",
-					type: "create_breeds"
+					type: "create_breeds",
+					inputs: {
+						"COUNT": {
+							"block": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
@@ -81,7 +97,11 @@ const toolbox: Toolbox = {
 			contents: [
 				{
 					kind: "block",
-					type: "ask_agent_set"
+					type: "boolean"
+				},
+				{
+					kind: "block",
+					type: "ask_agent_set" // TODO: add default block value
 				},
 				{
 					kind: "block",
@@ -95,26 +115,118 @@ const toolbox: Toolbox = {
 		},
 		{
 			kind: "category",
-			name: "Operators",
-		},
-		{
-			kind: "category",
 			name: "Math",
 			contents: [{
 				kind: "block",
-				type: "exponentiation"
+				type: "number"
 			}, {
 				kind: "block",
-				type: "multiplication"
+				type: "exponentiation",
+				inputs: {
+					"A": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 1
+							}
+						}
+					},
+					"B": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 1
+							}
+						}
+					}
+				}
 			}, {
 				kind: "block",
-				type: "division"
+				type: "multiplication",
+				inputs: {
+					"A": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 1
+							}
+						}
+					},
+					"B": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 1
+							}
+						}
+					}
+				}
 			}, {
 				kind: "block",
-				type: "addition"
+				type: "division",
+				inputs: {
+					"A": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 1
+							}
+						}
+					},
+					"B": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 1
+							}
+						}
+					}
+				}
 			}, {
 				kind: "block",
-				type: "subtraction"
+				type: "addition",
+				inputs: {
+					"A": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 0
+							}
+						}
+					},
+					"B": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 0
+							}
+						}
+					}
+				}
+			}, {
+				kind: "block",
+				type: "subtraction",
+				inputs: {
+					"A": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 0
+							}
+						}
+					},
+					"B": {
+						"block": {
+							type: "number",
+							fields: {
+								"NUMBER": 0
+							}
+						}
+					}
+				}
+			}, {
+				kind: "block",
+				type: "random"
 			}]
 		},
 		{

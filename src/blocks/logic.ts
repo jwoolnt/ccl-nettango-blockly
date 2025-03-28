@@ -1,18 +1,32 @@
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, Order } from "./definition/utilities";
+import { createBasicBlock, createValueBlock, Order, staticOptions } from "./definition/utilities";
 
+
+const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
+	message0: "%1",
+	args0: [{
+		type: "field_dropdown",
+		name: "BOOLEAN",
+		options: staticOptions(["true", "false"])
+	}],
+	for: (block) => {
+		const boolean = block.getFieldValue("BOOLEAN") || "true";
+		return [boolean, Order.ATOMIC];
+	}
+});
 
 const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 	message0: "ask %1\n %2",
 	args0: [{
 		type: "input_value",
-		name: "AGENT_SET"
+		name: "AGENTSET",
+		check: "Agentset"
 	}, {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
 	for: (block, generator) => {
-		const agentSet = generator.valueToCode(block, "AGENT_SET", Order.NONE) || "no-turtles";
+		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE) || "no-turtles";
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `ask ${agentSet} [\n${commands}\n]`
 	}
@@ -58,6 +72,7 @@ const ifelse: BlockDefinition = createBasicBlock("ifelse", { // TODO: support mu
 
 
 const logicBlocks: BlockDefinition[] = [
+	boolean,
 	ask_agent_set,
 	if_,
 	ifelse
