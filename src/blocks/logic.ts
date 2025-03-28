@@ -11,7 +11,7 @@ const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
 	}],
 	for: (block) => {
 		const boolean = orDefault(block.getFieldValue("BOOLEAN"), "true");
-		return [boolean, Order.ATOMIC];
+		return [`${boolean}`, Order.ATOMIC];
 	}
 });
 
