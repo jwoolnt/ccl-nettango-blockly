@@ -1,5 +1,5 @@
 import { BlockDefinition } from "./definition/types";
-import { createBasicBlock, createValueBlock, Order, staticOptions } from "./definition/utilities";
+import { createBasicBlock, createValueBlock, orDefault, Order, staticOptions } from "./definition/utilities";
 
 
 const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
@@ -10,7 +10,7 @@ const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
 		options: staticOptions(["true", "false"])
 	}],
 	for: (block) => {
-		const boolean = block.getFieldValue("BOOLEAN") || "true";
+		const boolean = orDefault(block.getFieldValue("BOOLEAN"), "true");
 		return [boolean, Order.ATOMIC];
 	}
 });
@@ -26,7 +26,7 @@ const ask_agent_set: BlockDefinition = createBasicBlock("ask_agent_set", {
 		name: "COMMANDS"
 	}],
 	for: (block, generator) => {
-		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE) || "no-turtles";
+		const agentSet = orDefault(generator.valueToCode(block, "AGENTSET", Order.NONE), "no-turtles"); // TODO: update with agenset
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `ask ${agentSet} [\n${commands}\n]`
 	}
@@ -43,7 +43,7 @@ const if_: BlockDefinition = createBasicBlock("if_", {
 		name: "COMMANDS"
 	}],
 	for: (block, generator) => {
-		const condition = generator.valueToCode(block, "CONDITION", Order.NONE) || false;
+		const condition = orDefault(generator.valueToCode(block, "CONDITION", Order.NONE), false);
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `if ${condition} [\n${commands}\n]`;
 	}
@@ -63,7 +63,7 @@ const ifelse: BlockDefinition = createBasicBlock("ifelse", { // TODO: support mu
 		name: "ELSE_COMMANDS"
 	}],
 	for: (block, generator) => {
-		const condition = generator.valueToCode(block, "CONDITION", Order.NONE) || false;
+		const condition = orDefault(generator.valueToCode(block, "CONDITION", Order.NONE), false);
 		const ifCommands = generator.statementToCode(block, "IF_COMMANDS");
 		const elseCommands = generator.statementToCode(block, "ELSE_COMMANDS");
 		return `ifelse ${condition} [\n${ifCommands}\n] [\n${elseCommands}\n]`;

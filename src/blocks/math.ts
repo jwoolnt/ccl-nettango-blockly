@@ -10,7 +10,7 @@ const number: BlockDefinition = createValueBlock("number", "Number", {
 	}],
 	for: (block) => {
 		const number = block.getFieldValue("NUMBER");
-		return [number, Order.ATOMIC];
+		return [`${number}`, Order.ATOMIC];
 	}
 });
 
