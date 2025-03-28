@@ -1,13 +1,14 @@
-export type Type =
+export type ValueType =
 	| "Boolean"
 	| "Number"
-	| "Colour"
+	| "Color"
 	| "String"
-	| "Array";
+	| "List"
+	| "Agentset";
 
-export type CheckString = Type | string;
+export type CheckString = ValueType | string;
 
-export type Check = null | CheckString | CheckString[]
+export type CheckValue = null | CheckString | CheckString[]
 
 export type Image = {
 	src: string;
@@ -17,14 +18,9 @@ export type Image = {
 }
 
 
-export type InputType =
+export type ArgumentType =
 	| "input_value"
-	| "input_statement";
-
-export type Input = ArgumentBase<InputType>
-
-
-export type FieldType =
+	| "input_statement"
 	| "field_input"
 	| "field_dropdown"
 	| "field_checkbox"
@@ -34,70 +30,60 @@ export type FieldType =
 	| "field_variable"
 	| "field_image";
 
-type FieldBase<T extends FieldType> = ArgumentBase<T>;
+type ArgumentBase<T extends ArgumentType, S = {}> = {
+	type: T;
+	check?: CheckValue;
+	name?: string;
+	alt?: Argument;
+} & S
 
-export type TextField = FieldBase<"field_input"> & {
+
+export type ValueInput = ArgumentBase<"input_value", {
+	value?: string;
+}>;
+
+export type StatementInput = ArgumentBase<"input_statement">;
+
+export type TextField = ArgumentBase<"field_input", {
 	text?: string;
 	spellcheck?: boolean;
-};
+}>;
 
-export type DropdownField = FieldBase<"field_dropdown"> & {
+export type DropdownField = ArgumentBase<"field_dropdown", {
 	options: Array<[string | Image, string]>;
-};
+}>;
 
-export type CheckboxField = FieldBase<"field_checkbox"> & {
+export type CheckboxField = ArgumentBase<"field_checkbox", {
 	checked?: boolean;
-};
+}>;
 
-// plugin field
-// export type ColourField = FieldBase<"field_colour"> & {
-// 	colour?: string;
-// 	colourOptions?: string[];
-// 	colourTitles?: string[];
-// 	columns: number;
-// };
-
-export type NumberField = FieldBase<"field_number"> & {
+export type NumberField = ArgumentBase<"field_number", {
 	value?: number;
 	min?: number;
 	max?: number;
 	precision?: number;
-};
+}>;
 
-// plugin field
-// export type AngleField = FieldBase<"field_angle"> & {
-// 	value?: number;
-// };
-
-export type VariableField = FieldBase<"field_variable"> & {
+export type VariableField = ArgumentBase<"field_variable", {
 	variable?: string;
 	variableTypes?: Type[];
 	defaultType?: Type;
-};
+}>;
 
-export type ImageField = FieldBase<"field_image"> & Image & {
+export type ImageField = ArgumentBase<"field_image", Image & {
 	flipRtl?: boolean;
-};
+}>;
 
-export type Field =
+
+export type Argument =
+	| ValueInput
+	| StatementInput
 	| TextField
 	| DropdownField
 	| CheckboxField
-	// | ColourField // plugin field
 	| NumberField
-	// | AngleField // plugin field
 	| VariableField
 	| ImageField;
-
-
-type ArgumentBase<T extends string> = {
-	type: T;
-	check?: Check;
-	name?: string;
-	alt?: Argument;
-}
-
-export type Argument = Input | Field;
 
 
 export type BlockFunction = (block: Block, generator: Generator) => string | [string, number];
@@ -111,8 +97,8 @@ export interface BlockDefinition {
 	// [key: `args${number}`]: Field[]; // supports args0...argsN
 	// [key: `implicitAlign${number}`]: "LEFT" | "CENTRE" | "RIGHT"; // supports implicitAlign0...implicitAlignN
 	inputsInline?: boolean;
-	nextStatement?: Check;
-	previousStatement?: Check;
+	nextStatement?: CheckValue;
+	previousStatement?: CheckValue;
 	output?: null | Type;
 	tooltip?: string;
 	helpUrl?: string;
