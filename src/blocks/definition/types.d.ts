@@ -113,6 +113,7 @@ export interface BlockDefinition {
 	output?: null | Type;
 	tooltip?: string;
 	helpUrl?: string;
+	colour?: number;
 	mutator?: string;
 	// custom properties
 	for: BlockFunction;
