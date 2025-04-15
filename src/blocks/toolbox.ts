@@ -220,7 +220,17 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "category",
-					name: "Variables"
+					name: "Variables",
+					contents: [
+						{
+						kind: "block",
+						type: "set_variable"
+						},
+						{
+						kind: "block",
+						type: "get_variable"
+						}
+					]
 				},
 				{
 					kind: "category",

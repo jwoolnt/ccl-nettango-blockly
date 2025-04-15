@@ -6,6 +6,7 @@ import logicBlocks from "./logic";
 import mathBlocks from "./math";
 import stringBlocks from "./strings";
 import agentsetBlocks from "./agentset";
+import setVariableBlock from './variables';
 
 
 const allBlocks: BlockDefinition[] = [
@@ -14,7 +15,8 @@ const allBlocks: BlockDefinition[] = [
 	...logicBlocks,
 	...mathBlocks,
 	...stringBlocks,
-	...agentsetBlocks
+	...agentsetBlocks,
+	...setVariableBlock,
 ]
 
 const activeBlocks = common.createBlockDefinitionsFromJsonArray(allBlocks);

@@ -4,7 +4,8 @@ import activeBlocks from "./blocks";
 import { save, load } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
 import { addBreed, resetBreeds } from "./data/breeds";
-
+import { VariableRegistry } from "./blocks/ui/variable_registry";
+import { setupVariableModal, openCustomVariableModal } from "./blocks/ui/variable_model";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -26,11 +27,12 @@ if (blockEditor && codeOutput) {
 	load(ws);
 	generateCode();
 
-
+	setupVariableModal(ws);
 	actionButtons[0].addEventListener("click", () => {
-		Blockly.Variables.createVariableButtonHandler(ws);
+		// Blockly.Variables.createVariableButtonHandler(ws);
+		openCustomVariableModal();
 	});
-
+	
 	actionButtons[1].addEventListener("click", () => {
 		let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
 		if (type == null) return;

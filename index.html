@@ -17,11 +17,32 @@
 		</menu>
 		<h1>NetTango Editor</h1>
 	</header>
+
 	<main class="sub-grid">
 		<div class="block-editor pane"></div>
 		<div class="output pane">
 			<pre><code class="generated-code"></code></pre>
 		</div>
 	</main>
+
+	<!-- Variable Custom Modal -->
+	<div id="customVarModal" class="custom-modal">
+		<div class="modal-content">
+			<h3>Create Variable</h3>
+			<label for="varNameInput">Variable Name:</label>
+			<input type="text" id="varNameInput" placeholder="e.g., speed" />
+			<label for="varScopeSelect">Scope:</label>
+			<select id="varScopeSelect">
+				<option value="global">Global</option>
+				<option value="turtle">Turtle</option>
+				<option value="patch">Patch</option>
+				<option value="link">Link</option>
+			</select>
+			<div class="modal-buttons">
+				<button id="confirmVar">Create</button>
+				<button id="cancelVar">Cancel</button>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
