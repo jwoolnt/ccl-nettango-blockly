@@ -390,7 +390,17 @@ const toolbox: Toolbox = {
 				}
 			}, {
 				kind: "block",
-				type: "random"
+				type: "random",
+				inputs: {
+					"N": {
+						"shadow": {
+							type: "number",
+							fields: {
+								"NUMBER": 0
+							}
+						}
+					}
+				}
 			}]
 		},
 		{

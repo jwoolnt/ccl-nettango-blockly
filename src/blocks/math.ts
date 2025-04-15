@@ -29,12 +29,12 @@ const subtraction: BlockDefinition = createMathOperatorBlock("subtraction", "-")
 const random: BlockDefinition = createValueBlock("random", "Number", {
 	message0: "random %1",
 	args0: [{
-		type: "field_number",
-		name: "NUMBER",
-		precision: 1
+		type: "input_value",
+		name: "N",
+		check: "Number"
 	}],
-	for: (block) => {
-		const number = block.getFieldValue("NUMBER");
+	for: (block, generator) => {
+		const number = generator.valueToCode(block, "N", Order.FUNCTION_CALL);
 		return [`random ${number}`, Order.FUNCTION_CALL];
 	}
 });
