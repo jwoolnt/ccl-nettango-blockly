@@ -3,7 +3,7 @@ import { createValueBlock, Order } from "./definition/utilities";
 
 
 const string: BlockDefinition = createValueBlock("string", "String", {
-	message0: "%1",
+	message0: "\"%1\"",
 	args0: [{
 		type: "field_input",
 		name: "STRING"
