@@ -20,23 +20,44 @@ export const VariableRegistry = {
     return scopedVars.filter(v => v.scope === scope);
   },
 
-  // Retrieve all variables across all scopes
+  // Retrieve all variables
   getAllVariables(): NetLogoVariable[] {
     return [...scopedVars];
   },
 
   // Retrieve all unique scopes that have variables
-  getScopes(): string[] {
+  getScopes(): NetLogoScope[] {
     return Array.from(new Set(scopedVars.map(v => v.scope)));
   },
 
-  // Retrieve all breed-like scopes (i.e., not global)
-  getBreedScopes(): string[] {
+  // Retrieve all breed-like scopes (non-global)
+  getBreedScopes(): NetLogoScope[] {
     return Array.from(new Set(
-      scopedVars
-        .map(v => v.scope)
-        .filter(scope => scope !== "global")
+      scopedVars.map(v => v.scope).filter(scope => scope !== "global")
     ));
+  },
+
+  // Rename an existing variable
+  renameVariable(oldName: string, newName: string, scope?: NetLogoScope): void {
+    scopedVars.forEach(v => {
+      if (v.name === oldName && (!scope || v.scope === scope)) {
+        v.name = newName;
+      }
+    });
+  },
+
+  // Delete a variable by name and optionally scope
+  deleteVariable(name: string, scope?: NetLogoScope): void {
+    scopedVars = scopedVars.filter(v => {
+      if (scope) {
+        return !(v.name === name && v.scope === scope);
+      }
+      return v.name !== name;
+    });
+  },
+
+  // Clear all variables
+  reset(): void {
+    scopedVars = [];
   }
-  
 };

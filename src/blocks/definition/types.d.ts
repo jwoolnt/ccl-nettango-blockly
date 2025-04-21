@@ -103,7 +103,13 @@ export type BlockFunction = (block: Block, generator: CodeGenerator) => string |
 export interface BlockDefinition {
 	type: string;
 	message0: string;
+	message1?: string;
+	message2?: string;
+	message3?: string;
 	args0?: Argument[];
+	args1?: Argument[];
+	args2?: Argument[];
+	args3?: Argument[];
 	implicitAlign0?: "LEFT" | "CENTRE" | "RIGHT";
 	// [key: `message${number}`]: string; //supports message0...messageN
 	// [key: `args${number}`]: Field[]; // supports args0...argsN
@@ -114,8 +120,11 @@ export interface BlockDefinition {
 	output?: null | ValueType;
 	tooltip?: string;
 	helpUrl?: string;
-	colour?: number;
+	color?: number;
 	mutator?: string;
+	extensions?: string[] | string;
+	check?: CheckValue | CheckValue[];
+	style?: string;
 	// custom properties
 	for: BlockFunction;
 }

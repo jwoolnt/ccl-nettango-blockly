@@ -1,32 +1,36 @@
+
 import * as Blockly from "blockly/core";
-import { Block, common } from "blockly/core";
 import { BlockDefinition } from "./definition/types";
 import { createStatementBlock } from "./definition/utilities";
-
 import { VariableRegistry } from "./ui/variable_registry";
 
-// Register the extension
-Blockly.Extensions.register("dynamic_variable_dropdown", function () {
-  const scopeField = this.getField("SCOPE");
-  const oldVarField = this.getField("VAR_NAME");
+// Register the extension to dynamically update variable options
+Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.Block) {
+  const block = this;
 
-  if (!scopeField || !oldVarField || !(oldVarField instanceof Blockly.FieldDropdown)) return;
+  const updateDropdown = () => {
+    // Get all variables from the registry
+    const allVars = VariableRegistry.getAllVariables();
+  
+    // Filter to variables used in this dropdown
+    const options: Blockly.MenuOption[] = allVars.map(v => [v.name, v.name] as [string, string]);
+  
+    const dropdown = block.getField("VAR_NAME") as Blockly.FieldDropdown;
+    if (dropdown) {
+      dropdown.getOptions = () => options;
+      dropdown.setValue(options[0]?.[1] ?? "");
+    }
+  };
 
-  const scope = scopeField.getValue();
+  updateDropdown();
 
-  const availableVars: [string, string][] = VariableRegistry.getVariablesByScope(scope).map(
-    (v) => [v.name, v.name]
-  );
-
-  const newMenuGenerator: Blockly.MenuGeneratorFunction = () =>
-    availableVars.length ? availableVars : [["<none>", ""]];
-
-  // Create a new dropdown and replace the old one
-  const newDropdown = new Blockly.FieldDropdown(newMenuGenerator);
-
-  // Remove old and append new (simulated update)
-  this.removeInput("VAR_NAME", true); // true = no error if not found
-  this.appendDummyInput("VAR_NAME").appendField(newDropdown, "VAR_NAME");
+  block.setOnChange(function(event: Blockly.Events.Abstract) {
+    if (event.type === Blockly.Events.BLOCK_CHANGE &&
+        'element' in event && event.element === "field" &&
+        'name' in event && event.name === "SCOPE") {
+      updateDropdown();
+    }
+  });
 });
 
 // Define the set_variable block
@@ -50,8 +54,13 @@ const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
     nextStatement: null,
     tooltip: "Set a variable by scope",
     helpUrl: "",
-    // extensions: ["dynamic_variable_dropdown"]  // Dynamically update the variable list
+    extensions: ["dynamic_variable_dropdown"],  // Dynamically update the variable list
+    for: (block, generator) => {
+      const variableName = block.getFieldValue("VAR_NAME") || null;
+      const value = generator.valueToCode(block, "VALUE", 0) || null;
+      return `set ${variableName} ${value}`; 
     }
+  }
 );
 
 const getVariableBlock = createStatementBlock("get_variable", {
@@ -69,20 +78,18 @@ const getVariableBlock = createStatementBlock("get_variable", {
     output: null,
     tooltip: "Get a variable by scope",
     helpUrl: "",
-    // extensions: ["dynamic_variable_dropdown"]  // Dynamically update the variable list
+    extensions: ["dynamic_variable_dropdown"],  // Dynamically update the variable list
+    for: (block, generator) => {
+        const variableName = block.getFieldValue("VAR_NAME") || null;
+        return `${variableName}`;
+    }
 });
 
-export default [
-    setVariableBlock,
-    getVariableBlock
-].map((block) => {
-    block.type = block.type.replace(/_/g, "-");
-    return block;
-}
-) as BlockDefinition[];
-// Register the blocks
-common.defineBlocks({
-    set_variable: setVariableBlock,
-    get_variable: getVariableBlock
-});
 
+// Export the blocks
+const variableBlocks: BlockDefinition[] = [
+  setVariableBlock,
+  getVariableBlock
+];
+
+export default variableBlocks;
