@@ -105,6 +105,16 @@ const toolbox: Toolbox = {
 		{
 			kind: "category",
 			name: "Colors",
+			contents: [{
+				kind: "block",
+				type: "set_turtle_color",
+			}, {
+				kind: "block",
+				type: "set_patch_color",
+			}, {
+				kind: "block",
+				type: "one_of",
+			},]
 		},
 		{
 			kind: "category",
@@ -431,8 +441,39 @@ const toolbox: Toolbox = {
 		},
 		{
 			kind: "category",
-			name: "Lists",
-		}
+			name: "List",
+			contents: [{
+				kind: "block",
+				type: "array_block",
+				inputs: {
+					"ELEMENT1": {
+						"shadow": {
+							type: "string",
+							fields: {
+								"STRING": "element1"
+							}
+						}
+					},
+					"ELEMENT2": {
+						"shadow": {
+							type: "string",
+							fields: {
+								"STRING": "element2"
+							}
+						}
+					},
+					"ELEMENT3": {
+						"shadow": {
+							type: "string",
+							fields: {
+								"STRING": "element3"
+							}
+						}
+					}
+				}
+			},
+			]	
+		},
 	]
 };
 

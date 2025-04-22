@@ -10,7 +10,7 @@ export type ValueType =
 	| "Agent"
 	| "Agentset";
 
-export type CheckValue = null | ValueType | ValueType[];
+export type CheckValue = null | ValueType | ValueType[] | Array | string | string[];
 
 export type CheckStatement = null | string | string[];
 

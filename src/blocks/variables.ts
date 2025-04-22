@@ -14,6 +14,9 @@ Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.
   
     // Filter to variables used in this dropdown
     const options: Blockly.MenuOption[] = allVars.map(v => [v.name, v.name] as [string, string]);
+    if (options.length === 0) {
+      options.push(["<none>", ""]);
+    }
   
     const dropdown = block.getField("VAR_NAME") as Blockly.FieldDropdown;
     if (dropdown) {
