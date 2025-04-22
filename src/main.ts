@@ -26,8 +26,12 @@ if (blockEditor && codeOutput) {
 
 	load(ws);
 	generateCode();
-
-	setupVariableModal(ws);
+	
+	// 
+	document.addEventListener("DOMContentLoaded", () => {
+		setupVariableModal(ws);
+	  });
+	  
 	actionButtons[0].addEventListener("click", () => {
 		// Blockly.Variables.createVariableButtonHandler(ws);
 		openCustomVariableModal();

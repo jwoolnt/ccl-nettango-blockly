@@ -35,6 +35,43 @@ Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.
   });
 });
 
+// Add a mutation observer or onchange handler
+Blockly.Extensions.register("register_scope_variables", function (this: Blockly.Block) {
+  const block = this;
+
+  const updateRegistry = () => {
+    const scope = block.getFieldValue("SCOPE") || "globals";
+    const rawScope = scope.replace("-own", "").replace("s", "");
+
+    const vars: string[] = [];
+    let currentBlock = block.getInputTargetBlock("VAR_BLOCKS");
+
+    while (currentBlock) {
+      const name = currentBlock.getFieldValue("VAR_NAME");
+      if (name) {
+        vars.push(name);
+        VariableRegistry.registerVariable(name, rawScope);
+      }
+      currentBlock = currentBlock.getNextBlock();
+    }
+  };
+
+  // Run once when block is created
+  updateRegistry();
+
+  block.setOnChange((event) => {
+    if (
+      event.type === Blockly.Events.BLOCK_MOVE ||
+      event.type === Blockly.Events.BLOCK_CREATE ||
+      event.type === Blockly.Events.BLOCK_CHANGE
+    ) {
+      updateRegistry();
+    }
+  });
+});
+
+
+// 
 const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
   message0: "set %1 %2 to %3",
   args0: [
@@ -62,7 +99,8 @@ const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
   nextStatement: null,
   tooltip: "Set a variable by scope",
   helpUrl: "",
-  extensions: ["dynamic_variable_dropdown"],
+  extensions: ["dynamic_variable_dropdown", "register_scope_variables"],
+
   for: (block, generator) => {
     const scope = block.getFieldValue("SCOPE") || "global";
     const variableName = block.getFieldValue("VAR_NAME") || "";
@@ -99,6 +137,8 @@ const getVariableBlock = createStatementBlock("get_variable", {
     return `${variableName}`;
   }
 });
+
+// Define a block for setting multiple variables by scope
 const setScopedVariablesBlock: BlockDefinition = createStatementBlock("declare_variables_by_scope", {
   message0: "set %1 [ %2 ] do %3",
   args0: [
@@ -113,7 +153,7 @@ const setScopedVariablesBlock: BlockDefinition = createStatementBlock("declare_v
       ]
     },
     {
-      type: "input_statement", // Accepts stacked get_variable blocks
+      type: "input_statement",
       name: "VAR_BLOCKS"
     },
     {
@@ -137,7 +177,7 @@ const setScopedVariablesBlock: BlockDefinition = createStatementBlock("declare_v
       const name = currentBlock.getFieldValue("VAR_NAME");
       if (name) {
         vars.push(name);
-        VariableRegistry.addVariable(name, rawScope);
+        VariableRegistry.registerVariable(name, rawScope);
       }
       currentBlock = currentBlock.getNextBlock();
     }
@@ -145,11 +185,6 @@ const setScopedVariablesBlock: BlockDefinition = createStatementBlock("declare_v
     const innerCode = generator.statementToCode(block, "DO") || "";
 
     const declLine = `${scope} [ ${vars.join(" ")} ]\n`;
-
-    if (scope !== "globals") {
-      const agent = scope.replace("-own", ""); // turtles-own → turtles
-      return `${declLine}ask ${agent} [\n${innerCode}\n]`;
-    }
 
     return `${declLine}${innerCode}`;
   }
