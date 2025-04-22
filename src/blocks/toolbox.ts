@@ -244,6 +244,10 @@ const toolbox: Toolbox = {
 						{
 						kind: "block",
 						type: "get_variable"
+						},
+						{
+						kind: "block",
+						type: "declare_variables_by_scope"
 						}
 					]
 				},

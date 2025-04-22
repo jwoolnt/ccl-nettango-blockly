@@ -7,9 +7,9 @@ import mathBlocks from "./math";
 import operatorBlocks from "./operators";
 import stringBlocks from "./strings";
 import agentsetBlocks from "./agentset";
-import variables from './variables';
 import listBlocks from './list';
 import colorBlocks from './colors';
+import variables from './variables';
 
 const allBlocks: BlockDefinition[] = [
 	...observerBlocks,

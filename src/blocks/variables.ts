@@ -9,15 +9,14 @@ Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.
   const block = this;
 
   const updateDropdown = () => {
-    // Get all variables from the registry
-    const allVars = VariableRegistry.getAllVariables();
-  
-    // Filter to variables used in this dropdown
-    const options: Blockly.MenuOption[] = allVars.map(v => [v.name, v.name] as [string, string]);
+    const scope = block.getFieldValue("SCOPE") || "global";  
+    const scopedVars = VariableRegistry.getAllVariables(scope);
+
+    const options: Blockly.MenuOption[] = scopedVars.map(v => [v.name, v.name]);
     if (options.length === 0) {
       options.push(["<none>", ""]);
     }
-  
+
     const dropdown = block.getField("VAR_NAME") as Blockly.FieldDropdown;
     if (dropdown) {
       dropdown.getOptions = () => options;
@@ -36,63 +35,131 @@ Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.
   });
 });
 
-// Define the set_variable block
 const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
-    message0: "set %1 to %2",
-    args0: [
-      {
-        type: "field_dropdown",
-        name: "VAR_NAME",
-        options: () => {
-          // Initially setting default options
-          return [["<none>", ""]];
-        }
-      },
-      {
-        type: "input_value",
-        name: "VALUE"
-      }
-    ],
-    previousStatement: null,
-    nextStatement: null,
-    tooltip: "Set a variable by scope",
-    helpUrl: "",
-    extensions: ["dynamic_variable_dropdown"],  // Dynamically update the variable list
-    for: (block, generator) => {
-      const variableName = block.getFieldValue("VAR_NAME") || null;
-      const value = generator.valueToCode(block, "VALUE", 0) || null;
-      return `set ${variableName} ${value}`; 
+  message0: "set %1 %2 to %3",
+  args0: [
+    {
+      type: "field_dropdown",
+      name: "SCOPE",
+      options: [
+        ["global", "global"],
+        ["turtle", "turtles-own"],
+        ["patch", "patches-own"],
+        ["link", "links-own"]
+      ]
+    },
+    {
+      type: "field_dropdown",
+      name: "VAR_NAME",
+      options: () => [["<none>", ""]]
+    },
+    {
+      type: "input_value",
+      name: "VALUE"
     }
+  ],
+  previousStatement: null,
+  nextStatement: null,
+  tooltip: "Set a variable by scope",
+  helpUrl: "",
+  extensions: ["dynamic_variable_dropdown"],
+  for: (block, generator) => {
+    const scope = block.getFieldValue("SCOPE") || "global";
+    const variableName = block.getFieldValue("VAR_NAME") || "";
+    const value = generator.valueToCode(block, "VALUE", 0) || "";
+
+    return `${scope} ${variableName} ${value}`;
   }
-);
-
-const getVariableBlock = createStatementBlock("get_variable", {
-    message0: "get %1",
-    args0: [
-        {
-            type: "field_dropdown",
-            name: "VAR_NAME",
-            options: () => {
-                // Initially setting default options
-                return [["<none>", ""]];
-            }
-        }
-    ],
-    output: null,
-    tooltip: "Get a variable by scope",
-    helpUrl: "",
-    extensions: ["dynamic_variable_dropdown"],  // Dynamically update the variable list
-    for: (block, generator) => {
-        const variableName = block.getFieldValue("VAR_NAME") || null;
-        return `${variableName}`;
-    }
 });
+const getVariableBlock = createStatementBlock("get_variable", {
+  message0: "%1 %2",
+  args0: [
+    {
+      type: "field_dropdown",
+      name: "SCOPE",
+      options: [
+        ["global", "global"],
+        ["turtle", "turtle"],
+        ["patch", "patch"],
+        ["link", "link"]
+      ]
+    },
+    {
+      type: "field_dropdown",
+      name: "VAR_NAME",
+      options: () => [["<none>", ""]]
+    }
+  ],
+  output: null,
+  tooltip: "Get a variable by scope",
+  extensions: ["dynamic_variable_dropdown"],
+  for: (block, generator) => {
+    const scope = block.getFieldValue("SCOPE") || "global";
+    const variableName = block.getFieldValue("VAR_NAME") || null;
+    return `${variableName}`;
+  }
+});
+const setScopedVariablesBlock: BlockDefinition = createStatementBlock("declare_variables_by_scope", {
+  message0: "set %1 [ %2 ] do %3",
+  args0: [
+    {
+      type: "field_dropdown",
+      name: "SCOPE",
+      options: [
+        ["globals", "globals"],
+        ["turtles", "turtles-own"],
+        ["patches", "patches-own"],
+        ["links", "links-own"]
+      ]
+    },
+    {
+      type: "input_statement", // Accepts stacked get_variable blocks
+      name: "VAR_BLOCKS"
+    },
+    {
+      type: "input_statement",
+      name: "DO"
+    }
+  ],
+  previousStatement: null,
+  nextStatement: null,
+  tooltip: "Declare multiple variables using variable blocks",
+  extensions: [],
+  for: (block, generator) => {
+    const scope = block.getFieldValue("SCOPE") || "globals";
+    const rawScope = scope.replace("-own", "").replace("s", ""); // global, turtle, patch, link
 
+    // Parse child get_variable blocks
+    const vars: string[] = [];
+    let currentBlock = block.getInputTargetBlock("VAR_BLOCKS");
+
+    while (currentBlock) {
+      const name = currentBlock.getFieldValue("VAR_NAME");
+      if (name) {
+        vars.push(name);
+        VariableRegistry.addVariable(name, rawScope);
+      }
+      currentBlock = currentBlock.getNextBlock();
+    }
+
+    const innerCode = generator.statementToCode(block, "DO") || "";
+
+    const declLine = `${scope} [ ${vars.join(" ")} ]\n`;
+
+    if (scope !== "globals") {
+      const agent = scope.replace("-own", ""); // turtles-own → turtles
+      return `${declLine}ask ${agent} [\n${innerCode}\n]`;
+    }
+
+    return `${declLine}${innerCode}`;
+  }
+});
 
 // Export the blocks
 const variableBlocks: BlockDefinition[] = [
   setVariableBlock,
-  getVariableBlock
+  getVariableBlock,
+  setScopedVariablesBlock
 ];
 
 export default variableBlocks;

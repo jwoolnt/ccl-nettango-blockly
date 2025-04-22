@@ -8,6 +8,7 @@ export interface NetLogoVariable {
 let scopedVars: NetLogoVariable[] = [];
 
 export const VariableRegistry = {
+
   // Register a new variable with scope
   registerVariable(name: string, scope: NetLogoScope) {
     if (!scopedVars.find(v => v.name === name && v.scope === scope)) {
@@ -21,8 +22,13 @@ export const VariableRegistry = {
   },
 
   // Retrieve all variables
-  getAllVariables(): NetLogoVariable[] {
-    return [...scopedVars];
+  // getAllVariables(): NetLogoVariable[] {
+  //   return [...scopedVars];
+  // },
+  
+  getAllVariables(scope?: string): NetLogoVariable[] {
+    if (!scope) return scopedVars;
+    return scopedVars.filter(v => v.scope === scope);
   },
 
   // Retrieve all unique scopes that have variables
@@ -36,7 +42,13 @@ export const VariableRegistry = {
       scopedVars.map(v => v.scope).filter(scope => scope !== "global")
     ));
   },
-
+  // Add a new variable if it doesn't already exist
+  addVariable(name: string, scope: string): void {
+    const exists = scopedVars.some(v => v.name === name && v.scope === scope);
+    if (!exists) {
+      scopedVars.push({ name, scope });
+    }
+  },
   // Rename an existing variable
   renameVariable(oldName: string, newName: string, scope?: NetLogoScope): void {
     scopedVars.forEach(v => {
@@ -61,3 +73,4 @@ export const VariableRegistry = {
     scopedVars = [];
   }
 };
+scopedVars

@@ -1,3 +1,4 @@
+// src/ui/variableModal.ts
 import { VariableRegistry } from "./variable_registry";
 import * as Blockly from "blockly/core";
 
@@ -18,14 +19,8 @@ export function setupVariableModal(ws: Blockly.WorkspaceSvg) {
       return;
     }
 
-    // Register the new variable with the specified scope
     VariableRegistry.registerVariable(name, scope);
-
-    // Automatically update the dropdowns by triggering Blockly to refresh the workspace
-    ws.getAllBlocks().forEach((block) => {
-      block.render(); // Trigger re-render of the blocks
-    });
-
+    Blockly.Variables.flyoutCategory(ws); // Refresh the variable flyout
     modal.classList.remove("show");
   };
 
