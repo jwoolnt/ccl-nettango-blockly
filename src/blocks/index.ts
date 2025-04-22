@@ -4,6 +4,7 @@ import observerBlocks from './observer';
 import turtleBlocks from "./turtles";
 import logicBlocks from "./logic";
 import mathBlocks from "./math";
+import operatorBlocks from "./operators";
 import stringBlocks from "./strings";
 import agentsetBlocks from "./agentset";
 import variables from './variables';
@@ -14,6 +15,7 @@ const allBlocks: BlockDefinition[] = [
 	...observerBlocks,
 	...turtleBlocks,
 	...logicBlocks,
+	...operatorBlocks,
 	...mathBlocks,
 	...stringBlocks,
 	...agentsetBlocks,

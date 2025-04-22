@@ -114,7 +114,12 @@ const toolbox: Toolbox = {
 			}, {
 				kind: "block",
 				type: "one_of",
-			},]
+			},
+			{
+				kind: "block",
+				type: "set_patch_color_one_of",
+			},
+			]
 		},
 		{
 			kind: "category",
@@ -262,26 +267,59 @@ const toolbox: Toolbox = {
 					{
 						kind: "block",
 						type: "if_",
-						inputs: {
-							"CONDITION": {
-								"shadow": {
-									type: "boolean"
-								}
-							}
-						}
 					},
 					{
 						kind: "block",
 						type: "ifelse",
-						inputs: {
-							"CONDITION": {
-								"shadow": {
-									type: "boolean"
-								}
-							}
-						}
+						
 					}]
 				}
+			]
+		},
+		{
+			kind:"category",
+			name: "Operators",
+			contents: [
+				{
+					kind: "block",
+					type: "greater_than",
+				},
+				{
+					kind: "block",
+					type: "less_than",
+				},
+				{
+					kind: "block",
+					type: "equal_to",
+				},
+				{
+					kind: "block",
+					type: "not_equal_to",
+				},
+				{
+					kind: "block",
+					type: "greater_than_or_equal_to",
+				},
+				{
+					kind: "block",
+					type: "less_than_or_equal_to",
+				},
+				{
+					kind: "block",
+					type: "and",
+				},
+				{
+					kind: "block",
+					type: "or",
+				},
+				{
+					kind: "block",
+					type: "not",
+				},
+				{
+					kind: "block",
+					type: "xor",
+				},
 			]
 		},
 		{
@@ -474,6 +512,7 @@ const toolbox: Toolbox = {
 			},
 			]	
 		},
+		
 	]
 };
 

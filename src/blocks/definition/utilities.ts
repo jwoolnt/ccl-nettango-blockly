@@ -154,16 +154,23 @@ export function createComparisonOperatorBlock(
 
 	return createOperatorBlock(type, symbol, check, "Boolean", true, {
 		...overrides,
+		// for: (block, generator) => {
+		// 	const order = operationOrder(type);
+		// 	const A = generator.valueToCode(block, "A", order)|| null;
+		// 	const B = generator.valueToCode(block, "B", order)|| null;
+
+		// 	if (A && B) {
+		// 		return [`${A} ${symbol} ${B}`, order];
+		// 	} else {
+		// 		return [`false`, order];
+		// 	}
+		// }
 		for: (block, generator) => {
 			const order = operationOrder(type);
-			const A = generator.valueToCode(block, "A", order);
-			const B = generator.valueToCode(block, "B", order);
-
-			if (A && B) {
-				return [`${A} ${symbol} ${B}`, order];
-			} else {
-				return [`false`, order];
-			}
+			const A = generator.valueToCode(block, "A", order) || "0"; // or any sensible default
+			const B = generator.valueToCode(block, "B", order) || "0"; // same here
+			return [`${A} ${symbol} ${B}`, order];
 		}
+		
 	});
 }

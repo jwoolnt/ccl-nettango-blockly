@@ -8,7 +8,8 @@ export type ValueType =
 	| "String"
 	| "List"
 	| "Agent"
-	| "Agentset";
+	| "Agentset"
+	| "Array";
 
 export type CheckValue = null | ValueType | ValueType[] | Array | string | string[];
 
