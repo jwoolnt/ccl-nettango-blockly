@@ -167,8 +167,8 @@ export function createComparisonOperatorBlock(
 		// }
 		for: (block, generator) => {
 			const order = operationOrder(type);
-			const A = generator.valueToCode(block, "A", order) || "0"; // or any sensible default
-			const B = generator.valueToCode(block, "B", order) || "0"; // same here
+			const A = generator.valueToCode(block, "A", order) || null;
+			const B = generator.valueToCode(block, "B", order) || null;
 			return [`${A} ${symbol} ${B}`, order];
 		}
 		
