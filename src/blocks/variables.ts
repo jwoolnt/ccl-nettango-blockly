@@ -1,31 +1,37 @@
-
 import * as Blockly from "blockly/core";
 import { BlockDefinition } from "./definition/types";
 import { createStatementBlock } from "./definition/utilities";
-import { VariableRegistry } from "./ui/variable_registry";
+import { VariableRegistry, NetLogoScope } from "./ui/variable_registry";
+import { openCustomVariableModal } from "./ui/variable_model";
 
 // Register the extension to dynamically update variable options
 Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.Block) {
   const block = this;
 
   const updateDropdown = () => {
-    let scope = block.getFieldValue("SCOPE") || "global";  
-    // scope = scope.replace("-own", "").replace("s", ""); // Normalize scope for registry
-
+    const scope = block.getFieldValue("SCOPE") || "global";  
     const scopedVars = VariableRegistry.getAllVariables(scope);
     const options: Blockly.MenuOption[] = scopedVars.map(v => [v.name, v.name]);
-
-    if (options.length === 0) {
-      options.push(["<none>", ""]);
+  
+    // Add an option to create a new variable (will open the modal)
+    options.push(["+ Create new variable...", "CREATE_NEW"]);
+  
+    if (options.length === 1) {
+      // If only the "Create new" option exists, add a placeholder
+      options.unshift(["<none>", ""]);
     }
-
+  
     const dropdown = block.getField("VAR_NAME") as Blockly.FieldDropdown;
     
     if (dropdown) {
       dropdown.getOptions = () => options;
-      dropdown.setValue(options[0]?.[1] ?? "");
+      
+      // Only set default value if there are actual variables
+      if (scopedVars.length > 0) {
+        dropdown.setValue(options[0]?.[1] ?? "");
+      }
     }
-  };
+  };  
 
   updateDropdown();
 
@@ -34,13 +40,27 @@ Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.
       // Cast to the correct event type
       const changeEvent = event as Blockly.Events.BlockChange;
       
-      // Now check if this change event is for the SCOPE field
-      if (changeEvent.element === "field" && changeEvent.name === "SCOPE") {
-        updateDropdown();
+      // Check if this is a field change
+      if (changeEvent.element === "field") {
+        // If the scope changed, update the variable dropdown
+        if (changeEvent.name === "SCOPE") {
+          updateDropdown();
+        }
+        
+        // If user selected "Create new variable"
+        if (changeEvent.name === "VAR_NAME" && changeEvent.newValue === "CREATE_NEW") {
+          // Open the variable modal
+          openCustomVariableModal();
+          
+          // Set back to previous value or empty to prevent showing "Create new variable" as selected
+          const dropdown = block.getField("VAR_NAME") as Blockly.FieldDropdown;
+          dropdown.setValue(changeEvent.oldValue || "");
+          
+          // The modal will handle variable creation and the dropdown will be updated next time it's clicked
+        }
       }
     }
   });
-
 });
 
 // Define a block for setting a variable by scope
@@ -52,8 +72,8 @@ const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
       name: "SCOPE",
       options: [
         ["global", "global"],
-        ["turtle", "turtles-own"],
-        ["patch", "patches-own"],
+        ["turtle", "turtle"],
+        ["patch", "patch"],
         ["link", "link"]
       ]
     },
@@ -72,13 +92,11 @@ const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
   tooltip: "Set a variable by scope",
   helpUrl: "",
   extensions: ["dynamic_variable_dropdown"],
-
   for: (block, generator) => {
-    const scope = block.getFieldValue("SCOPE") || "global";
     const variableName = block.getFieldValue("VAR_NAME") || "";
-    const value = generator.valueToCode(block, "VALUE", 0) || "";
+    const value = generator.valueToCode(block, "VALUE", 0) || "0";
 
-    return `${scope} ${variableName} ${value}`;
+    return `set ${variableName} ${value}`;
   }
 });
 
@@ -105,9 +123,8 @@ const getVariableBlock = createStatementBlock("get_variable", {
   tooltip: "Get a variable by scope",
   extensions: ["dynamic_variable_dropdown"],
   for: (block, generator) => {
-    const scope = block.getFieldValue("SCOPE") || "global";
-    const variableName = block.getFieldValue("VAR_NAME") || null;
-    return `${variableName}`;
+    const variableName = block.getFieldValue("VAR_NAME") || "";
+    return variableName;
   }
 });
 

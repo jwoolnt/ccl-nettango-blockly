@@ -56,7 +56,7 @@ if (blockEditor && codeOutput) {
 	});
 
 
-	ws.addChangeListener((e) => {
+	ws?.addChangeListener((e) => {
 		if (
 			e.isUiEvent ||
 			e.type == Blockly.Events.FINISHED_LOADING ||

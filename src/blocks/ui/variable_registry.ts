@@ -22,9 +22,6 @@ export const VariableRegistry = {
   },
 
   // Retrieve all variables
-  // getAllVariables(): NetLogoVariable[] {
-  //   return [...scopedVars];
-  // },
   getAllVariables(scope?: string): NetLogoVariable[] {
     if (!scope) return scopedVars;
     return scopedVars.filter(v => v.scope === scope);
