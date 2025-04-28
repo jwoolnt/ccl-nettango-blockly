@@ -20,6 +20,7 @@ Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.
     }
 
     const dropdown = block.getField("VAR_NAME") as Blockly.FieldDropdown;
+    
     if (dropdown) {
       dropdown.getOptions = () => options;
       dropdown.setValue(options[0]?.[1] ?? "");
@@ -29,14 +30,17 @@ Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.
   updateDropdown();
 
   block.setOnChange(function(event: Blockly.Events.Abstract) {
-    if (
-      event.type === Blockly.Events.BLOCK_CHANGE &&
-      'element' in event && event.element === "field" &&
-      'name' in event && event.name === "SCOPE"
-    ) {
-      updateDropdown();
+    if (event.type === Blockly.Events.BLOCK_CHANGE) {
+      // Cast to the correct event type
+      const changeEvent = event as Blockly.Events.BlockChange;
+      
+      // Now check if this change event is for the SCOPE field
+      if (changeEvent.element === "field" && changeEvent.name === "SCOPE") {
+        updateDropdown();
+      }
     }
   });
+
 });
 
 // Define a block for setting a variable by scope
@@ -48,8 +52,8 @@ const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
       name: "SCOPE",
       options: [
         ["global", "global"],
-        ["turtle", "turtle"],
-        ["patch", "patch"],
+        ["turtle", "turtles-own"],
+        ["patch", "patches-own"],
         ["link", "link"]
       ]
     },
@@ -75,52 +79,6 @@ const setVariableBlock: BlockDefinition = createStatementBlock("set_variable", {
     const value = generator.valueToCode(block, "VALUE", 0) || "";
 
     return `${scope} ${variableName} ${value}`;
-  }
-});
-
-// Define a block for setting multiple variables by scope
-const setScopedVariablesBlock: BlockDefinition = createStatementBlock("declare_variables_by_scope", {
-  message0: "set %1 [ %2 ]",
-  args0: [
-    {
-      type: "field_dropdown",
-      name: "SCOPE",
-      options: [
-        ["globals", "globals"],
-        ["turtles", "turtles-own"],
-        ["patches", "patches-own"],
-        ["links", "links-own"]
-      ]
-    },
-    {
-      type: "input_statement",
-      name: "VAR_BLOCKS"
-    }
-  ],
-  previousStatement: null,
-  nextStatement: null,
-  tooltip: "Declare multiple variables using variable blocks",
-  extensions: [],
-  for: (block, generator) => {
-    const scope = block.getFieldValue("SCOPE") || "globals";
-    const rawScope = scope.replace("-own", "").replace("s", ""); // global, turtle, patch, link
-
-    // Parse child get_variable blocks
-    const vars: string[] = [];
-    let currentBlock = block.getInputTargetBlock("VAR_BLOCKS");
-
-    while (currentBlock) {
-      const name = currentBlock.getFieldValue("VAR_NAME");
-      if (name) {
-        vars.push(name);
-        VariableRegistry.registerVariable(name, rawScope);
-      }
-      currentBlock = currentBlock.getNextBlock();
-    }
-
-    const declLine = `${scope} [ ${vars.join(" ")} ]\n`;
-
-    return declLine;
   }
 });
 
@@ -157,7 +115,6 @@ const getVariableBlock = createStatementBlock("get_variable", {
 const variableBlocks: BlockDefinition[] = [
   setVariableBlock,
   getVariableBlock,
-  setScopedVariablesBlock,
 ];
 
 export default variableBlocks;
