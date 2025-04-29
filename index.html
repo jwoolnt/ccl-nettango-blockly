@@ -44,5 +44,26 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- Breed Custom Modal -->
+	<div id="customBreedModal" class="custom-modal">
+		<div class="modal-content">
+		<h3>Create Breed</h3>
+		<label for="breedTypeSelect">Breed Type:</label>
+		<select id="breedTypeSelect">
+			<option value="turtle">Turtle</option>
+			<option value="undirected-link">Undirected Link</option>
+			<option value="directed-link">Directed Link</option>
+		</select>
+		<label for="breedPluralInput">Plural Name:</label>
+		<input type="text" id="breedPluralInput" placeholder="e.g., wolves" />
+		<label for="breedSingularInput">Singular Name:</label>
+		<input type="text" id="breedSingularInput" placeholder="e.g., wolf" />
+		<div class="modal-buttons">
+			<button id="cancelBreed">Cancel</button>
+			<button id="confirmBreed">Create</button>
+		</div>
+		</div>
+	</div>
 </body>
 </html>

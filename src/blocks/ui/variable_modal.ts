@@ -6,6 +6,11 @@ export function setupVariableModal(ws: Blockly.WorkspaceSvg) {
   const modal = document.getElementById("customVarModal");
   const confirmButton = document.getElementById("confirmVar");
   const cancelButton = document.getElementById("cancelVar");
+  
+  // Listen for scope changes
+  window.addEventListener('variableScopesChanged', () => {
+    updateVarScopeDropdown();
+  });
 
   if (!modal) {
     console.error("Modal not found");
@@ -54,4 +59,42 @@ export function setupVariableModal(ws: Blockly.WorkspaceSvg) {
 export function openCustomVariableModal() {
   const modal = document.getElementById("customVarModal");
   modal?.classList.add("show");
+}
+
+
+export function updateVarScopeDropdown() {
+  const scopeSelect = document.getElementById('varScopeSelect') as HTMLSelectElement;
+  if (!scopeSelect) return;
+
+  // Clear existing options
+  scopeSelect.innerHTML = '';
+
+  // Add basic scopes
+  const basicScopes = [
+    { label: "Global", value: "global" },
+    { label: "Turtle", value: "turtle" },
+    { label: "Patch", value: "patch" },
+    { label: "Link", value: "link" }
+  ];
+
+  basicScopes.forEach(({ label, value }) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = label;
+    scopeSelect.appendChild(option);
+  });
+
+  // Add custom scopes (breeds)
+  const customScopes = VariableRegistry.getCustomScopes();
+  customScopes.forEach(scope => {
+    const option = document.createElement('option');
+    option.value = scope;
+    option.textContent = capitalizeFirstLetter(scope);
+    scopeSelect.appendChild(option);
+  });
+}
+
+// Helper to capitalize first letter (optional, makes breed names like "Wolves" look nicer)
+export function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }

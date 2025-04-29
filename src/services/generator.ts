@@ -1,6 +1,7 @@
 import { Generator } from "blockly";
 import { forBlocks } from "../blocks";
 import { VariableRegistry } from "../blocks/ui/variable_registry";
+import { getBreeds } from "../data/breeds";
 
 // Declare the extension to the Generator type
 declare module "blockly" {
@@ -19,18 +20,17 @@ netlogoGenerator.forBlock = forBlocks;
 netlogoGenerator.generateVariableDeclarations = function () {
     let declarationCode = '';
 
-    // Always include globals, even if empty
+    // Always include globals
     const globalVars = VariableRegistry.getAllVariables('global');
     declarationCode += 'globals [' + globalVars.map(v => v.name).join(' ') + ']\n';
 
-    // Map internal scope names to NetLogo declarations
+    // Map built-in agent types to NetLogo declarations
     const scopeToDeclaration = {
         'turtle': 'turtles-own',
         'patch': 'patches-own',
         'link': 'links-own'
     };
 
-    // Add declarations for each breed-like scope
     Object.entries(scopeToDeclaration).forEach(([scope, declaration]) => {
         const vars = VariableRegistry.getAllVariables(scope);
         if (vars.length > 0) {
@@ -38,13 +38,27 @@ netlogoGenerator.generateVariableDeclarations = function () {
         }
     });
 
+    // Now handle custom breeds
+    const breeds = getBreeds();
+    for (const [plural, singular] of breeds) {
+        if (plural !== "turtles" && plural !== "links") { 
+            declarationCode += `breed [ ${plural} ${singular} ]\n`;
+
+            // Optionally: if breed-specific variables, generate
+            const breedVars = VariableRegistry.getAllVariables(plural);
+            if (breedVars.length > 0) {
+                declarationCode += `${plural}-own [${breedVars.map(v => v.name).join(' ')}]\n`;
+            }
+        }
+    }
+
     return declarationCode;
 };
 
 // Override the original workspaceToCode method to include variable declarations
 const originalWorkspaceToCode = netlogoGenerator.workspaceToCode;
+
 netlogoGenerator.workspaceToCode = function (workspace) {
-    // TypeScript now knows this function can exist
     const variableDeclarations = this.generateVariableDeclarations?.() || '';
 
     // Get the regular code

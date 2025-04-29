@@ -5,7 +5,9 @@ import { save, load } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
 import { addBreed, resetBreeds } from "./data/breeds";
 import { VariableRegistry } from "./blocks/ui/variable_registry";
-import { setupVariableModal, openCustomVariableModal } from "./blocks/ui/variable_model";
+import { setupVariableModal, openCustomVariableModal } from "./blocks/ui/variable_modal";
+import { setupBreedModal, openBreedModal } from "./data/breed_modal";
+import { initBreedRegistryIntegration } from "./data/breed_registry";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -24,37 +26,41 @@ if (blockEditor && codeOutput) {
 	const generateCode = () =>
 		codeOutput.textContent = netlogoGenerator.workspaceToCode(ws);
 
+	// Initialize the breed registry integration with variable system
+	initBreedRegistryIntegration();
+	
+	// Set up the breed modal
+	setupBreedModal(ws);
+	
+	// Set up the variable modal
+	setupVariableModal(ws);
+	
 	load(ws);
 	generateCode();
 	
-	// 
-	document.addEventListener("DOMContentLoaded", () => {
-		setupVariableModal(ws);
-	  });
-	  
 	actionButtons[0].addEventListener("click", () => {
-		// Blockly.Variables.createVariableButtonHandler(ws);
 		openCustomVariableModal();
 	});
 	
 	actionButtons[1].addEventListener("click", () => {
-		let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
-		if (type == null) return;
-		let plural = prompt("what is the breeds plural name?");
-		if (plural == null) return;
-		let singular = prompt("what is the breeds singular name?");
-		if (singular == null) return;
-		addBreed(type, [plural, singular]);
+		openBreedModal();
 	});
 
 	actionButtons[2].addEventListener("click", () => {
-		resetBreeds();
+		if (confirm("Are you sure you want to reset all breeds? This will remove all custom breeds.")) {
+			resetBreeds();
+			// Reset breed-related scopes in variable registry
+			VariableRegistry.resetCustomScopes();
+			// Force refresh of dropdowns
+			ws.fireChangeListener({ type: Blockly.Events.FINISHED_LOADING } as Blockly.Events.FinishedLoading);
+		}
 	});
 
 	actionButtons[3].addEventListener("click", () => {
-		ws.clear();
+		if (confirm("Are you sure you want to reset the workspace? This will clear all blocks.")) {
+			ws.clear();
+		}
 	});
-
 
 	ws?.addChangeListener((e) => {
 		if (
