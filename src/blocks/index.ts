@@ -3,7 +3,6 @@ import { BlockDefinition, BlockFunction } from './types';
 import observerBlocks from './observer';
 import turtleBlocks from "./turtles";
 import logicBlocks from "./logic";
-import variableBlocks from './variables';
 import mathBlocks from "./math";
 import stringBlocks from "./strings";
 import agentsetBlocks from "./agentset";
@@ -13,7 +12,6 @@ const allBlocks: BlockDefinition[] = [
 	...observerBlocks,
 	...turtleBlocks,
 	...logicBlocks,
-	...variableBlocks,
 	...mathBlocks,
 	...stringBlocks,
 	...agentsetBlocks

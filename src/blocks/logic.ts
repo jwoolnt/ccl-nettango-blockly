@@ -35,6 +35,30 @@ const greater_than: BlockDefinition = createComparisonOperatorBlock("greater_tha
 
 const greater_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock("greater_than_or_equal_to", ">=");
 
+
+const let_: BlockDefinition = function simple_local_declaration_statement(block, generator) {
+	const variable = block.getFieldValue("VAR");
+	const value = generator.valueToCode(block, "DECL", Order.NONE);
+	let code = `let ${variable} ${value}\n`;
+
+	generator.INDENT = "";
+	code += generator.statementToCode(block, "DO");
+	generator.INDENT = "\t";
+
+	return code;
+}
+
+const set: BlockDefinition = function lexical_variable_set(block, generator) {
+	const variable = block.getFieldValue("VAR");
+	const value = generator.valueToCode(block, "VALUE", Order.NONE);
+	return `set ${variable} ${value}`;
+}
+
+const get: BlockDefinition = function lexical_variable_get(block) {
+	return [block.getFieldValue("VAR"), Order.ATOMIC];
+}
+
+
 const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
 	message0: "ask %1\n %2",
 	args0: [{
@@ -103,6 +127,11 @@ const logicBlocks: BlockDefinition[] = [
 	less_than_or_equal_to,
 	greater_than,
 	greater_than_or_equal_to,
+
+	let_,
+	set,
+	get,
+
 	ask_agent_set,
 	if_,
 	ifelse
