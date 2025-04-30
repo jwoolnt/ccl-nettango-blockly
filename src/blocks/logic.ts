@@ -114,6 +114,38 @@ const ifelse: BlockDefinition = createStatementBlock("ifelse", { // TODO: suppor
 	}
 });
 
+const to: BlockDefinition = function procedures_defnoreturn(block: any, generator) { // TODO: remove any
+	const prefix = `to ${block.getFieldValue("NAME")}`;
+
+	let parameters = "";
+	if (block.arguments_.length) {
+		parameters += " [ "
+
+		for (const parameter of block.arguments_) {
+			parameters += `${parameter} `
+		}
+
+		parameters += "]"
+	}
+
+	const body = generator.statementToCode(block, "STACK");
+
+	const suffix = "end";
+
+	return `${prefix}${parameters}\n${body}\n${suffix}`;
+}
+
+const call_command: BlockDefinition = function procedures_callnoreturn(block: any, generator) { // TODO: remove any
+	const procedure = block.getFieldValue("PROCNAME");
+
+	let args = "";
+	for (let i = 0; i < block.arguments_.length; i++) {
+		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL)}`; // TODO: add zero shadow block
+	}
+
+	return procedure + args;
+}
+
 
 const logicBlocks: BlockDefinition[] = [
 	boolean,
@@ -134,7 +166,9 @@ const logicBlocks: BlockDefinition[] = [
 
 	ask_agent_set,
 	if_,
-	ifelse
+	ifelse,
+	to,
+	call_command
 ];
 
 

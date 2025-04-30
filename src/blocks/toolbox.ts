@@ -291,6 +291,12 @@ const toolbox: Toolbox = {
 								}
 							}
 						}
+					}, {
+						kind: "block",
+						type: "procedures_defnoreturn"
+					}, {
+						kind: "block",
+						type: "procedures_callnoreturn"
 					}]
 				}
 			]
