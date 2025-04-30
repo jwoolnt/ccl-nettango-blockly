@@ -1,7 +1,7 @@
 import * as Blockly from "blockly";
 import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
-import { save, load } from "./services/serializer"
+import { save, load, reset } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
 import { addBreed, resetBreeds } from "./data/breeds";
 
@@ -27,8 +27,7 @@ if (blockEditor && codeOutput) {
 	const generateCode = () =>
 		codeOutput.textContent = netlogoGenerator.workspaceToCode(ws);
 
-	load(ws);
-	generateCode();
+	load(ws, generateCode);
 
 
 	const actionMap: Record<string, () => void> = {
@@ -43,7 +42,7 @@ if (blockEditor && codeOutput) {
 			addBreed(type, [plural, singular]);
 		},
 		"reset-breed": resetBreeds,
-		"reset-workspace": () => ws.clear()
+		"reset-workspace": () => reset(ws)
 	}
 
 	Array.from(actionButtons).forEach(e => {
