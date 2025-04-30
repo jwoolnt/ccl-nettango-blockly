@@ -37,6 +37,7 @@ const greater_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock(
 
 
 const let_: BlockDefinition = function simple_local_declaration_statement(block, generator) {
+	// TODO: change to local_declaration_statement
 	const variable = block.getFieldValue("VAR");
 	const value = generator.valueToCode(block, "DECL", Order.NONE);
 	let code = `let ${variable} ${value}\n`;
@@ -85,7 +86,7 @@ const call_command: BlockDefinition = function procedures_callnoreturn(block: an
 
 	let args = "";
 	for (let i = 0; i < block.arguments_.length; i++) {
-		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL)}`; // TODO: add zero shadow block
+		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL) || "0"}`; // TODO: add zero shadow block
 	}
 
 	return procedure + args;
