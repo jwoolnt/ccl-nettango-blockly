@@ -27,27 +27,26 @@ if (blockEditor && codeOutput) {
 	generateCode();
 
 
-	actionButtons[0].addEventListener("click", () => {
-		Blockly.Variables.createVariableButtonHandler(ws);
-	});
+	const actionMap: Record<string, () => void> = {
+		"add-variable": () => Blockly.Variables.createVariableButtonHandler(ws),
+		"add-breed": () => {
+			let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
+			if (type == null) return;
+			let plural = prompt("what is the breeds plural name?");
+			if (plural == null) return;
+			let singular = prompt("what is the breeds singular name?");
+			if (singular == null) return;
+			addBreed(type, [plural, singular]);
+		},
+		"reset-breed": resetBreeds,
+		"reset-workspace": () => ws.clear()
+	}
 
-	actionButtons[1].addEventListener("click", () => {
-		let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
-		if (type == null) return;
-		let plural = prompt("what is the breeds plural name?");
-		if (plural == null) return;
-		let singular = prompt("what is the breeds singular name?");
-		if (singular == null) return;
-		addBreed(type, [plural, singular]);
-	});
-
-	actionButtons[2].addEventListener("click", () => {
-		resetBreeds();
-	});
-
-	actionButtons[3].addEventListener("click", () => {
-		ws.clear();
-	});
+	Array.from(actionButtons).forEach(e => {
+		if (actionMap[e.id]) {
+			e.addEventListener("click", actionMap[e.id]);
+		}
+	})
 
 
 	ws.addChangeListener((e) => {
