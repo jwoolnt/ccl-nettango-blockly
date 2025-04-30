@@ -59,22 +59,37 @@ const get: BlockDefinition = function lexical_variable_get(block) {
 }
 
 
-const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
-	message0: "ask %1\n %2",
-	args0: [{
-		type: "input_value",
-		name: "AGENTSET",
-		check: "Agentset"
-	}, {
-		type: "input_statement",
-		name: "COMMANDS"
-	}],
-	for: (block, generator) => {
-		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE);
-		const commands = generator.statementToCode(block, "COMMANDS");
-		return `ask ${agentSet} [\n${commands}\n]`
+const to: BlockDefinition = function procedures_defnoreturn(block: any, generator) { // TODO: remove any
+	const prefix = `to ${block.getFieldValue("NAME")}`;
+
+	let parameters = "";
+	if (block.arguments_.length) {
+		parameters += " [ "
+
+		for (const parameter of block.arguments_) {
+			parameters += `${parameter} `
+		}
+
+		parameters += "]"
 	}
-});
+
+	const body = generator.statementToCode(block, "STACK");
+
+	const suffix = "end";
+
+	return `${prefix}${parameters}\n${body}\n${suffix}`;
+}
+
+const call_command: BlockDefinition = function procedures_callnoreturn(block: any, generator) { // TODO: remove any
+	const procedure = block.getFieldValue("PROCNAME");
+
+	let args = "";
+	for (let i = 0; i < block.arguments_.length; i++) {
+		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL)}`; // TODO: add zero shadow block
+	}
+
+	return procedure + args;
+}
 
 const if_: BlockDefinition = createStatementBlock("if_", {
 	message0: "if %1\n %2",
@@ -114,37 +129,22 @@ const ifelse: BlockDefinition = createStatementBlock("ifelse", { // TODO: suppor
 	}
 });
 
-const to: BlockDefinition = function procedures_defnoreturn(block: any, generator) { // TODO: remove any
-	const prefix = `to ${block.getFieldValue("NAME")}`;
-
-	let parameters = "";
-	if (block.arguments_.length) {
-		parameters += " [ "
-
-		for (const parameter of block.arguments_) {
-			parameters += `${parameter} `
-		}
-
-		parameters += "]"
+const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
+	message0: "ask %1\n %2",
+	args0: [{
+		type: "input_value",
+		name: "AGENTSET",
+		check: "Agentset"
+	}, {
+		type: "input_statement",
+		name: "COMMANDS"
+	}],
+	for: (block, generator) => {
+		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE);
+		const commands = generator.statementToCode(block, "COMMANDS");
+		return `ask ${agentSet} [\n${commands}\n]`
 	}
-
-	const body = generator.statementToCode(block, "STACK");
-
-	const suffix = "end";
-
-	return `${prefix}${parameters}\n${body}\n${suffix}`;
-}
-
-const call_command: BlockDefinition = function procedures_callnoreturn(block: any, generator) { // TODO: remove any
-	const procedure = block.getFieldValue("PROCNAME");
-
-	let args = "";
-	for (let i = 0; i < block.arguments_.length; i++) {
-		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL)}`; // TODO: add zero shadow block
-	}
-
-	return procedure + args;
-}
+});
 
 
 const logicBlocks: BlockDefinition[] = [
@@ -164,11 +164,11 @@ const logicBlocks: BlockDefinition[] = [
 	set,
 	get,
 
-	ask_agent_set,
+	to,
+	call_command,
 	if_,
 	ifelse,
-	to,
-	call_command
+	ask_agent_set
 ];
 
 

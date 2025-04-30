@@ -258,6 +258,12 @@ const toolbox: Toolbox = {
 					name: "Control Flow",
 					contents: [{
 						kind: "block",
+						type: "procedures_defnoreturn"
+					}, {
+						kind: "block",
+						type: "procedures_callnoreturn"
+					}, {
+						kind: "block",
 						type: "ask_agent_set",
 						inputs: {
 							"AGENTSET": {
@@ -291,12 +297,6 @@ const toolbox: Toolbox = {
 								}
 							}
 						}
-					}, {
-						kind: "block",
-						type: "procedures_defnoreturn"
-					}, {
-						kind: "block",
-						type: "procedures_callnoreturn"
 					}]
 				}
 			]
