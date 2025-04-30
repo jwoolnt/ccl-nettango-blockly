@@ -196,27 +196,135 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "block",
-					type: "equal"
+					type: "equal",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "not_equal"
+					type: "not_equal",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "less_than"
+					type: "less_than",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "less_than_or_equal_to"
+					type: "less_than_or_equal_to",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "greater_than"
+					type: "greater_than",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "block",
-					type: "greater_than_or_equal_to"
+					type: "greater_than_or_equal_to",
+					inputs: {
+						"A": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						},
+						"B": {
+							"shadow": {
+								type: "number",
+								fields: {
+									"NUMBER": 0
+								}
+							}
+						}
+					}
 				},
 				{
 					kind: "category",
