@@ -1,5 +1,5 @@
 import { common } from 'blockly/core';
-import { BlockDefinition, BlockFunction } from './definition/types';
+import { BlockDefinition, BlockFunction } from './types';
 import observerBlocks from './observer';
 import turtleBlocks from "./turtles";
 import logicBlocks from "./logic";

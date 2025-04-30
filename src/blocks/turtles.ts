@@ -1,6 +1,6 @@
 import { getTurtleBreeds, specifyPlurality } from "../data/breeds";
-import { BlockDefinition } from "./definition/types";
-import { createStatementBlock, dynamicOptions, Order } from "./definition/utilities";
+import { BlockDefinition } from "./types";
+import { createStatementBlock, dynamicOptions, Order } from "./utilities";
 
 
 const create_breeds: BlockDefinition = createStatementBlock("create_breeds", {

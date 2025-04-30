@@ -1,5 +1,5 @@
-import { BlockDefinition } from "./definition/types";
-import { createValueBlock, Order } from "./definition/utilities";
+import { BlockDefinition } from "./types";
+import { createValueBlock, Order } from "./utilities";
 
 
 const string: BlockDefinition = createValueBlock("string", "String", {
