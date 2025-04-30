@@ -220,7 +220,38 @@ const toolbox: Toolbox = {
 				},
 				{
 					kind: "category",
-					name: "Variables"
+					name: "Variables",
+					contents: [{
+						kind: "block",
+						type: "simple_local_declaration_statement",
+						inputs: {
+							"DECL": {
+								"shadow": {
+									type: "number",
+									fields: {
+										"NUMBER": 0
+									}
+								}
+							}
+						}
+					},
+					{
+						kind: "block",
+						type: "lexical_variable_set",
+						inputs: {
+							"VALUE": {
+								"shadow": {
+									type: "number",
+									fields: {
+										"NUMBER": 0
+									}
+								}
+							}
+						}
+					}, {
+						kind: "block",
+						type: "lexical_variable_get"
+					}]
 				},
 				{
 					kind: "category",

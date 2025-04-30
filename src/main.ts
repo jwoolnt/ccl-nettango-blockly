@@ -5,6 +5,9 @@ import { save, load } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
 import { addBreed, resetBreeds } from "./data/breeds";
 
+//@ts-expect-error
+import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
+
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -19,6 +22,7 @@ if (blockEditor && codeOutput) {
 		zoom: { controls: true },
 		move: { scrollbars: false, drag: true, wheel: true }
 	});
+	LexicalVariablesPlugin.init(ws);
 
 	const generateCode = () =>
 		codeOutput.textContent = netlogoGenerator.workspaceToCode(ws);

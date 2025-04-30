@@ -100,9 +100,9 @@ export type Argument =
 
 export type BlockFunction = (block: Block, generator: CodeGenerator) => string | [string, number] | null;
 
-export interface BlockDefinition {
+export type BlockDefinition = {
 	type: string;
-	message0: string;
+	message0?: string;
 	args0?: Argument[];
 	implicitAlign0?: "LEFT" | "CENTRE" | "RIGHT";
 	// [key: `message${number}`]: string; //supports message0...messageN
@@ -118,4 +118,4 @@ export interface BlockDefinition {
 	mutator?: string;
 	// custom properties
 	for: BlockFunction;
-}
+} | BlockFunction;
