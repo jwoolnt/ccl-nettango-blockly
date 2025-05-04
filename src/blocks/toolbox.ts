@@ -513,33 +513,49 @@ const toolbox: Toolbox = {
             contents: [
                 {
                     kind: "block",
-                    type: "array_block",
+                    type: "list_item",
                     inputs: {
-                        "ELEMENT1": {
+                        "INDEX": {
                             "shadow": {
-                                type: "string",
+                                type: "number",
                                 fields: {
-                                    "STRING": "element1"
-                                }
-                            }
-                        },
-                        "ELEMENT2": {
-                            "shadow": {
-                                type: "string",
-                                fields: {
-                                    "STRING": "element2"
-                                }
-                            }
-                        },
-                        "ELEMENT3": {
-                            "shadow": {
-                                type: "string",
-                                fields: {
-                                    "STRING": "element3"
+                                    "NUMBER": 1
                                 }
                             }
                         }
                     }
+                },
+                {
+                    kind: "block",
+                    type: "add_to_list",
+                    inputs: {
+                        "ITEM": {
+                            "shadow": {
+                                type: "string",
+                                fields: {
+                                    "STRING": "item"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "delete_from_list",
+                    inputs: {
+                        "INDEX": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "clear_list"
                 },
             ]
         },

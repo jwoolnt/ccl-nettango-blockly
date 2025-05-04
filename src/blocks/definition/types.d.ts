@@ -1,17 +1,21 @@
-import { Block, CodeGenerator } from "blockly";
+import { Block, CodeGenerator, Input } from "blockly";
 
 
-export type ValueType =
-	| "Boolean"
-	| "Number"
-	| "Color"
-	| "String"
-	| "List"
-	| "Agent"
-	| "Agentset"
-	| "Array";
+// export type ValueType =
+// 	| "Boolean"
+// 	| "Number"
+// 	| "Color"
+// 	| "String"
+// 	| "List"
+// 	| "Agent"
+// 	| "Agentset"
+// 	| "Array"
+// 	| "List Item";
 
-export type CheckValue = null | ValueType | ValueType[] | Array | string | string[];
+// export type CheckValue = null | ValueType | ValueType[] | Array | string | string[];
+
+export type ValueType = string | string[];
+export type CheckValue = string | string[] | null;
 
 export type CheckStatement = null | string | string[];
 
@@ -54,17 +58,24 @@ export type TextField = ArgumentBase<"field_input"> & {
 	spellcheck?: boolean;
 };
 
-export type DropdownFieldOption = [string | Image, string];
+// export type DropdownFieldOption = [string | Image, string];
 
-export type StaticDropdownFieldOptions = DropdownFieldOption[]
+// export type StaticDropdownFieldOptions = DropdownFieldOption[]
 
-export type DynamicDropdownFieldOptions = () => DropdownFieldOption[];
+// export type DynamicDropdownFieldOptions = () => DropdownFieldOption[];
 
-export type DropdownFieldOptions = StaticDropdownFieldOptions | DynamicDropdownFieldOptions
+// export type DropdownFieldOptions = StaticDropdownFieldOptions | DynamicDropdownFieldOptions
 
-export type DropdownField = ArgumentBase<"field_dropdown"> & {
-	options: DropdownFieldOptions;
-};
+export type StaticDropdownFieldOptions = [string, string][];
+export type DynamicDropdownFieldOptions = () => StaticDropdownFieldOptions;
+export type DropdownFieldOptions = StaticDropdownFieldOptions | DynamicDropdownFieldOptions;
+export type DropdownFieldOption = [string, string];
+
+export interface DropdownField {
+    type: "field_dropdown";
+    name: string;
+    options: DropdownFieldOptions;
+}
 
 export type CheckboxField = ArgumentBase<"field_checkbox"> & {
 	checked?: boolean;
@@ -86,7 +97,12 @@ export type VariableField = ArgumentBase<"field_variable"> & {
 export type ImageField = ArgumentBase<"field_image"> & Image & {
 	flipRtl?: boolean;
 };
-
+export interface InputField {
+    type: "input_value" | "input_statement";
+    name: string;
+    check?: CheckValue;
+    align?: string;
+}
 
 export type Argument =
 	| ValueInput
@@ -96,7 +112,9 @@ export type Argument =
 	| CheckboxField
 	| NumberField
 	| VariableField
-	| ImageField;
+	| ImageField
+	| InputField
+	| any;
 
 
 export type BlockFunction = (block: Block, generator: CodeGenerator) => string | [string, number] | null;

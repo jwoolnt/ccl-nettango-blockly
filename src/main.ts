@@ -8,6 +8,7 @@ import { VariableRegistry } from "./blocks/ui/variable_registry";
 import { setupVariableModal, openCustomVariableModal } from "./blocks/ui/variable_modal";
 import { setupBreedModal, openBreedModal } from "./data/breed_modal";
 import { initBreedRegistryIntegration } from "./data/breed_registry";
+import { setupListModal, openListModal} from "./blocks/ui/list_modal";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -34,6 +35,9 @@ if (blockEditor && codeOutput) {
 	
 	// Set up the variable modal
 	setupVariableModal(ws);
+
+	// Set up the list modal
+	setupListModal(ws);
 	
 	load(ws);
 	generateCode();
@@ -47,6 +51,10 @@ if (blockEditor && codeOutput) {
 	});
 
 	actionButtons[2].addEventListener("click", () => {
+		openListModal();
+	});
+
+	actionButtons[3].addEventListener("click", () => {
 		if (confirm("Are you sure you want to reset all breeds? This will remove all custom breeds.")) {
 			resetBreeds();
 			// Reset breed-related scopes in variable registry
@@ -56,7 +64,7 @@ if (blockEditor && codeOutput) {
 		}
 	});
 
-	actionButtons[3].addEventListener("click", () => {
+	actionButtons[4].addEventListener("click", () => {
 		if (confirm("Are you sure you want to reset the workspace? This will clear all blocks.")) {
 			ws.clear();
 		}

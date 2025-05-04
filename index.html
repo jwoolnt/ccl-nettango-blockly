@@ -1,69 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<title>NetTango Editor</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" type="text/css" href="index.css" />
-	<script defer type="module" src="src/main.ts"></script>
-</head>
-<body>
-	<header class="sub-grid">
-		<menu>
-			<li><button class="action-button">Make a Variable</button></li>
-			<li><button class="action-button">Add a Breed</button></li>
-			<li><button class="action-button">Reset Breeds</button></li>
-			<li><button class="action-button">Reset Workspace</button></li>
-		</menu>
-		<!-- <h1>NetTango Editor</h1> -->
-	</header>
+  <head>
+    <meta charset="UTF-8" />
+    <title>NetTango Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <script defer type="module" src="src/main.ts"></script>
+  </head>
+  <body>
+    <header class="sub-grid">
+      <menu>
+        <li><button class="action-button">Make a Variable</button></li>
+        <li><button class="action-button">Add a Breed</button></li>
+        <li><button class="action-button">Make a List</button></li>
+        <li><button class="action-button">Reset Breeds</button></li>
+        <li><button class="action-button">Reset Workspace</button></li>
+      </menu>
+      <!-- <h1>NetTango Editor</h1> -->
+    </header>
 
-	<main class="sub-grid">
-		<div class="block-editor pane"></div>
-		<div class="output pane">
-			<pre><code class="generated-code"></code></pre>
-		</div>
-	</main>
+    <main class="sub-grid">
+      <div class="block-editor pane"></div>
+      <div class="output pane">
+        <pre><code class="generated-code"></code></pre>
+      </div>
+    </main>
 
-	<!-- Variable Custom Modal -->
-	<div id="customVarModal" class="custom-modal">
-		<div class="modal-content">
-			<h3>Create Variable</h3>
-			<label for="varNameInput">Variable Name:</label>
-			<input type="text" id="varNameInput" placeholder="e.g., speed" />
-			<label for="varScopeSelect">Scope:</label>
-			<select id="varScopeSelect">
-				<option value="global">Global</option>
-				<option value="turtle">Turtle</option>
-				<option value="patch">Patch</option>
-				<option value="link">Link</option>
-			</select>
-			<div class="modal-buttons">
-				<button id="cancelVar">Cancel</button>
-				<button id="confirmVar">Create</button>
-			</div>
-		</div>
-	</div>
-	
-	<!-- Breed Custom Modal -->
-	<div id="customBreedModal" class="custom-modal">
-		<div class="modal-content">
-		<h3>Create Breed</h3>
-		<label for="breedTypeSelect">Breed Type:</label>
-		<select id="breedTypeSelect">
-			<option value="turtle">Turtle</option>
-			<option value="undirected-link">Undirected Link</option>
-			<option value="directed-link">Directed Link</option>
-		</select>
-		<label for="breedPluralInput">Plural Name:</label>
-		<input type="text" id="breedPluralInput" placeholder="e.g., wolves" />
-		<label for="breedSingularInput">Singular Name:</label>
-		<input type="text" id="breedSingularInput" placeholder="e.g., wolf" />
-		<div class="modal-buttons">
-			<button id="cancelBreed">Cancel</button>
-			<button id="confirmBreed">Create</button>
-		</div>
-		</div>
-	</div>
-</body>
+    <!-- Variable Custom Modal -->
+    <div id="customVarModal" class="custom-modal">
+      <div class="modal-content">
+        <h3>Create Variable</h3>
+        <label for="varNameInput">Variable Name:</label>
+        <input type="text" id="varNameInput" placeholder="e.g., speed" />
+        <label for="varScopeSelect">Scope:</label>
+        <select id="varScopeSelect">
+          <option value="global">Global</option>
+          <option value="turtle">Turtle</option>
+          <option value="patch">Patch</option>
+          <option value="link">Link</option>
+        </select>
+        <div class="modal-buttons">
+          <button id="cancelVar">Cancel</button>
+          <button id="confirmVar">Create</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breed Custom Modal -->
+    <div id="customBreedModal" class="custom-modal">
+      <div class="modal-content">
+        <h3>Create Breed</h3>
+        <label for="breedTypeSelect">Breed Type:</label>
+        <select id="breedTypeSelect">
+          <option value="turtle">Turtle</option>
+          <option value="undirected-link">Undirected Link</option>
+          <option value="directed-link">Directed Link</option>
+        </select>
+        <label for="breedPluralInput">Plural Name:</label>
+        <input type="text" id="breedPluralInput" placeholder="e.g., wolves" />
+        <label for="breedSingularInput">Singular Name:</label>
+        <input type="text" id="breedSingularInput" placeholder="e.g., wolf" />
+        <div class="modal-buttons">
+          <button id="cancelBreed">Cancel</button>
+          <button id="confirmBreed">Create</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- List Custom Modal -->
+    <div id="customListModal" class="custom-modal">
+      <div class="modal-content">
+        <h3>Create a New List</h3>
+        <label for="listName">List Name:</label>
+        <input type="text" id="listName" placeholder="Enter list name" />
+        <div class="modal-buttons">
+          <button id="cancelList">Cancel</button>
+          <button id="confirmList">Create</button>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

@@ -3,11 +3,11 @@ import { createStatementBlock } from "./definition/utilities";
 import { VariableRegistry, NetLogoScope } from "./ui/variable_registry";
 import { openCustomVariableModal } from "./ui/variable_modal";
 
-/**
- * Function: generates options for a dropdown
- * param: scope to get variables for
- * return: array of options for the dropdown
- */
+// 
+// Function: generates options for a dropdown
+// param: scope to get variables
+// return: array of options for the dropdown
+// 
 function generateVariableOptions(scope: string): Blockly.MenuOption[] {
     try {
         // Get variables for the given scope
@@ -28,10 +28,10 @@ function generateVariableOptions(scope: string): Blockly.MenuOption[] {
     }
 }
 
-/**
- * Function: generates scope options including custom breeds
- * return: An array of options for the scope dropdown
- */
+// 
+// Function: generates scope options including custom breeds
+// return: An array of options for the scope dropdown
+// 
 function generateScopeOptions(): Blockly.MenuOption[] {
     try {
         // Start with the default scopes
@@ -278,7 +278,7 @@ const getVariableBlock = createStatementBlock("get_variable", {
     }
 });
 
-// Export the blocks
+
 const variableBlocks = [
     setVariableBlock,
     getVariableBlock,
