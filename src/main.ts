@@ -4,6 +4,7 @@ import activeBlocks from "./blocks";
 import { save, load, reset } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
 import { addBreed, BREED_SERIALIZER, BreedType } from "./data/breeds";
+import { addGlobal, renameGlobal, removeGlobal } from "./data/globals";
 
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
@@ -31,7 +32,23 @@ if (blockEditor && codeOutput) {
 
 
 	const actionMap: Record<string, () => any> = {
-		"add-variable": () => Blockly.Variables.createVariableButtonHandler(ws),
+		"add-variable": () => {
+			switch (prompt("what do you want to do? (add, rename, remove)")) {
+				case "add":
+					addGlobal(prompt("what is the name?") as string);
+					break;
+				case "rename":
+					renameGlobal(prompt("what is the old name?") as string, prompt("what is the new name?") as string);
+					break;
+				case "remove":
+					removeGlobal(prompt("what is the name?") as string);
+					break;
+				default:
+					console.error("invalid variable action");
+					break;
+			}
+
+		},
 		"add-breed": () => {
 			let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
 			if (type == null) return;
@@ -45,10 +62,7 @@ if (blockEditor && codeOutput) {
 			BREED_SERIALIZER.clear(ws);
 			save(ws);
 		},
-		"reset-workspace": () => {
-			reset(ws);
-			save(ws);
-		}
+		"reset-workspace": () => reset(ws)
 	}
 
 	Array.from(actionButtons).forEach(e => {

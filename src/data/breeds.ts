@@ -33,8 +33,6 @@ export const BREED_SERIALIZER: serialization.ISerializer = {
 	save: () => BREED_STATE
 }
 
-serialization.registry.register("nettango-breeds", BREED_SERIALIZER);
-
 
 export function getTurtleBreeds(): Breed[] {
 	return [
