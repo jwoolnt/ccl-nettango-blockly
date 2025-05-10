@@ -15,14 +15,16 @@ export function save(workspace: WorkspaceSvg) {
   window.localStorage?.setItem(storageKey, JSON.stringify(data));
 }
 
-export function load(workspace: WorkspaceSvg, loadCheck: () => any) {
+export function load(workspace: WorkspaceSvg, loadCheck?: () => unknown) {
   const data = window.localStorage?.getItem(storageKey);
   if (!data) return;
 
   Events.disable();
   try {
     serialization.workspaces.load(JSON.parse(data), workspace, { recordUndo: false });
-    loadCheck();
+    if (loadCheck) {
+      loadCheck();
+    }
   }
   catch (e) {
     console.error(`Serialization: cannot load workspace (${e})`);

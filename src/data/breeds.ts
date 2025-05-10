@@ -34,14 +34,19 @@ export const BREED_SERIALIZER: serialization.ISerializer = {
 }
 
 
-export function getTurtleBreeds(): Breed[] {
-	return [
-		["turtles", "turtle"],
-		...BREED_STATE.turtleBreeds
-	];
+export function getTurtleBreeds(includeDefault: boolean = true): Breed[] {
+	const result: Breed[] = [];
+
+	if (includeDefault) {
+		result.push(["turtles", "turtle"]);
+	}
+
+	result.push(...BREED_STATE.turtleBreeds);
+
+	return result;
 }
 
-export function getLinkBreeds(): Breed[] {
+export function getLinkBreeds(includeDefault: boolean = true): Breed[] {
 	return [
 		["links", "link"],
 		...BREED_STATE.undirectedLinkBreeds,
@@ -49,17 +54,17 @@ export function getLinkBreeds(): Breed[] {
 	];
 }
 
-export function getBreeds(): Breed[] {
+export function getBreeds(includeDefault: boolean = true): Breed[] {
 	return [
-		...getTurtleBreeds(),
-		...getLinkBreeds()
+		...getTurtleBreeds(includeDefault),
+		...getLinkBreeds(includeDefault)
 	];
 }
 
-export function getAgentSets(): Breed[] {
+export function getAgentSets(includeDefault: boolean = true): Breed[] {
 	return [
 		["patches", "patch"],
-		...getBreeds()
+		...getBreeds(includeDefault)
 	];
 }
 

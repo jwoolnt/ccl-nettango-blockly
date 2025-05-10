@@ -17,7 +17,7 @@ export const GLOBAL_SERIALIZER: serialization.ISerializer = {
 }
 
 
-export const getGlobals = () => [...GLOBAL_STATE];
+export const getGlobals = (includeDefault: boolean = true) => [...GLOBAL_STATE];
 
 export function addGlobal(name: string) {
 	GLOBAL_STATE.push(name);

@@ -2,7 +2,7 @@ import * as Blockly from "blockly";
 import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, reset } from "./services/serializer"
-import netlogoGenerator from "./services/generator";
+import netlogoGenerator, { generateCodePrefix } from "./services/generator";
 import { addBreed, BREED_SERIALIZER, BreedType } from "./data/breeds";
 import { addGlobal, renameGlobal, removeGlobal } from "./data/globals";
 
@@ -26,7 +26,7 @@ if (blockEditor && codeOutput) {
 	LexicalVariablesPlugin.init(ws);
 
 	const generateCode = () =>
-		codeOutput.textContent = netlogoGenerator.workspaceToCode(ws);
+		codeOutput.textContent = generateCodePrefix() + netlogoGenerator.workspaceToCode(ws);
 
 	load(ws, generateCode);
 
@@ -47,7 +47,6 @@ if (blockEditor && codeOutput) {
 					console.error("invalid variable action");
 					break;
 			}
-
 		},
 		"add-breed": () => {
 			let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
@@ -67,7 +66,11 @@ if (blockEditor && codeOutput) {
 
 	Array.from(actionButtons).forEach(e => {
 		if (actionMap[e.id]) {
-			e.addEventListener("click", actionMap[e.id]);
+			e.addEventListener("click", () => {
+				actionMap[e.id]();
+				save(ws);
+				generateCode();
+			});
 		}
 	})
 
