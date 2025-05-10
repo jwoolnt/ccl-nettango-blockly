@@ -3,7 +3,7 @@ import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, reset } from "./services/serializer"
 import netlogoGenerator from "./services/generator";
-import { addBreed, resetBreeds } from "./data/breeds";
+import { addBreed, BREED_SERIALIZER, BreedType } from "./data/breeds";
 
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
@@ -30,7 +30,7 @@ if (blockEditor && codeOutput) {
 	load(ws, generateCode);
 
 
-	const actionMap: Record<string, () => void> = {
+	const actionMap: Record<string, () => any> = {
 		"add-variable": () => Blockly.Variables.createVariableButtonHandler(ws),
 		"add-breed": () => {
 			let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
@@ -39,10 +39,16 @@ if (blockEditor && codeOutput) {
 			if (plural == null) return;
 			let singular = prompt("what is the breeds singular name?");
 			if (singular == null) return;
-			addBreed(type, [plural, singular]);
+			addBreed(type as BreedType, [plural, singular]);
 		},
-		"reset-breed": resetBreeds,
-		"reset-workspace": () => reset(ws)
+		"reset-breed": () => {
+			BREED_SERIALIZER.clear(ws);
+			save(ws);
+		},
+		"reset-workspace": () => {
+			reset(ws);
+			save(ws);
+		}
 	}
 
 	Array.from(actionButtons).forEach(e => {

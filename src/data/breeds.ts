@@ -1,23 +1,53 @@
+import { serialization } from "blockly";
+
+
+export type BreedType = "turtle" | "undirected-link" | "ulink" | "directed-link" | "dlink";
+
 type Breed = [string, string];
 
-let turtleBreeds: Breed[] = [
-	["turtles", "turtle"]
-];
+interface BreedState {
+	turtleBreeds: Breed[];
+	undirectedLinkBreeds: Breed[];
+	directedLinkBreeds: Breed[];
+}
 
-let undirectedLinkBreeds: Breed[] = [];
 
-let directedLinkBreeds: Breed[] = [];
+const BREED_STATE: BreedState = {
+	turtleBreeds: [],
+	undirectedLinkBreeds: [],
+	directedLinkBreeds: []
+}
+
+export const BREED_SERIALIZER: serialization.ISerializer = {
+	priority: serialization.priorities.VARIABLES,
+	clear: () => {
+		BREED_STATE.turtleBreeds = [];
+		BREED_STATE.undirectedLinkBreeds = [];
+		BREED_STATE.directedLinkBreeds = [];
+	},
+	load: (state: BreedState) => {
+		BREED_STATE.turtleBreeds = state.turtleBreeds;
+		BREED_STATE.undirectedLinkBreeds = state.undirectedLinkBreeds;
+		BREED_STATE.directedLinkBreeds = state.directedLinkBreeds;
+	},
+	save: () => BREED_STATE
+}
+
+serialization.registry.register("nettango-breeds", BREED_SERIALIZER);
 
 
 export function getTurtleBreeds(): Breed[] {
-	return turtleBreeds;
+	return [
+		["turtles", "turtle"],
+		...BREED_STATE.turtleBreeds
+	];
 }
 
 export function getLinkBreeds(): Breed[] {
 	return [
 		["links", "link"],
-		...undirectedLinkBreeds,
-		...directedLinkBreeds
+		...BREED_STATE.undirectedLinkBreeds,
+		...BREED_STATE.directedLinkBreeds
 	];
 }
 
@@ -35,28 +65,27 @@ export function getAgentSets(): Breed[] {
 	];
 }
 
-export function specifyPlurality(breeds: Breed[], plural: boolean): string[] {
-	if (plural) {
-		return breeds.map(([plural,]) => plural);
-	} else {
-		return breeds.map(([, singular]) => singular);
-	}
-}
+export const plural = ([plural,]: Breed) => plural;
 
-export function addBreed(type: string, breed: Breed) {
+export const singular = ([, singular]: Breed) => singular;
+
+export const specifyPlurality = (breeds: Breed[], plural_: boolean) =>
+	breeds.map(plural_ ? plural : singular);
+
+export function addBreed(type: BreedType, breed: Breed) {
 	// TODO: breed words (singular or plural) cannot be repeated
 	// TODO: breeds cannot be commands (e.g. repeat, random, if)
 	switch (type) {
 		case "turtle":
-			turtleBreeds.push(breed);
+			BREED_STATE.turtleBreeds.push(breed);
 			break;
 		case "ulink":
 		case "undirected-link":
-			undirectedLinkBreeds.push(breed);
+			BREED_STATE.undirectedLinkBreeds.push(breed);
 			break;
 		case "dlink":
 		case "directed-link":
-			directedLinkBreeds.push(breed);
+			BREED_STATE.directedLinkBreeds.push(breed);
 			break;
 		default:
 			console.error(`Unsupported type: ${type}`);
@@ -64,29 +93,12 @@ export function addBreed(type: string, breed: Breed) {
 	}
 }
 
-export function removeBreed(type: string, targetBreed: Breed) {
-	switch (type) {
-		case "turtle":
-			turtleBreeds = turtleBreeds.filter(breed => breed !== targetBreed);
-			break;
-		case "ulink":
-		case "undirected-link":
-			undirectedLinkBreeds = undirectedLinkBreeds.filter(breed => breed !== targetBreed);
-			break;
-		case "dlink":
-		case "directed-link":
-			directedLinkBreeds = directedLinkBreeds.filter(breed => breed !== targetBreed);
-			break;
-		default:
-			console.error(`Unsupported type: ${type}`);
-			break;
-	}
-}
+export function removeBreed(targetBreed: Breed | string) {
+	const FILTER = (targetBreed instanceof Array) ?
+		(breed: Breed) => breed !== targetBreed :
+		(breed: Breed) => plural(breed) !== targetBreed && singular(breed) !== targetBreed;
 
-export function resetBreeds(): void {
-	turtleBreeds = [
-		["turtles", "turtle"]
-	];
-	undirectedLinkBreeds = [];
-	directedLinkBreeds = [];
+	BREED_STATE.turtleBreeds = BREED_STATE.turtleBreeds.filter(FILTER);
+	BREED_STATE.undirectedLinkBreeds = BREED_STATE.undirectedLinkBreeds.filter(FILTER);
+	BREED_STATE.directedLinkBreeds = BREED_STATE.directedLinkBreeds.filter(FILTER);
 }

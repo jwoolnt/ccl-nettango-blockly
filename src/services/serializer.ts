@@ -1,7 +1,7 @@
-import { WorkspaceSvg, serialization, Events } from 'blockly/core';
+import { WorkspaceSvg, serialization, Events } from "blockly";
 
 
-const storageKey = 'nettango-workspace';
+const storageKey = "nettango-workspace";
 
 
 export function save(workspace: WorkspaceSvg) {
