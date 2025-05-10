@@ -8,6 +8,20 @@ const netlogoGenerator = new Generator('NetLogo');
 
 netlogoGenerator.forBlock = forBlocks;
 
+netlogoGenerator.workspaceToCode = (workspace) => {
+    let code = "";
+
+    if (workspace) {
+        workspace.getTopBlocks(true).forEach(block => {
+            if (block.type === "procedures_defnoreturn") {
+                code += netlogoGenerator.blockToCode(block);
+            }
+        });
+    }
+
+    return code;
+}
+
 netlogoGenerator.scrub_ = (block, code, thisOnly) => {
     const nextBlock =
         block.nextConnection && block.nextConnection.targetBlock();
@@ -37,7 +51,7 @@ export function generateCodePrefix() {
 
     // TODO: prefix code for links
 
-    return prefix;
+    return prefix ? prefix + "\n" : "";
 }
 
 
