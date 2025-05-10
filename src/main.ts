@@ -4,7 +4,7 @@ import activeBlocks from "./blocks";
 import { save, load, reset } from "./services/serializer"
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
 import { addBreed, BREED_SERIALIZER, BreedType } from "./data/breeds";
-import { addGlobal, renameGlobal, removeGlobal } from "./data/globals";
+import { addVariable, renameVariable, removeVariable } from "./data/variables";
 
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
@@ -35,13 +35,13 @@ if (blockEditor && codeOutput) {
 		"add-variable": () => {
 			switch (prompt("what do you want to do? (add, rename, remove)")) {
 				case "add":
-					addGlobal(prompt("what is the name?") as string);
+					addVariable(prompt("what is the name?") as string, prompt("what breed? (hit enter if none)") as string);
 					break;
 				case "rename":
-					renameGlobal(prompt("what is the old name?") as string, prompt("what is the new name?") as string);
+					renameVariable(prompt("what is the old name?") as string, prompt("what is the new name?") as string);
 					break;
 				case "remove":
-					removeGlobal(prompt("what is the name?") as string);
+					removeVariable(prompt("what is the name?") as string);
 					break;
 				default:
 					console.error("invalid variable action");

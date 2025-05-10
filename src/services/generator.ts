@@ -1,6 +1,6 @@
 import { Generator } from "blockly";
 import { forBlocks } from "../blocks";
-import { getGlobals } from "../data/globals";
+import { getBreedVariables, getGlobals } from "../data/variables";
 import { getTurtleBreeds } from "../data/breeds";
 
 
@@ -45,8 +45,17 @@ export function generateCodePrefix() {
     const TURTLE_BREEDS = getTurtleBreeds(false).map(
         ([plural, singular]) => `breed [${plural} ${singular}]`
     ).join("\n");
-    if (TURTLE_BREEDS.length) {
+    if (TURTLE_BREEDS) {
         prefix += `${TURTLE_BREEDS}\n\n`;
+    }
+
+    let breed_variable_code = "";
+    const BREED_VARIABLES = getBreedVariables(false);
+    for (const BREED in BREED_VARIABLES) {
+        breed_variable_code += `${BREED}-own [ ${BREED_VARIABLES[BREED].join(" ")} ]\n\n`;
+    }
+    if (breed_variable_code) {
+        prefix += `${breed_variable_code}\n\n`;
     }
 
     // TODO: prefix code for links

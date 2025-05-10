@@ -1,13 +1,13 @@
 import { WorkspaceSvg, serialization, Events } from "blockly";
 import { BREED_SERIALIZER } from "../data/breeds";
-import { GLOBAL_SERIALIZER } from "../data/globals";
+import { VARIABLE_SERIALIZER } from "../data/variables";
 
 
 const storageKey = "nettango-workspace";
 
 
 serialization.registry.register("nettango-breeds", BREED_SERIALIZER);
-serialization.registry.register("nettango-globals", GLOBAL_SERIALIZER);
+serialization.registry.register("nettango-variables", VARIABLE_SERIALIZER);
 
 
 export function save(workspace: WorkspaceSvg) {
@@ -38,7 +38,7 @@ export function reset(workspace: WorkspaceSvg) {
 
   workspace.clear();
   BREED_SERIALIZER.clear(workspace);
-  GLOBAL_SERIALIZER.clear(workspace);
+  VARIABLE_SERIALIZER.clear(workspace);
 
   save(workspace);
 }

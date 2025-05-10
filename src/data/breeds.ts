@@ -1,4 +1,5 @@
 import { serialization } from "blockly";
+import { removeVariableBreed, VARIABLE_SERIALIZER } from "./variables";
 
 
 export type BreedType = "turtle" | "undirected-link" | "ulink" | "directed-link" | "dlink";
@@ -21,6 +22,9 @@ const BREED_STATE: BreedState = {
 export const BREED_SERIALIZER: serialization.ISerializer = {
 	priority: serialization.priorities.VARIABLES,
 	clear: () => {
+		//@ts-expect-error
+		VARIABLE_SERIALIZER.clear();
+
 		BREED_STATE.turtleBreeds = [];
 		BREED_STATE.undirectedLinkBreeds = [];
 		BREED_STATE.directedLinkBreeds = [];
@@ -96,7 +100,10 @@ export function addBreed(type: BreedType, breed: Breed) {
 	}
 }
 
+// TODO: rename breed
+
 export function removeBreed(targetBreed: Breed | string) {
+	// TODO: return breedtype?
 	const FILTER = (targetBreed instanceof Array) ?
 		(breed: Breed) => breed !== targetBreed :
 		(breed: Breed) => plural(breed) !== targetBreed && singular(breed) !== targetBreed;
@@ -104,4 +111,6 @@ export function removeBreed(targetBreed: Breed | string) {
 	BREED_STATE.turtleBreeds = BREED_STATE.turtleBreeds.filter(FILTER);
 	BREED_STATE.undirectedLinkBreeds = BREED_STATE.undirectedLinkBreeds.filter(FILTER);
 	BREED_STATE.directedLinkBreeds = BREED_STATE.directedLinkBreeds.filter(FILTER);
+
+	removeVariableBreed((targetBreed instanceof Array) ? plural(targetBreed) : targetBreed);
 }
