@@ -116,8 +116,9 @@ export function resetBreeds(): void {
 function isValidBreedName(name: string): boolean {
     if (!name || name.trim() === "") return false;
     if (RESERVED_WORDS.includes(name.toLowerCase())) return false;
-    
-    return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name);
+
+    // Allow letters, numbers, underscores, and hyphens
+    return /^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(name);
 }
 
 // Check if a breed name already exists
