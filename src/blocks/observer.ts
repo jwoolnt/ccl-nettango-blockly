@@ -1,5 +1,5 @@
-import { BlockDefinition } from "./types";
-import { createStatementBlock } from "./utilities";
+import { BlockDefinition } from "./definition/types";
+import { createStatementBlock } from "./definition/utilities";
 
 
 const clear_all: BlockDefinition = createStatementBlock("clear_all");

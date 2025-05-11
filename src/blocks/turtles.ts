@@ -1,6 +1,6 @@
 import { getTurteAgentSets } from "../data/context";
-import { BlockDefinition } from "./types";
-import { createStatementBlock, dynamicOptions, Order } from "./utilities";
+import { BlockDefinition } from "./definition/types";
+import { createStatementBlock, dynamicOptions, Order } from "./definition/utilities";
 
 
 const create_breeds: BlockDefinition = createStatementBlock("create_breeds", {

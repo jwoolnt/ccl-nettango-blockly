@@ -1,5 +1,5 @@
-import { BlockDefinition } from "./types";
-import { createStatementBlock, createComparisonOperatorBlock, createLogicalOperatorBlock, createValueBlock, Order, staticOptions } from "./utilities";
+import { BlockDefinition } from "./definition/types";
+import { createStatementBlock, createComparisonOperatorBlock, createLogicalOperatorBlock, createValueBlock, Order, staticOptions } from "./definition/utilities";
 
 
 const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {

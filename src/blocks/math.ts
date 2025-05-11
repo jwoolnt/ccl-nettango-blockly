@@ -1,5 +1,5 @@
-import { BlockDefinition } from "./types";
-import { createMathOperatorBlock, createValueBlock, Order } from "./utilities";
+import { BlockDefinition } from "./definition/types";
+import { createMathOperatorBlock, createValueBlock, Order } from "./definition/utilities";
 
 
 const number: BlockDefinition = createValueBlock("number", "Number", {
