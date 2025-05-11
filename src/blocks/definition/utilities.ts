@@ -41,6 +41,7 @@ export function createStatementBlock(type: string, overrides?: Partial<BlockDefi
 	return createBasicBlock(type, {
 		previousStatement: null,
 		nextStatement: null,
+		colour: null,
 		...overrides
 	});
 }
@@ -110,6 +111,7 @@ export function createOperatorBlock(
 		message0,
 		args0,
 		inputsInline: true,
+		colour: null,
 		for: (block, generator) => {
 			const order = operationOrder(type, binary);
 			const A = generator.valueToCode(block, "A", order);

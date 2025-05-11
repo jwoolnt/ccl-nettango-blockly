@@ -8,6 +8,7 @@ const number: BlockDefinition = createValueBlock("number", "Number", {
 		type: "field_number",
 		name: "NUMBER"
 	}],
+	colour: "#c72216",
 	for: (block) => {
 		const number = block.getFieldValue("NUMBER");
 		return [`${number}`, Order.ATOMIC];
@@ -33,6 +34,7 @@ const random: BlockDefinition = createValueBlock("random", "Number", {
 		name: "N",
 		check: "Number"
 	}],
+	colour: "#c72216",
 	for: (block, generator) => {
 		const number = generator.valueToCode(block, "N", Order.FUNCTION_CALL);
 		return [`random ${number}`, Order.FUNCTION_CALL];

@@ -17,6 +17,7 @@ const create_breeds: BlockDefinition = createStatementBlock("create_breeds", {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
+	colour: "#2E7D32",
 	for: (block, generator) => {
 		const breed = block.getFieldValue("BREED");
 		const count = generator.valueToCode(block, "COUNT", Order.NONE);

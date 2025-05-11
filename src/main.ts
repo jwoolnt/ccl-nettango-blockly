@@ -14,12 +14,35 @@ Blockly.common.defineBlocks({ ...activeBlocks });
 const blockEditor = document.getElementsByClassName("block-editor")[0];
 const codeOutput = document.getElementsByClassName("generated-code")[0];
 
+const customTheme = Blockly.Theme.defineTheme('customTheme', {
+  name: 'customTheme',
+  blockStyles: {
+    number_blocks: {
+      colourPrimary: '#c72216',
+      hat: ''
+    },
+    procedure_blocks: {
+      colourPrimary: '#673AB7'  // purple for procedures
+    },
+    variable_blocks: {
+      colourPrimary: '#9C27B0'  // gold for variables
+    }
+  },
+  fontStyle: {
+    family: 'Fira Code',
+    weight: 'normal',
+    size: 12
+  },
+  startHats: false
+});
+
 if (blockEditor && codeOutput) {
   const ws = Blockly.inject(blockEditor, {
     renderer: 'thrasos',
     toolbox,
-	zoom: { controls: true },
-	move: { scrollbars: false, drag: true, wheel: true },
+    theme: customTheme,
+    zoom: { controls: true },
+    move: { scrollbars: false, drag: true, wheel: true },
   });
   
   LexicalVariablesPlugin.init(ws);

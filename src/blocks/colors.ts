@@ -13,6 +13,7 @@ const setTurtleColor: BlockDefinition = createStatementBlock("set_turtle_color",
         name: "VALUE",
         options: netlogoColors
     }],
+    colour:"#2E7D32",
     for: block => `set color ${block.getFieldValue("VALUE")}`
 });
 
@@ -23,6 +24,7 @@ const setPatchColor: BlockDefinition = createStatementBlock("set_patch_color", {
         name: "VALUE",
         options: netlogoColors
     }],
+    colour: "#795548",
     for: block => `set pcolor ${block.getFieldValue("VALUE")}`
 });
 const setPatchColorOneOf: BlockDefinition = createStatementBlock("set_patch_color_one_of", {
@@ -32,6 +34,7 @@ const setPatchColorOneOf: BlockDefinition = createStatementBlock("set_patch_colo
         name: "LIST",
         check: "Array" // Ensures the input is a list
     }],
+    colour: "#795548",
     for: (block, generator) => {
         const list = generator.valueToCode(block, "LIST", 0) || "[]"; // Default to an empty list if none is provided
         return `set pcolor one-of [ ${list} ]`;
@@ -45,6 +48,7 @@ const oneOf: BlockDefinition = createValueBlock("one_of", "Color", {
         name: "LIST",
         check: "Array",
     }],
+    colour: "#795548",
     for: (block, generator) => {
         const list = generator.valueToCode(block, "LIST", 0);
         return [`one-of ${list}`, 0];
