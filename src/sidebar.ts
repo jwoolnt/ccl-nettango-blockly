@@ -2,6 +2,7 @@
 import * as Blockly from "blockly";
 import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
 import { save } from "./services/serializer";
+import { initDialogs, showVariableActionDialog, showBreedActionDialog } from "./modules";
 
 // Sidebar state management
 export type SidebarCategory = 'variables' | 'control' | 'math' | 'logic' | 'agents' | 'turtles' | 'patches' | 'lists' | 'strings';
@@ -10,6 +11,9 @@ let activeCategory: SidebarCategory = 'variables';
 
 // Initialize sidebar functionality
 export function initSidebar(workspace: any, displayCodeCallback: () => void) {
+  // Initialize custom dialogs
+  initDialogs();
+  
   // Set up category click handlers
   const categories = document.querySelectorAll('.sidebar-category');
   categories.forEach(category => {
@@ -31,7 +35,7 @@ export function initSidebar(workspace: any, displayCodeCallback: () => void) {
   // Set up actions for sidebar items
   setupVariableActions(workspace, displayCodeCallback);
   setupBreedActions(workspace, displayCodeCallback);
-//   setupListActions(workspace, displayCodeCallback);
+  setupListActions(workspace, displayCodeCallback);
   
   // Set up the file menu dropdown
   setupFileMenu(workspace);
@@ -43,108 +47,36 @@ function filterBlocksByCategory(category: SidebarCategory) {
   // Future implementation: show/hide blocks based on category
 }
 
-// Set up variable-related actions
+// Set up variable-related actions using custom dialogs
 function setupVariableActions(workspace: any, displayCodeCallback: () => void) {
   const editVariablesButton = document.getElementById('edit-variables');
   if (editVariablesButton) {
     editVariablesButton.addEventListener('click', () => {
-      const action = prompt("What do you want to do? (add, rename, remove)");
-      
-      switch (action) {
-        case "add":
-          const name = prompt("What is the variable name?");
-          if (name == null) return;
-          
-          const type = prompt("What breed? (hit enter if none)");
-          if (type == null) return;
-          
-          addVariable(name, type ? type : "globals");
-          break;
-          
-        case "rename":
-          const currentName = prompt("What is the old variable name?");
-          if (currentName == null) return;
-          
-          const newName = prompt("What is the new variable name?");
-          if (newName == null) return;
-          
-          updateVariable(currentName, newName);
-          break;
-          
-        case "remove":
-          const removeName = prompt("What is the variable name?");
-          if (removeName == null) return;
-          
-          removeVariable(removeName);
-          break;
-          
-        default:
-          console.error("Invalid variable action");
-          break;
-      }
-      
-      refreshMITPlugin();
-      displayCodeCallback();
-      save(workspace);
+      showVariableActionDialog(workspace, displayCodeCallback);
     });
   }
 }
 
-// Set up breed-related actions
+// Set up breed-related actions using custom dialogs
 function setupBreedActions(workspace: any, displayCodeCallback: () => void) {
   const editBreedsButton = document.getElementById('edit-breeds');
   if (editBreedsButton) {
     editBreedsButton.addEventListener('click', () => {
-      const action = prompt("What do you want to do? (add, remove)");
-      
-      switch (action) {
-        case "add":
-          const typeRaw = prompt("What is the breed type? (turtle, undirected-link, directed-link)");
-          if (typeRaw == null || !["turtle", "undirected-link", "directed-link"].includes(typeRaw)) return;
-          
-          const type = typeRaw as BreedType;
-          const pluralName = prompt("What is the breeds plural name?");
-          if (pluralName == null) return;
-          
-          const singularName = prompt("What is the breeds singular name?");
-          if (singularName == null) return;
-          
-          addBreed({
-            type,
-            pluralName,
-            singularName
-          });
-          break;
-          
-        case "remove":
-          const removeName = prompt("What is the breed name?");
-          if (removeName == null) return;
-          
-          removeBreed(removeName);
-          break;
-          
-        default:
-          console.error("Invalid breed action");
-          break;
-      }
-      
-      refreshMITPlugin();
-      displayCodeCallback();
-      save(workspace);
+      showBreedActionDialog(workspace, displayCodeCallback);
     });
   }
 }
 
 // Set up list-related actions (placeholder for future implementation)
-// function setupListActions(workspace: any, displayCodeCallback: () => void) {
-//   const listButton = document.querySelector('.sidebar-item:nth-child(3)');
-//   if (listButton) {
-//     listButton.addEventListener('click', () => {
-//       alert("List: Working on it...!");
-//       // Future implementation
-//     });
-//   }
-// }
+function setupListActions(workspace: any, displayCodeCallback: () => void) {
+  const editListsButton = document.getElementById('edit-lists');
+  if (editListsButton) {
+    editListsButton.addEventListener('click', () => {
+      alert("List functionality coming soon!");
+      // Future implementation
+    });
+  }
+}
 
 // Set up file menu functionality
 function setupFileMenu(workspace: any) {
@@ -171,6 +103,7 @@ function setupFileMenu(workspace: any) {
               location.reload(); // Simple reset for now
             }
             break;
+          case 'Upload local':
           case 'Upload from computer':
             // Create a file input element
             const fileInput = document.createElement('input');
