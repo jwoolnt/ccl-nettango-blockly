@@ -561,6 +561,17 @@ const toolbox: Toolbox = {
         //     ]
         // },
         {
+            kind: "category",
+            name: "Procedures",
+            colour: "#FF9800", // Deep Orange
+            contents: [
+                {
+                    kind: "block",
+                    type: "procedure_def",
+                },
+            ]
+        },
+        {
             kind: 'category',
             name: 'Lists',
             categorystyle: 'list_category',

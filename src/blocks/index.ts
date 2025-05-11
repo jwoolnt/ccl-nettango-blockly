@@ -1,27 +1,29 @@
 import { common } from 'blockly/core';
 import { BlockDefinition, BlockFunction } from './definition/types';
-import observerBlocks from './observer';
-import turtleBlocks from "./turtles";
-import logicBlocks from "./logic";
-import mathBlocks from "./math";
-import operatorBlocks from "./operators";
-import stringBlocks from "./strings";
-import agentsetBlocks from "./agentset";
-import listBlocks from './list';
-import colorBlocks from './colors';
+import observer from './observer';
+import turtle from "./turtles";
+import logic from "./logic";
+import math from "./math";
+import operator from "./operators";
+import string from "./strings";
+import agentset from "./agentset";
+import list from './list';
+import color from './colors';
 import variables from './variables';
+import procedure from './procedure';
 
 const allBlocks: BlockDefinition[] = [
-	...observerBlocks,
-	...turtleBlocks,
-	...logicBlocks,
-	...operatorBlocks,
-	...mathBlocks,
-	...stringBlocks,
-	...agentsetBlocks,
+	...observer,
+	...turtle,
+	...logic,
+	...operator,
+	...math,
+	...string,
+	...agentset,
 	...variables,
-	...listBlocks,
-	...colorBlocks,
+	...list,
+	...color,
+	...procedure,
 ]
 
 const activeBlocks = common.createBlockDefinitionsFromJsonArray(allBlocks);

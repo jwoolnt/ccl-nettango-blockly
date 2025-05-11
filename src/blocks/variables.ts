@@ -61,7 +61,7 @@ function generateScopeOptions(): Blockly.MenuOption[] {
 }
 
 // Register the extension to dynamically update variable options
-Blockly.Extensions.register("dynamic_variable_dropdown", function(this) {
+Blockly.Extensions.register("dynamic_variable_dropdown", function(this: Blockly.Block) {
     const block = this;
     
     // Keep track of field update operations to prevent infinite loops
