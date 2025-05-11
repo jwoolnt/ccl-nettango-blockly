@@ -152,7 +152,7 @@ export function createComparisonOperatorBlock(
 		check.push("Agentset");
 	}
 
-	return createOperatorBlock(type, symbol, check, "Boolean", true, {
+	return createOperatorBlock(type, symbol, check as CheckValue, "Boolean", true, {
 		...overrides,
 		// for: (block, generator) => {
 		// 	const order = operationOrder(type);
