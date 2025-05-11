@@ -1,12 +1,12 @@
 import { common } from 'blockly/core';
-import { BlockDefinition, BlockFunction } from './types';
+import { BlockDefinition, BlockFunction } from './definition/types';
 import observerBlocks from './observer';
 import turtleBlocks from "./turtles";
 import logicBlocks from "./logic";
 import mathBlocks from "./math";
 import stringBlocks from "./strings";
 import agentsetBlocks from "./agentset";
-
+import colorBlocks from "./colors";
 
 const allBlocks: BlockDefinition[] = [
 	...observerBlocks,
@@ -14,7 +14,9 @@ const allBlocks: BlockDefinition[] = [
 	...logicBlocks,
 	...mathBlocks,
 	...stringBlocks,
-	...agentsetBlocks
+	...agentsetBlocks,
+	...colorBlocks,
+	
 ]
 
 const activeBlocks = common.createBlockDefinitionsFromJsonArray(
