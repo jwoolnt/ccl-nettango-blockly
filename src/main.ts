@@ -3,11 +3,10 @@ import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, reset } from "./services/serializer"
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import { addBreed, BREED_SERIALIZER, BreedType } from "./data/breeds";
-import { addVariable, renameVariable, removeVariable } from "./data/variables";
 
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
+import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
 
 
 Blockly.common.defineBlocks({ ...activeBlocks });
@@ -23,43 +22,72 @@ if (blockEditor && codeOutput) {
 		zoom: { controls: true },
 		move: { scrollbars: false, drag: true, wheel: true }
 	});
+
 	LexicalVariablesPlugin.init(ws);
+	Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX = "";
 
-	const generateCode = () =>
+	const displayCode = () => {
+		refreshMITPlugin();
 		codeOutput.textContent = generateCodePrefix() + netlogoGenerator.workspaceToCode(ws);
+		save(ws);
+	}
 
-	load(ws, generateCode);
+	load(ws);
+	displayCode();
 
 
 	const actionMap: Record<string, () => any> = {
-		"add-variable": () => {
+		"edit-variables": () => {
 			switch (prompt("what do you want to do? (add, rename, remove)")) {
 				case "add":
-					addVariable(prompt("what is the name?") as string, prompt("what breed? (hit enter if none)") as string);
+					let name = prompt("what is the variable name?");
+					if (name == null) return;
+					let type = prompt("what breed? (hit enter if none)");
+					if (type == null) return;
+					addVariable(name, type ? type : "globals");
 					break;
 				case "rename":
-					renameVariable(prompt("what is the old name?") as string, prompt("what is the new name?") as string);
+					let currentName = prompt("what is the old variable name?");
+					if (currentName == null) return;
+					let newName = prompt("what is the new variable name?");
+					if (newName == null) return;
+					updateVariable(currentName, newName);
 					break;
 				case "remove":
-					removeVariable(prompt("what is the name?") as string);
+					let removeName = prompt("what is the variable name?");
+					if (removeName == null) return;
+					removeVariable(removeName);
 					break;
 				default:
 					console.error("invalid variable action");
 					break;
 			}
 		},
-		"add-breed": () => {
-			let type = prompt("what is the breed type? (turtle, undirected-link/ulink, directed-link/dlink)");
-			if (type == null) return;
-			let plural = prompt("what is the breeds plural name?");
-			if (plural == null) return;
-			let singular = prompt("what is the breeds singular name?");
-			if (singular == null) return;
-			addBreed(type as BreedType, [plural, singular]);
-		},
-		"reset-breed": () => {
-			BREED_SERIALIZER.clear(ws);
-			save(ws);
+		"edit-breeds": () => {
+			switch (prompt("what do you want to do? (add, remove)")) {
+				case "add":
+					let typeRaw = prompt("what is the breed type? (turtle, undirected-link, directed-link)");
+					if (typeRaw == null || !["turtle", "undirected-link", "directed-link"].includes(typeRaw)) return;
+					let type = typeRaw as BreedType;
+					let pluralName = prompt("what is the breeds plural name?");
+					if (pluralName == null) return;
+					let singularName = prompt("what is the breeds singular name?");
+					if (singularName == null) return;
+					addBreed({
+						type,
+						pluralName,
+						singularName
+					});
+					break;
+				case "remove":
+					let removeName = prompt("what is the breed name?");
+					if (removeName == null) return;
+					removeBreed(removeName)
+					break;
+				default:
+					console.error("invalid breed action");
+					break;
+			}
 		},
 		"reset-workspace": () => reset(ws)
 	}
@@ -68,8 +96,7 @@ if (blockEditor && codeOutput) {
 		if (actionMap[e.id]) {
 			e.addEventListener("click", () => {
 				actionMap[e.id]();
-				save(ws);
-				generateCode();
+				displayCode();
 			});
 		}
 	})
@@ -83,7 +110,7 @@ if (blockEditor && codeOutput) {
 		) {
 			return;
 		}
-		generateCode();
+		displayCode();
 	});
 
 	ws.addChangeListener((e) => {

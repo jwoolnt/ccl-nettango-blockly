@@ -1,4 +1,4 @@
-import { getTurtleBreeds, specifyPlurality } from "../data/breeds";
+import { getTurteAgentSets } from "../data/context";
 import { BlockDefinition } from "./types";
 import { createStatementBlock, dynamicOptions, Order } from "./utilities";
 
@@ -8,7 +8,7 @@ const create_breeds: BlockDefinition = createStatementBlock("create_breeds", {
 	args0: [{
 		type: "field_dropdown",
 		name: "BREED",
-		options: dynamicOptions(() => specifyPlurality(getTurtleBreeds(), true))
+		options: dynamicOptions(getTurteAgentSets)
 	}, {
 		type: "input_value",
 		name: "COUNT",

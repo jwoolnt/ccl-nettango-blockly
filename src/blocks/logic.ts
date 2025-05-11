@@ -44,19 +44,19 @@ const let_: BlockDefinition = function simple_local_declaration_statement(block,
 
 	generator.INDENT = "";
 	code += generator.statementToCode(block, "DO");
-	generator.INDENT = "\t";
+	generator.INDENT = "  ";
 
 	return code;
 }
 
 const set: BlockDefinition = function lexical_variable_set(block, generator) {
-	const variable = block.getFieldValue("VAR");
+	const variable = block.getFieldValue("VAR").split(" ").pop();
 	const value = generator.valueToCode(block, "VALUE", Order.NONE);
 	return `set ${variable} ${value}`;
 }
 
 const get: BlockDefinition = function lexical_variable_get(block) {
-	return [block.getFieldValue("VAR"), Order.ATOMIC];
+	return [block.getFieldValue("VAR").split(" ").pop(), Order.ATOMIC];
 }
 
 
@@ -78,7 +78,7 @@ const to: BlockDefinition = function procedures_defnoreturn(block: any, generato
 
 	const suffix = "end";
 
-	return `${prefix}${parameters}\n${body}\n${suffix}`;
+	return `\n${prefix}${parameters}\n${body}\n${suffix}\n`;
 }
 
 const call_command: BlockDefinition = function procedures_callnoreturn(block: any, generator) { // TODO: remove any

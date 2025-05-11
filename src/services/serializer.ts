@@ -1,30 +1,25 @@
-import { WorkspaceSvg, serialization, Events } from "blockly";
-import { BREED_SERIALIZER } from "../data/breeds";
-import { VARIABLE_SERIALIZER } from "../data/variables";
+import { Workspace, serialization, Events } from "blockly";
+import { CONTEXT_SERIALIZER } from "../data/context";
 
 
-const storageKey = "nettango-workspace";
+const STORAGE_KEY = "nettango-workspace";
 
 
-serialization.registry.register("nettango-breeds", BREED_SERIALIZER);
-serialization.registry.register("nettango-variables", VARIABLE_SERIALIZER);
+serialization.registry.register("nettango-context", CONTEXT_SERIALIZER);
 
 
-export function save(workspace: WorkspaceSvg) {
-  const data = serialization.workspaces.save(workspace);
-  window.localStorage?.setItem(storageKey, JSON.stringify(data));
+export function save(workspace: Workspace) {
+  let data = serialization.workspaces.save(workspace);
+  window.localStorage?.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-export function load(workspace: WorkspaceSvg, loadCheck?: () => unknown) {
-  const data = window.localStorage?.getItem(storageKey);
+export function load(workspace: Workspace) {
+  let data = window.localStorage?.getItem(STORAGE_KEY);
   if (!data) return;
 
   Events.disable();
   try {
     serialization.workspaces.load(JSON.parse(data), workspace, { recordUndo: false });
-    if (loadCheck) {
-      loadCheck();
-    }
   }
   catch (e) {
     console.error(`Serialization: cannot load workspace (${e})`);
@@ -33,12 +28,8 @@ export function load(workspace: WorkspaceSvg, loadCheck?: () => unknown) {
   Events.enable();
 };
 
-export function reset(workspace: WorkspaceSvg) {
-  localStorage.removeItem(storageKey);
-
+export function reset(workspace: Workspace) {
   workspace.clear();
-  BREED_SERIALIZER.clear(workspace);
-  VARIABLE_SERIALIZER.clear(workspace);
-
-  save(workspace);
+  CONTEXT_SERIALIZER.clear(workspace);
+  localStorage.removeItem(STORAGE_KEY);
 }
