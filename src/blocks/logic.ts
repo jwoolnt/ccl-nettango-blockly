@@ -9,6 +9,7 @@ const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
 		name: "BOOLEAN",
 		options: staticOptions(["true", "false"])
 	}],
+	colour: "#d6850d",
 	for: (block) => {
 		const boolean = block.getFieldValue("BOOLEAN");
 		return [`${boolean}`, Order.ATOMIC];
@@ -93,6 +94,7 @@ const call_command: BlockDefinition = function procedures_callnoreturn(block: an
 }
 
 const if_: BlockDefinition = createStatementBlock("if_", {
+	type: "controls_if",
 	message0: "if %1\n %2",
 	args0: [{
 		type: "input_value",
@@ -102,6 +104,7 @@ const if_: BlockDefinition = createStatementBlock("if_", {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
+	colour: "#0794a6",
 	for: (block, generator) => {
 		const condition = generator.valueToCode(block, "CONDITION", Order.NONE);
 		const commands = generator.statementToCode(block, "COMMANDS");
@@ -122,6 +125,7 @@ const ifelse: BlockDefinition = createStatementBlock("ifelse", { // TODO: suppor
 		type: "input_statement",
 		name: "ELSE_COMMANDS"
 	}],
+	colour: "#0794a6",
 	for: (block, generator) => {
 		const condition = generator.valueToCode(block, "CONDITION", Order.NONE);
 		const ifCommands = generator.statementToCode(block, "IF_COMMANDS");
@@ -140,6 +144,7 @@ const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
 		type: "input_statement",
 		name: "COMMANDS"
 	}],
+	colour: "#0794a6",
 	for: (block, generator) => {
 		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE);
 		const commands = generator.statementToCode(block, "COMMANDS");

@@ -72,7 +72,7 @@ const toolbox: Toolbox = {
         {
             kind: "category",
             name: "Turtles",
-            colour: "#2E7D32", // Dark Green
+            colour: "#178f49", // Dark Green
             contents: [
                 {
                     kind: "block",
@@ -94,32 +94,32 @@ const toolbox: Toolbox = {
                 }
             ]
         },
-        {
-            kind: "category",
-            name: "Patches",
-            colour: "#795548", // Brown
-            contents: [
-                {
-                    kind: "block",
-                    type: "set_patch_color",
-                },
-                {
-                    kind: "block",
-                    type: "set_patch_color_one_of",
-                }
-            ]
-        },
-        {
-            kind: "category",
-            name: "Links",
-            colour: "#1565C0", // Blue
-            contents: []
-        },
+        // {
+        //     kind: "category",
+        //     name: "Patches",
+        //     colour: "#795548", // Brown
+        //     contents: [
+        //         {
+        //             kind: "block",
+        //             type: "set_patch_color",
+        //         },
+        //         {
+        //             kind: "block",
+        //             type: "set_patch_color_one_of",
+        //         }
+        //     ]
+        // },
+        // {
+        //     kind: "category",
+        //     name: "Links",
+        //     colour: "#1565C0", // Blue
+        //     contents: []
+        // },
         // ATTRIBUTE CATEGORIES
         {
             kind: "category",
             name: "Colors",
-            colour: "#FFC107", // Yellow
+            colour: "#dba70b", // Yellow
             contents: [
                 {
                     kind: "block",
@@ -143,7 +143,7 @@ const toolbox: Toolbox = {
         {
             kind: "category",
             name: "Math",
-            colour: "#F44336", // Red
+            colour: "#c72216", // Red
             contents: [
                 {
                     kind: "block",
@@ -292,7 +292,7 @@ const toolbox: Toolbox = {
         {
             kind: "category",
             name: "Logic",
-            colour: "#FF9800", // Orange
+            colour: "#d6850d", // Orange
             contents: [
                 {
                     kind: "block",
@@ -553,7 +553,7 @@ const toolbox: Toolbox = {
         },
         {
             kind: "category",
-            name: "Control Flow",
+            name: "Control",
             colour: "#00BCD4", // Cyan
             contents: [
                 {
