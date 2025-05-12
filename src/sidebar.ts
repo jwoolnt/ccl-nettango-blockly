@@ -2,7 +2,7 @@
 import * as Blockly from "blockly";
 import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
 import { save } from "./services/serializer";
-import { initDialogs, showVariableActionDialog, showBreedActionDialog } from "./modules";
+import { initDialogs, showVariableActionDialog, showBreedActionDialog, showListActionDialog } from "./modules";
 
 // Sidebar state management
 export type SidebarCategory = 'variables' | 'control' | 'math' | 'logic' | 'agents' | 'turtles' | 'patches' | 'lists' | 'strings';
@@ -72,8 +72,7 @@ function setupListActions(workspace: any, displayCodeCallback: () => void) {
   const editListsButton = document.getElementById('edit-lists');
   if (editListsButton) {
     editListsButton.addEventListener('click', () => {
-      alert("List functionality coming soon!");
-      // Future implementation
+      showListActionDialog(workspace, displayCodeCallback);
     });
   }
 }

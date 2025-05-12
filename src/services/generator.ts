@@ -33,7 +33,6 @@ netlogoGenerator.scrub_ = (block, code, thisOnly) => {
     return code;
 };
 
-
 export function generateCodePrefix() {
     let prefix = "";
 

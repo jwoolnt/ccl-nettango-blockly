@@ -24,6 +24,9 @@ const customTheme = Blockly.Theme.defineTheme('customTheme', {
     procedure_blocks: {
       colourPrimary: '#673AB7'  // purple for procedures
     },
+    list_blocks: {
+      colourPrimary: "#009688",
+    },
     variable_blocks: {
       colourPrimary: '#9C27B0'  // gold for variables
     }
