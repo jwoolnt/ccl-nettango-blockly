@@ -37,6 +37,11 @@ netlogoGenerator.scrub_ = (block, code, thisOnly) => {
 export function generateCodePrefix() {
     let prefix = "";
 
+    const UI_VARIABLES = getVariables("ui")?.join(" ");
+    if (UI_VARIABLES) {
+        prefix += `; ui [ ${UI_VARIABLES} ]\n\n`;
+    }
+
     const GLOBAL_VARIABLES = getGlobalVariables().join(" ");
     if (GLOBAL_VARIABLES) {
         prefix += `globals [ ${GLOBAL_VARIABLES} ]\n\n`;
