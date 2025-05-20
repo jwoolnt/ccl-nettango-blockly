@@ -1,12 +1,14 @@
-// list blocks
-const listBlocks: any = {
-    lists_create_with: function (block: any) {
-        const elements = new Array(block.itemCount_);
-        for (let i = 0; i < block.itemCount_; i++) {
-            elements[i] = this.valueToCode(block, 'ADD' + i, 0) || 'nobody';
-        }
-        return ['(list ' + elements.join(' ') + ')', 0];
-    }
-};
+import { Order } from "./definition/utilities";
+import { BlockFunction } from "./definition/types";
 
-export default listBlocks;
+export const generateListsCreateWith: BlockFunction = function (block, generator) {
+    const items = [];
+    const itemCount = typeof block.getInput === "function"
+        ? block.inputList.filter(input => input.name && input.name.startsWith("ADD")).length
+        : 0;
+    for (let i = 0; i < itemCount; i++) {
+        const item = generator.valueToCode(block, `ADD${i}`, Order.NONE);
+        if (item) items.push(item);
+    }
+    return [`[${items.join(", ")}]`, Order.ATOMIC];
+};

@@ -9,6 +9,7 @@ export enum Order {
 	MULTIPLICATIVE,
 	ADDITIVE,
 	LOGICAL,
+	LIST,
 	NONE
 }
 
