@@ -49,11 +49,9 @@ type CategoryToolbox = ToolboxBase<"categoryToolbox", Category>;
 
 type Toolbox = FlyoutToolbox | CategoryToolbox;
 
-// Updated toolbox with consistent color scheme and better organization
 const toolbox: Toolbox = {
 	kind: 'categoryToolbox',
 	contents: [
-        // AGENT CATEGORIES
         {
             kind: "category",
             name: "Observer",
@@ -90,32 +88,51 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "set_turtle_color",
+                    inputs: {
+                        "VALUE": {
+                            "shadow": {
+                                type: "color",
+                                fields: {
+                                    "COLOR": "#000000"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
                     type: "die"
-                }
+                },
             ]
         },
-        // {
-        //     kind: "category",
-        //     name: "Patches",
-        //     colour: "#795548", // Brown
-        //     contents: [
-        //         {
-        //             kind: "block",
-        //             type: "set_patch_color",
-        //         },
-        //         {
-        //             kind: "block",
-        //             type: "set_patch_color_one_of",
-        //         }
-        //     ]
-        // },
-        // {
-        //     kind: "category",
-        //     name: "Links",
-        //     colour: "#1565C0", // Blue
-        //     contents: []
-        // },
-        // ATTRIBUTE CATEGORIES
+        {
+            kind: "category",
+            name: "Patches",
+            colour: "#795548", // Brown
+            contents: [
+                {
+                    kind: "block",
+                    type: "set_patch_color",
+                    inputs: {
+                        "VALUE": {
+                            "shadow": {
+                                type: "color",
+                                fields: {
+                                    "COLOR": "#000000"
+                                }
+                            }
+                        }
+                    }
+                },
+            ]
+        },
+        {
+            kind: "category",
+            name: "Links",
+            colour: "#1565C0", // Blue
+            contents: []
+        },
         {
             kind: "category",
             name: "Colors",
@@ -123,23 +140,10 @@ const toolbox: Toolbox = {
             contents: [
                 {
                     kind: "block",
-                    type: "set_turtle_color",
+                    type: "color",
                 },
-                {
-                    kind: "block",
-                    type: "set_patch_color",
-                },
-                {
-                    kind: "block",
-                    type: "one_of",
-                },
-                {
-                    kind: "block",
-                    type: "set_patch_color_one_of",
-                }
             ]
         },
-        // DATA & MANIPULATION CATEGORIES
         {
             kind: "category",
             name: "Math",
@@ -630,6 +634,10 @@ const toolbox: Toolbox = {
             name: 'Lists',
             colour: "#009688", // Teal
             contents: [
+                {
+                    kind: "block",
+                    type: "one_of",
+                },
                 {
                     kind: 'block',
                     type: 'lists_create_with',
