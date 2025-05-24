@@ -29,12 +29,17 @@ netlogoGenerator.scrub_ = (block, code, thisOnly) => {
     if (!thisOnly && nextBlock) {
         return code + '\n' + netlogoGenerator.blockToCode(nextBlock);
     }
- 
+
     return code;
 };
 
 export function generateCodePrefix() {
     let prefix = "";
+
+    const UI_VARIABLES = getVariables("ui")?.join(" ");
+    if (UI_VARIABLES) {
+        prefix += `; ui [ ${UI_VARIABLES} ]\n\n`;
+    }
 
     const GLOBAL_VARIABLES = getGlobalVariables().join(" ");
     if (GLOBAL_VARIABLES) {

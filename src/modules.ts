@@ -209,10 +209,21 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) 
         const scope = (document.getElementById('variable-scope') as HTMLSelectElement).value;
 
         if (name) {
+            // Add to Blockly's internal variable model
+            workspace.createVariable(name); 
+            workspace.updateToolbox(workspace.options.languageTree);
+
             addVariable(name, scope);
             refreshMITPlugin();
             displayCodeCallback();
             save(workspace);
+
+            const toolbox = workspace.getToolbox();
+            const selectedItem = toolbox.getSelectedItem();
+            if (selectedItem) {
+                toolbox.refreshSelection(); 
+            }
+
             closeDialog();
         } else {
             alert('Please enter a variable name');
@@ -598,4 +609,33 @@ function showRemoveListDialog(workspace: any, displayCodeCallback: () => void) {
         const nameInput = document.getElementById('remove-list-name') as HTMLInputElement;
         if (nameInput) nameInput.focus();
     }, 100);
+}
+
+function reset(workspace: Blockly.WorkspaceSvg): void {
+    workspace.clear();
+}
+
+// reset module to reset the workspace
+export function resetWorkspace(workspace: Blockly.WorkspaceSvg): void {
+    const dialog = createDialogElement('Reset');
+    const content = dialog.querySelector('.dialog-content') as HTMLDivElement;
+
+    const message = document.createElement('p');
+    message.textContent = 'Are you sure you want to reset the workspace?';
+    content.appendChild(message);
+
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+
+    const cancelButton = createButton('Cancel', closeDialog);
+    const resetButton = createButton('Reset', () => {
+        reset(workspace);
+        closeDialog();
+    }, 'primary');
+
+    buttonContainer.appendChild(cancelButton);
+    buttonContainer.appendChild(resetButton);
+
+    content.appendChild(buttonContainer);
+    openDialog(dialog);
 }
