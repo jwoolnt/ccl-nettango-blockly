@@ -1,74 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>NetTango Editor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="index.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <title>NetTango Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
+      rel="stylesheet"
+    />
 
-  <script defer type="module" src="src/main.ts"></script>
-  
-</head>
-<body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="logo">
-      <img src="./assets/nettango-logo-.png" alt="NetTango Logo" />
+    <script defer type="module" src="src/main.ts"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <img src="./assets/nettango-logo-.png" alt="NetTango Logo" />
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="#" class="nav-link">File</a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">New</a>
+            <a href="#" class="dropdown-item">Upload local</a>
+            <a href="#" class="dropdown-item">Save</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">Tutorial</a>
+        </li>
+      </ul>
+      <div class="spacer"></div>
+      <button class="auth-button">Sign In</button>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-category">
+          <!-- a drop down to select for different domain workspace -->
+          <div style="display: flex; align-items: center">
+            <div class="color-indicator color-variables"></div>
+            <span>Domain</span>
+          </div>
+          <select id="workspace-selector" class="workspace-selector">
+            <option value="default">Default</option>
+            <option value="Ants">Ants</option>
+            <option value="Wolf-Sheep">Wolf-Sheep</option>
+            <option value="Frog Pond">Frog Pond</option>
+            <option value="Abstract Painting">Abstract Painting</option>
+          </select>
+        </div>
+        
+        <div class="sidebar-category active">
+          <div style="display: flex; align-items: center">
+            <div class="color-indicator color-variables"></div>
+            <span>Custom</span>
+          </div>
+        </div>
+        <div class="sidebar-item" id="edit-variables">Variables</div>
+        <div class="sidebar-item" id="edit-breeds">Breeds</div>
+        <div class="sidebar-item" id="edit-lists">Lists</div>
+        <div class="sidebar-item" id="reset">Reset</div>
+      </aside>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <div class="workspace">
+          <div class="block-editor">
+            <!-- Blockly will be injected here -->
+          </div>
+          <div class="output">
+            <pre><code class="generated-code">// generated code will appear here</code></pre>
+            <sub>NOTE: Only generates code for procedure blocks</sub>
+          </div>
+        </div>
+      </div>
     </div>
-    <ul class="nav-menu">
-      <li class="nav-item">
-        <a href="#" class="nav-link">File</a>
-        <div class="dropdown-menu">
-          <a href="#" class="dropdown-item">New</a>
-          <a href="#" class="dropdown-item">Upload local</a>
-          <a href="#" class="dropdown-item">Save</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">Tutorial</a>
-      </li>
-    </ul>
-    <div class="spacer"></div>
-    <button class="auth-button">Sign In</button>
-  </nav>
-
-  <!-- Main Container -->
-  <div class="main-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-category active">
-        <div style="display: flex; align-items: center;">
-          <div class="color-indicator color-variables"></div>
-          <span>Custom</span>
-        </div>
-      </div>
-      <div class="sidebar-item" id="edit-variables">
-        Variables
-      </div>
-      <div class="sidebar-item" id="edit-breeds">
-        Breeds
-      </div>
-      <div class="sidebar-item" id="edit-lists">
-        Lists
-      </div>
-      <div class="sidebar-item" id="reset">
-        Reset
-      </div>
-    </aside>
-
-    <!-- Content Area -->
-    <div class="content-area">
-      <div class="workspace">
-        <div class="block-editor">
-          <!-- Blockly will be injected here -->
-        </div>
-        <div class="output">
-          <pre><code class="generated-code">// generated code will appear here</code></pre>
-          <sub>NOTE: Only generates code for procedure blocks</sub>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
