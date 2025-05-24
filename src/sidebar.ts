@@ -2,7 +2,7 @@
 import * as Blockly from "blockly";
 import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
 import { reset, save } from "./services/serializer";
-import { initDialogs, showVariableActionDialog, showBreedActionDialog, showListActionDialog, resetWorkspace} from "./modules";
+import { initDialogs, showVariableActionDialog, showBreedActionDialog, showListActionDialog, showResetWorkspaceDialog} from "./modules";
 
 // Sidebar state management
 export type SidebarCategory = 'variables';
@@ -36,8 +36,15 @@ export function initSidebar(workspace: any, displayCodeCallback: () => void) {
   setupVariableActions(workspace, displayCodeCallback);
   setupBreedActions(workspace, displayCodeCallback);
   setupListActions(workspace, displayCodeCallback);
-  resetWorkspace(workspace);
-  
+
+  const resetButton = document.getElementById('reset');
+  if (resetButton) {
+    resetButton.addEventListener('click', () => {
+      if (confirm("Are you sure you want to reset the workspace?")) {
+        reset(workspace);
+      }
+    });
+  }
   // Set up the file menu dropdown
   setupFileMenu(workspace);
 }
