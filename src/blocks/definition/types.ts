@@ -119,3 +119,4 @@ export type BlockDefinition = {
 	// custom properties
 	for: BlockFunction;
 } | BlockFunction;
+
