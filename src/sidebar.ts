@@ -1,11 +1,11 @@
 // sidebar.ts - Handles sidebar interactions and state
 import * as Blockly from "blockly";
 import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
-import { save } from "./services/serializer";
-import { initDialogs, showVariableActionDialog, showBreedActionDialog, showListActionDialog } from "./modules";
+import { reset, save } from "./services/serializer";
+import { initDialogs, showVariableActionDialog, showBreedActionDialog, showListActionDialog, resetWorkspace} from "./modules";
 
 // Sidebar state management
-export type SidebarCategory = 'variables' | 'control' | 'math' | 'logic' | 'agents' | 'turtles' | 'patches' | 'lists' | 'strings';
+export type SidebarCategory = 'variables';
 
 let activeCategory: SidebarCategory = 'variables';
 
@@ -36,6 +36,7 @@ export function initSidebar(workspace: any, displayCodeCallback: () => void) {
   setupVariableActions(workspace, displayCodeCallback);
   setupBreedActions(workspace, displayCodeCallback);
   setupListActions(workspace, displayCodeCallback);
+  resetWorkspace(workspace);
   
   // Set up the file menu dropdown
   setupFileMenu(workspace);
@@ -44,7 +45,6 @@ export function initSidebar(workspace: any, displayCodeCallback: () => void) {
 // Filter blocks based on selected category (for future implementation)
 function filterBlocksByCategory(category: SidebarCategory) {
   console.log(`Filtering blocks by category: ${category}`);
-  // Future implementation: show/hide blocks based on category
 }
 
 // Set up variable-related actions using custom dialogs
@@ -67,7 +67,7 @@ function setupBreedActions(workspace: any, displayCodeCallback: () => void) {
   }
 }
 
-// Set up list-related actions (placeholder for future implementation)
+// Set up list-related actions
 function setupListActions(workspace: any, displayCodeCallback: () => void) {
   const editListsButton = document.getElementById('edit-lists');
   if (editListsButton) {

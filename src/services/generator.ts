@@ -29,7 +29,7 @@ netlogoGenerator.scrub_ = (block, code, thisOnly) => {
     if (!thisOnly && nextBlock) {
         return code + '\n' + netlogoGenerator.blockToCode(nextBlock);
     }
- 
+
     return code;
 };
 
