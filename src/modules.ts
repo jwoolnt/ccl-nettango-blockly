@@ -1,7 +1,7 @@
 // dialog.ts - Custom modal dialog components
 import * as Blockly from "blockly";
 import { addBreed, addVariable, BreedType, getAllBreeds, refreshMITPlugin, removeBreed, removeVariable, updateVariable, addList, removeList} from "./data/context";
-import { save } from "./services/serializer";
+import { reset, save } from "./services/serializer";
 
 // Dialog DOM elements
 let dialogOverlay: HTMLDivElement | null = null;
@@ -611,25 +611,24 @@ function showRemoveListDialog(workspace: any, displayCodeCallback: () => void) {
     }, 100);
 }
 
-function reset(workspace: Blockly.WorkspaceSvg): void {
-    workspace.clear();
-}
-
-// reset module to reset the workspace
-export function resetWorkspace(workspace: Blockly.WorkspaceSvg): void {
-    const dialog = createDialogElement('Reset');
+// reset workspace dialog
+export function showResetWorkspaceDialog(workspace: any, displayCodeCallback: () => void) {
+    const dialog = createDialogElement('Reset Workspace');
     const content = dialog.querySelector('.dialog-content') as HTMLDivElement;
 
+    // Create confirmation message
     const message = document.createElement('p');
-    message.textContent = 'Are you sure you want to reset the workspace?';
+    message.textContent = "Are you sure you want to reset the workspace?";
     content.appendChild(message);
 
+    // Button container
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
 
     const cancelButton = createButton('Cancel', closeDialog);
     const resetButton = createButton('Reset', () => {
         reset(workspace);
+        displayCodeCallback();
         closeDialog();
     }, 'primary');
 
