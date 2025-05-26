@@ -42,7 +42,6 @@ export function createStatementBlock(type: string, overrides?: Partial<BlockDefi
 	return createBasicBlock(type, {
 		previousStatement: null,
 		nextStatement: null,
-		colour: null,
 		...overrides
 	});
 }
@@ -169,4 +168,14 @@ export function createComparisonOperatorBlock(
 			}
 		}
 	});
+}
+
+declare const Blockly: any;
+
+export function registerBlock(type: string, definition: BlockDefinition) {
+  Blockly.Blocks[type] = {
+	init: function () {
+	  this.jsonInit(definition);
+	}
+  };
 }

@@ -3,10 +3,34 @@ import { forBlocks } from "../blocks";
 import { getAllAgentSets, getVariables, getGlobalVariables } from "../data/context";
 import { getTurtleBreeds } from "../data/context";
 import { Order } from "../blocks/definition/utilities";
+import { DOMAIN_BLOCKS } from "../blocks/definition/domain";
 
 const netlogoGenerator = new Generator('NetLogo');
 
-netlogoGenerator.forBlock = forBlocks;
+// netlogoGenerator.forBlock = forBlocks;
+netlogoGenerator.forBlock = new Proxy(forBlocks, {
+  get(target, prop) {
+    if (typeof prop !== "string") return undefined;
+    
+    // Check main blocks first
+    if (target[prop]) return target[prop];
+    
+    // Check domain blocks
+    for (const { blocks } of Object.values(DOMAIN_BLOCKS)) {
+      const block = blocks.find(b => typeof b !== 'function' && b.type === prop);
+      if (block && typeof block !== 'function' && block.for) {
+        return block.for;
+      }
+    }
+    
+    return undefined;
+  },
+  
+  set(target, prop, value) {
+    if (typeof prop === "string") target[prop] = value;
+    return true;
+  }
+});
 
 netlogoGenerator.workspaceToCode = (workspace) => {
     let code = "";
