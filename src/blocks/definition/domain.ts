@@ -12,58 +12,130 @@ interface DomainBlocks {
 
 // Domain-specific block definitions
 export const DOMAIN_BLOCKS: { [key: string]: DomainBlocks } = {
+  'ants': {
+    name: "Ants",
+    blocks: [
+      {
+        type: 'ant_move',
+        message0: 'move %1',
+        args0: [
+          {
+            type: 'input_value',
+            name: 'DIRECTION',
+            check: 'String'
+          }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        colour: 60,
+        tooltip: 'Make the ant move in a direction',
+        helpUrl: '',
+        for: (block, generator) => {
+          const direction = generator.valueToCode(block, 'DIRECTION', Order.ATOMIC) || '';
+          return `move ${direction}`;
+        }
+      }
+    ]
+  },
   'frog-pond': {
     name: "Frog Pond",
     blocks: [
-        createStatementBlock('frog_eat', {
-          message0: 'eat %1',
-          args0: [
-            {
-              type: 'input_value',
-              name: 'FOOD',
-              check: 'String'
-            }
-          ],     
-            colour: 120,
-            tooltip: 'Make the frog eat food',
-            helpUrl: '',
-            for: (block, generator) => {
-              const food = generator.valueToCode(block, 'FOOD', Order.ATOMIC) || '""';
-              return `eat ${food}`;
-            }
-        }),
+      {
+        type: 'frog_jump',
+        message0: 'hop %1',
+        args0: [
+          {
+            type: 'input_value',
+            name: 'DISTANCE',
+            check: 'Number'
+          }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        colour: 120,
+        tooltip: 'Make the frog jump a certain distance',
+        helpUrl: '',
+        for: (block, generator) => {
+          const distance = generator.valueToCode(block, 'DISTANCE', Order.ATOMIC) || '0';
+          return `hop ${distance}`;
+        }
+      },
+      {
+        // chirp
+        type: 'frog_chirp',
+        message0: 'chirp %1',
+        args0: [
+          {
+            type: 'input_value',
+            name: 'VOLUME',
+            check: 'Number'
+          }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        colour: 120,
+        tooltip: 'Make the frog chirp at a certain volume',
+        helpUrl: '',
+        for: (block, generator) => {
+          const volume = generator.valueToCode(block, 'VOLUME', Order.ATOMIC) || '0';
+          return `chirp ${volume}`;
+        }
+      }
+    ]
+  },
+  'wolf-sheep': {
+    name: "Wolf-Sheep",
+    blocks: [
+      {
+        type: 'wolf_hunt',
+        message0: 'hunt %1',
+        args0: [
+          {
+            type: 'input_value',
+            name: 'TARGET',
+            check: 'String'
+          }
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        colour: 30,
+        tooltip: 'Make the wolf hunt a target',
+        helpUrl: '',
+        for: (block, generator) => {
+          const target = generator.valueToCode(block, 'TARGET', Order.ATOMIC) || '';
+          return `hunt ${target}`;
+        }
+      }
     ]
   },
 };
 
-// Track currently registered domain blocks
 let currentDomainBlocks: Set<string> = new Set();
 
-// Function to register domain-specific blocks
 function registerDomainBlocks(domainBlocks: BlockDefinition[]) {
-  const blockDefinitions: { [key: string]: any } = {};
+  // filter out function blocks and get only object definitions
+  const blockDefObjects = domainBlocks.filter(blockDef => typeof blockDef !== 'function');
   
-  domainBlocks.forEach(blockDef => {
-    if (typeof blockDef !== 'function') {
-      blockDefinitions[blockDef.type] = blockDef;
-      currentDomainBlocks.add(blockDef.type);
-    }
-  });
-  
-  if (Object.keys(blockDefinitions).length > 0) {
-    Blockly.common.defineBlocks(blockDefinitions);
+  if (blockDefObjects.length > 0) {
+    const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray(blockDefObjects);
+    
+    // register block
+    Object.keys(blockDefinitions).forEach(blockType => {
+      if (!Blockly.Blocks[blockType]) {
+        Blockly.Blocks[blockType] = blockDefinitions[blockType];
+        currentDomainBlocks.add(blockType);
+        console.log(`Successfully registered block: ${blockType}`);
+      }
+    });
   }
 }
 
-// Function to unregister domain-specific blocks
 function unregisterDomainBlocks() {
   currentDomainBlocks.forEach(blockType => {
-    // Remove from Blockly.Blocks registry
     if (Blockly.Blocks[blockType]) {
       delete Blockly.Blocks[blockType];
     }
     
-    // Remove from the internal registry if it exists
     try {
       if (Blockly.registry.hasItem('block', blockType)) {
         Blockly.registry.unregister('block', blockType);
@@ -75,7 +147,6 @@ function unregisterDomainBlocks() {
   currentDomainBlocks.clear();
 }
 
-// Create domain-specific toolbox category
 function createDomainToolboxCategory(domainKey: string): any {
   if (!DOMAIN_BLOCKS[domainKey]) {
     return null;
@@ -94,26 +165,16 @@ function createDomainToolboxCategory(domainKey: string): any {
   };
 }
 
-// Get appropriate color for domain category
 function getColorForDomain(domainKey: string): string {
   const colorMap: { [key: string]: string } = {
     'frog-pond': '120',
-    'ants': '60', 
+    'ants': '60',
     'wolf-sheep': '30',
-    'abstract-painting': '300'
   };
   
   return colorMap[domainKey] || '160';
 }
 
-// Check if blocks are already registered
-function areBlocksRegistered(blockTypes: string[]): boolean {
-  return blockTypes.some(blockType => 
-    Blockly.Blocks[blockType] !== undefined
-  );
-}
-
-// update workspace for selected domain
 export function updateWorkspaceForDomain(
   workspace: Blockly.WorkspaceSvg, 
   selectedDomain: string, 
@@ -121,64 +182,51 @@ export function updateWorkspaceForDomain(
 ) {
   console.log(`Updating workspace for domain: ${selectedDomain}`);
   
-  // Always unregister previous domain blocks first
   unregisterDomainBlocks();
   
-  // If not default, register new domain blocks
   if (selectedDomain !== 'default' && selectedDomain.toLowerCase() !== 'default') {
-    // Map the HTML option values to domain keys
     const domainKey = getDomainKey(selectedDomain);
+    console.log(`Mapped domain key: ${domainKey}`);
     
     if (domainKey && DOMAIN_BLOCKS[domainKey]) {
+      console.log(`Found domain blocks for: ${domainKey}`);
       const domainBlocks = DOMAIN_BLOCKS[domainKey].blocks;
-      const blockTypes = domainBlocks
-        .filter(block => typeof block !== 'function')
-        .map(block => block.type);
-      
-      // Only register if blocks aren't already registered
-      if (!areBlocksRegistered(blockTypes)) {
-        registerDomainBlocks(domainBlocks);
-      } else {
-        console.warn('Some domain blocks are already registered, skipping registration');
-      }
-      
-      // Update toolbox to include domain-specific category
+      registerDomainBlocks(domainBlocks);
+      console.log(`Registered domain blocks`);
+
       updateToolboxWithDomain(workspace, domainKey);
+      console.log(`Updated toolbox with domain: ${domainKey}`);
+    } else {
+      console.log(`No domain blocks found for key: ${domainKey}`);
     }
   } else {
+    console.log(`Using default workspace`);
     updateToolboxWithDomain(workspace, null);
   }
   
-  // Refresh the workspace
   workspace.refreshToolboxSelection();
   displayCodeCallback();
 }
 
-// Map HTML select option values to internal domain keys
 function getDomainKey(selectedValue: string): string | null {
   const mapping: { [key: string]: string } = {
     'Frog Pond': 'frog-pond',
     'Ants': 'ants',
     'Wolf-Sheep': 'wolf-sheep', 
-    'Abstract Painting': 'abstract-painting'
   };
   
   return mapping[selectedValue] || null;
 }
 
-// Update the toolbox to include domain-specific blocks
 function updateToolboxWithDomain(workspace: Blockly.WorkspaceSvg, domainKey: string | null) {
-  // Clone the original toolbox
   const originalToolbox = JSON.parse(JSON.stringify(toolbox));
   
   if (domainKey && DOMAIN_BLOCKS[domainKey]) {
-    // Add domain-specific category at the top
     const domainCategory = createDomainToolboxCategory(domainKey);
     if (domainCategory && originalToolbox.contents) {
       originalToolbox.contents.unshift(domainCategory);
     }
   }
   
-  // Update the workspace toolbox
   workspace.updateToolbox(originalToolbox);
 }
