@@ -1,7 +1,7 @@
 import { Order } from "./utilities";
 import { BlockFunction } from "./types";
 
-export const generateListsCreateWith: BlockFunction = function (block, generator) {
+export const generateListsCreateWith: BlockFunction = function lists_create_with(block, generator) {
     const items = [];
     const itemCount = typeof block.getInput === "function"
         ? block.inputList.filter(input => input.name && input.name.startsWith("ADD")).length
