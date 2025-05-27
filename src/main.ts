@@ -1,13 +1,13 @@
 import * as Blockly from "blockly";
 import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
-import { save, load, reset } from "./services/serializer";
+import { save, load } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
-import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
+import { refreshMITPlugin } from "./data/context";
 import { initSidebar } from "./sidebar";
-import { DOMAIN_BLOCKS, updateWorkspaceForDomain } from "./blocks/domain";
+import { updateWorkspaceForDomain } from "./blocks/domain";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 

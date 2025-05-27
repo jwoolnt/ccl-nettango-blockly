@@ -1,7 +1,7 @@
 // domain.ts - Handles domain-specific workspace selection
 import * as Blockly from "blockly";
-import { BlockDefinition, ValueType } from "./types";
-import { createStatementBlock, createValueBlock, Order } from "./utilities";
+import { BlockDefinition } from "./types";
+import { Order } from "./utilities";
 import toolbox from "./toolbox";
 
 // Define domain-specific block configurations
