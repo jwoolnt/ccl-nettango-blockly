@@ -1,5 +1,5 @@
-import { BlockDefinition } from "./definition/types";
-import { createValueBlock, Order } from "./definition/utilities";
+import { BlockDefinition } from "./types";
+import { createValueBlock, Order } from "./utilities";
 
 
 const string: BlockDefinition = createValueBlock("string", "String", {
@@ -9,7 +9,7 @@ const string: BlockDefinition = createValueBlock("string", "String", {
 		name: "STRING"
 	}],
 	output: "String",
-	colour: "#673AB7", 
+	colour: "#673AB7",
 	for: block => [`"${block.getFieldValue("STRING")}"`, Order.ATOMIC]
 });
 

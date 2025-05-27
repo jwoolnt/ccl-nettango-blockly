@@ -1,6 +1,6 @@
 import { getAllAgentSets } from "../data/context";
-import { BlockDefinition } from "./definition/types";
-import { createValueBlock, dynamicOptions, Order } from "./definition/utilities";
+import { BlockDefinition } from "./types";
+import { createValueBlock, dynamicOptions, Order } from "./utilities";
 
 
 const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {

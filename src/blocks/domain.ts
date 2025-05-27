@@ -2,7 +2,7 @@
 import * as Blockly from "blockly";
 import { BlockDefinition, ValueType } from "./types";
 import { createStatementBlock, createValueBlock, Order } from "./utilities";
-import toolbox from "../toolbox";
+import toolbox from "./toolbox";
 
 // Define domain-specific block configurations
 interface DomainBlocks {
@@ -115,10 +115,10 @@ let currentDomainBlocks: Set<string> = new Set();
 function registerDomainBlocks(domainBlocks: BlockDefinition[]) {
   // filter out function blocks and get only object definitions
   const blockDefObjects = domainBlocks.filter(blockDef => typeof blockDef !== 'function');
-  
+
   if (blockDefObjects.length > 0) {
     const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray(blockDefObjects);
-    
+
     // register block
     Object.keys(blockDefinitions).forEach(blockType => {
       if (!Blockly.Blocks[blockType]) {
@@ -135,7 +135,7 @@ function unregisterDomainBlocks() {
     if (Blockly.Blocks[blockType]) {
       delete Blockly.Blocks[blockType];
     }
-    
+
     try {
       if (Blockly.registry.hasItem('block', blockType)) {
         Blockly.registry.unregister('block', blockType);
@@ -171,23 +171,23 @@ function getColorForDomain(domainKey: string): string {
     'ants': '60',
     'wolf-sheep': '30',
   };
-  
+
   return colorMap[domainKey] || '160';
 }
 
 export function updateWorkspaceForDomain(
-  workspace: Blockly.WorkspaceSvg, 
-  selectedDomain: string, 
+  workspace: Blockly.WorkspaceSvg,
+  selectedDomain: string,
   displayCodeCallback: () => void
 ) {
   console.log(`Updating workspace for domain: ${selectedDomain}`);
-  
+
   unregisterDomainBlocks();
-  
+
   if (selectedDomain !== 'default' && selectedDomain.toLowerCase() !== 'default') {
     const domainKey = getDomainKey(selectedDomain);
     console.log(`Mapped domain key: ${domainKey}`);
-    
+
     if (domainKey && DOMAIN_BLOCKS[domainKey]) {
       console.log(`Found domain blocks for: ${domainKey}`);
       const domainBlocks = DOMAIN_BLOCKS[domainKey].blocks;
@@ -203,7 +203,7 @@ export function updateWorkspaceForDomain(
     console.log(`Using default workspace`);
     updateToolboxWithDomain(workspace, null);
   }
-  
+
   workspace.refreshToolboxSelection();
   displayCodeCallback();
 }
@@ -212,21 +212,21 @@ function getDomainKey(selectedValue: string): string | null {
   const mapping: { [key: string]: string } = {
     'Frog Pond': 'frog-pond',
     'Ants': 'ants',
-    'Wolf-Sheep': 'wolf-sheep', 
+    'Wolf-Sheep': 'wolf-sheep',
   };
-  
+
   return mapping[selectedValue] || null;
 }
 
 function updateToolboxWithDomain(workspace: Blockly.WorkspaceSvg, domainKey: string | null) {
   const originalToolbox = JSON.parse(JSON.stringify(toolbox));
-  
+
   if (domainKey && DOMAIN_BLOCKS[domainKey]) {
     const domainCategory = createDomainToolboxCategory(domainKey);
     if (domainCategory && originalToolbox.contents) {
       originalToolbox.contents.unshift(domainCategory);
     }
   }
-  
+
   workspace.updateToolbox(originalToolbox);
 }

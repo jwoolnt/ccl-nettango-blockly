@@ -1,5 +1,5 @@
-import { Order } from "./definition/utilities";
-import { BlockFunction } from "./definition/types";
+import { Order } from "./utilities";
+import { BlockFunction } from "./types";
 
 export const generateListsCreateWith: BlockFunction = function (block, generator) {
     const items = [];

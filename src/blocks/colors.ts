@@ -1,8 +1,8 @@
-import { createStatementBlock, createValueBlock, staticOptions } from "./definition/utilities";
-import { BlockDefinition } from "./definition/types";
+import { createStatementBlock, createValueBlock, staticOptions } from "./utilities";
+import { BlockDefinition } from "./types";
 
 const netlogoColors = staticOptions([
-    "black", "gray", "white", "red", "orange", 
+    "black", "gray", "white", "red", "orange",
     "yellow", "green", "blue", "violet", "pink"
 ]);
 
@@ -29,7 +29,7 @@ const setTurtleColor: BlockDefinition = createStatementBlock("set_turtle_color",
         name: "VALUE",
         check: "Color",
     }],
-    colour:"#2E7D32",
+    colour: "#2E7D32",
     for: (block, generator) => {
         const value = generator.valueToCode(block, "VALUE", 0) || "0";
         return `set color ${value}`;
@@ -44,7 +44,7 @@ const setPatchColor: BlockDefinition = createStatementBlock("set_patch_color", {
         check: "Color",
     }],
     colour: "#795548",
-        for: (block, generator) => {
+    for: (block, generator) => {
         const value = generator.valueToCode(block, "VALUE", 0) || "0";
         return `set pcolor ${value}`;
     }

@@ -7,7 +7,7 @@ import netlogoGenerator, { generateCodePrefix } from "./services/generator";
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
 import { initSidebar } from "./sidebar";
-import { DOMAIN_BLOCKS, updateWorkspaceForDomain } from "./blocks/definition/domain";
+import { DOMAIN_BLOCKS, updateWorkspaceForDomain } from "./blocks/domain";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -94,7 +94,7 @@ if (blockEditor && codeOutput) {
 // Initialize workspace selector
 function initWorkspaceSelector(workspace: Blockly.WorkspaceSvg, displayCodeCallback: () => void) {
   const workspaceSelector = document.getElementById('workspace-selector') as HTMLSelectElement;
-  
+
   if (!workspaceSelector) {
     console.error("Workspace selector not found");
     return;
@@ -104,7 +104,7 @@ function initWorkspaceSelector(workspace: Blockly.WorkspaceSvg, displayCodeCallb
   workspaceSelector.addEventListener('change', (event) => {
     const selectedValue = (event.target as HTMLSelectElement).value;
     console.log(`Switching to workspace: ${selectedValue}`);
-    
+
     // Update the workspace with domain-specific blocks
     updateWorkspaceForDomain(workspace, selectedValue, displayCodeCallback);
   });
