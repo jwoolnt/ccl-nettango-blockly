@@ -1,6 +1,5 @@
 // dialog.ts - Custom modal dialog components
-import * as Blockly from "blockly";
-import { addBreed, addVariable, BreedType, getAllBreeds, refreshMITPlugin, removeBreed, removeVariable, updateVariable, addList, removeList} from "./data/context";
+import { addBreed, addVariable, BreedType, getAllBreeds, refreshMITPlugin, removeBreed, removeVariable, updateVariable, addList, removeList } from "./data/context";
 import { reset, save } from "./services/serializer";
 
 // Dialog DOM elements
@@ -171,9 +170,9 @@ export function showVariableActionDialog(workspace: any, displayCodeCallback: ()
     openDialog(dialog);
 }
 
-// 
+//
 // Show the add variable dialog
-// 
+//
 function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) {
     const dialog = createDialogElement('Add Variable');
     const content = dialog.querySelector('.dialog-content') as HTMLDivElement;
@@ -210,7 +209,7 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) 
 
         if (name) {
             // Add to Blockly's internal variable model
-            workspace.createVariable(name); 
+            workspace.createVariable(name);
             workspace.updateToolbox(workspace.options.languageTree);
 
             addVariable(name, scope);
@@ -221,7 +220,7 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) 
             const toolbox = workspace.getToolbox();
             const selectedItem = toolbox.getSelectedItem();
             if (selectedItem) {
-                toolbox.refreshSelection(); 
+                toolbox.refreshSelection();
             }
 
             closeDialog();
@@ -245,9 +244,9 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) 
     }, 100);
 }
 
-// 
+//
 // Show the rename variable dialog
-// 
+//
 function showRenameVariableDialog(workspace: any, displayCodeCallback: () => void) {
     const dialog = createDialogElement('Rename Variable');
     const content = dialog.querySelector('.dialog-content') as HTMLDivElement;
@@ -357,7 +356,7 @@ export function showBreedActionDialog(workspace: any, displayCodeCallback: () =>
     title.textContent = "Select an action:";
     title.className = 'dialog-title';
     content.appendChild(title);
-    
+
     const addButton = createButton('Add Breed', () => {
         closeDialog();
         showAddBreedDialog(workspace, displayCodeCallback);
