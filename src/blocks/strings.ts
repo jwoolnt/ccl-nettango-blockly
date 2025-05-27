@@ -8,7 +8,6 @@ const string: BlockDefinition = createValueBlock("string", "String", {
 		type: "field_input",
 		name: "STRING"
 	}],
-	output: "String",
 	colour: "#673AB7",
 	for: block => [`"${block.getFieldValue("STRING")}"`, Order.ATOMIC]
 });

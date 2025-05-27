@@ -94,7 +94,6 @@ const call_command: BlockDefinition = function procedures_callnoreturn(block: an
 }
 
 const if_: BlockDefinition = createStatementBlock("if_", {
-	type: "controls_if",
 	message0: "if %1\n %2",
 	args0: [{
 		type: "input_value",

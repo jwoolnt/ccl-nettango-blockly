@@ -32,6 +32,7 @@ export function createBasicBlock(type: string, overrides?: Partial<BlockDefiniti
 	return {
 		message0: command,
 		for: () => command,
+		colour: null,
 		...overrides,
 		type
 	};
@@ -111,7 +112,6 @@ export function createOperatorBlock(
 		message0,
 		args0,
 		inputsInline: true,
-		colour: null,
 		for: (block, generator) => {
 			const order = operationOrder(type, binary);
 			const A = generator.valueToCode(block, "A", order);
@@ -173,9 +173,9 @@ export function createComparisonOperatorBlock(
 declare const Blockly: any;
 
 export function registerBlock(type: string, definition: BlockDefinition) {
-  Blockly.Blocks[type] = {
-	init: function () {
-	  this.jsonInit(definition);
-	}
-  };
+	Blockly.Blocks[type] = {
+		init: function () {
+			this.jsonInit(definition);
+		}
+	};
 }

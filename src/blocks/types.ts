@@ -114,9 +114,8 @@ export type BlockDefinition = {
 	output?: null | ValueType;
 	tooltip?: string;
 	helpUrl?: string;
-	colour?: number;
+	colour?: number | null;
 	mutator?: string;
 	// custom properties
 	for: BlockFunction;
 } | BlockFunction;
-
