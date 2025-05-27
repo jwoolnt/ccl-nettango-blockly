@@ -19,12 +19,12 @@ interface NetlogoContext {
 	patches: string[];
 	links: string[];
 	breeds: Breed[];
-	[key: string]: any;
+	lists: Record<string, ListType>;
 }
 
 export interface ListType {
-  name: string;
-  elements: any[];
+	name: string;
+	elements: any[];
 }
 
 const DEFAULT_VARIABLE_TYPES: DefaultVariableTypes[] = ["ui", "globals", "turtles", "patches", "links"];
@@ -39,7 +39,8 @@ const DEFAULT_CONTEXT: NetlogoContext = {
 	turtles: [],
 	patches: [],
 	links: [],
-	breeds: []
+	breeds: [],
+	lists: {}
 };
 
 
@@ -248,12 +249,12 @@ export const getAllAgentSets = getAgentSets(["turtles", "patches", "links"], get
 
 export function addList(name: string, elements: any[] = []): void {
 	let list: ListType = { name, elements };
-	context[name] = list;
+	context.lists[name] = list;
 }
 
 export function removeList(name: string): void {
-	if (context[name]) {
-		delete context[name];
+	if (context.lists[name]) {
+		delete context.lists[name];
 	} else {
 		console.error(`Invalid List: list "${name}" could not be found`);
 	}
