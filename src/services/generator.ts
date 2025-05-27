@@ -2,8 +2,8 @@ import { Generator } from "blockly";
 import { forBlocks } from "../blocks";
 import { getAllAgentSets, getVariables, getGlobalVariables } from "../data/context";
 import { getTurtleBreeds } from "../data/context";
-import { Order } from "../blocks/utilities";
 import { DOMAIN_BLOCKS } from "../blocks/domain";
+
 
 const netlogoGenerator = new Generator('NetLogo');
 
