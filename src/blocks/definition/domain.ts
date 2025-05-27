@@ -110,12 +110,14 @@ export const DOMAIN_BLOCKS: { [key: string]: DomainBlocks } = {
   },
 };
 
+// initially empty set to track registered blocks to avoid duplicates with already registered blocks
 let currentDomainBlocks: Set<string> = new Set();
+
 
 function registerDomainBlocks(domainBlocks: BlockDefinition[]) {
   // filter out function blocks and get only object definitions
   const blockDefObjects = domainBlocks.filter(blockDef => typeof blockDef !== 'function');
-  
+  // create block definitions from the filtered objects
   if (blockDefObjects.length > 0) {
     const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray(blockDefObjects);
     
@@ -135,7 +137,7 @@ function unregisterDomainBlocks() {
     if (Blockly.Blocks[blockType]) {
       delete Blockly.Blocks[blockType];
     }
-    
+    // unregister from registry if it exists
     try {
       if (Blockly.registry.hasItem('block', blockType)) {
         Blockly.registry.unregister('block', blockType);
@@ -147,6 +149,9 @@ function unregisterDomainBlocks() {
   currentDomainBlocks.clear();
 }
 
+// 
+// Create a toolbox category for the domain blocks
+// 
 function createDomainToolboxCategory(domainKey: string): any {
   if (!DOMAIN_BLOCKS[domainKey]) {
     return null;
@@ -175,13 +180,17 @@ function getColorForDomain(domainKey: string): string {
   return colorMap[domainKey] || '160';
 }
 
+// 
+// Handle domain-specific workspace selection and updates the Blockly workspace accordingly.
+// 
 export function updateWorkspaceForDomain(
-  workspace: Blockly.WorkspaceSvg, 
+  workspace: Blockly.WorkspaceSvg,
   selectedDomain: string, 
   displayCodeCallback: () => void
 ) {
   console.log(`Updating workspace for domain: ${selectedDomain}`);
   
+  // Unregister any previously registered domain blocks to avoid duplicates
   unregisterDomainBlocks();
   
   if (selectedDomain !== 'default' && selectedDomain.toLowerCase() !== 'default') {
@@ -217,7 +226,7 @@ function getDomainKey(selectedValue: string): string | null {
   
   return mapping[selectedValue] || null;
 }
-
+// Updates the Blockly toolbox with domain-specific blocks if available
 function updateToolboxWithDomain(workspace: Blockly.WorkspaceSvg, domainKey: string | null) {
   const originalToolbox = JSON.parse(JSON.stringify(toolbox));
   
