@@ -7,6 +7,7 @@ import mathBlocks from "./math";
 import stringBlocks from "./strings";
 import agentsetBlocks from "./agentset";
 import colorBlocks from "./colors";
+import listBlocks from "./lists";
 
 const allBlocks: BlockDefinition[] = [
 	...observerBlocks,
@@ -16,7 +17,7 @@ const allBlocks: BlockDefinition[] = [
 	...stringBlocks,
 	...agentsetBlocks,
 	...colorBlocks,
-
+	...listBlocks
 ]
 
 const activeBlocks = common.createBlockDefinitionsFromJsonArray(
@@ -27,6 +28,7 @@ export const forBlocks: Record<string, BlockFunction> = {};
 allBlocks.forEach(blockDefinition => {
 	if (blockDefinition instanceof Function) {
 		forBlocks[blockDefinition.name] = blockDefinition;
+		console.log(blockDefinition.name);
 	} else {
 		forBlocks[blockDefinition.type] = blockDefinition.for;
 	}
