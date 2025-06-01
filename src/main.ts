@@ -45,14 +45,28 @@ if (blockEditor && codeOutput) {
     toolbox,
     theme: customTheme,
     zoom: {
-      controls: true
+      controls: true,
+      wheel: true,
+      startScale: 1,
+      maxScale: 3,
+      minScale: 0.3,
+      scaleSpeed: 1.2
     },
     move: {
-      scrollbars: false,
+      scrollbars: {
+        horizontal: true,
+        vertical: true
+      },
       drag: true,
       wheel: true
     },
-  });
+    grid: {
+      spacing: 40,
+      length: 40,
+      colour: '#ccc',
+      snap: true
+    }
+});
 
   LexicalVariablesPlugin.init(ws);
   Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX = "";

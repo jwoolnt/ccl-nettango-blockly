@@ -2,7 +2,7 @@
 import * as Blockly from "blockly";
 import { addBreed, addVariable, BreedType, refreshMITPlugin, removeBreed, removeVariable, updateVariable } from "./data/context";
 import { reset, save } from "./services/serializer";
-import { initDialogs, showVariableActionDialog, showBreedActionDialog, showListActionDialog, showResetWorkspaceDialog} from "./modules";
+import { initDialogs, showVariableActionDialog, showBreedActionDialog} from "./modules";
 
 // Sidebar state management
 export type SidebarCategory = 'variables';
@@ -35,7 +35,6 @@ export function initSidebar(workspace: any, displayCodeCallback: () => void) {
   // Set up actions for sidebar items
   setupVariableActions(workspace, displayCodeCallback);
   setupBreedActions(workspace, displayCodeCallback);
-  setupListActions(workspace, displayCodeCallback);
 
   const resetButton = document.getElementById('reset');
   if (resetButton) {
@@ -70,16 +69,6 @@ function setupBreedActions(workspace: any, displayCodeCallback: () => void) {
   if (editBreedsButton) {
     editBreedsButton.addEventListener('click', () => {
       showBreedActionDialog(workspace, displayCodeCallback);
-    });
-  }
-}
-
-// Set up list-related actions
-function setupListActions(workspace: any, displayCodeCallback: () => void) {
-  const editListsButton = document.getElementById('edit-lists');
-  if (editListsButton) {
-    editListsButton.addEventListener('click', () => {
-      showListActionDialog(workspace, displayCodeCallback);
     });
   }
 }
