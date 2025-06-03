@@ -92,14 +92,16 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
-                    type: "set_turtle_color",
+                    type: "setxy",
                     inputs: {
-                        "VALUE": {
+                        "X": {
                             "shadow": {
-                                type: "color",
-                                fields: {
-                                    "COLOR": "#000000"
-                                }
+                                type: "random_xcor"
+                            }
+                        },
+                        "Y": {
+                            "shadow": {
+                                type: "random_ycor"
                             }
                         }
                     }
@@ -178,6 +180,14 @@ const toolbox: Toolbox = {
                         }
                     }
                 },
+                {
+                    kind: "block",
+                    type: "random_xcor"
+                },
+                {
+                    kind: "block",
+                    type: "random_ycor"
+                }
             ]
         },
         {

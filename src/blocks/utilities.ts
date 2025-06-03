@@ -47,7 +47,7 @@ export function createStatementBlock(type: string, overrides?: Partial<BlockDefi
 	});
 }
 
-export function createValueBlock(type: string, output: ValueType, overrides?: Partial<BlockDefinition>): BlockDefinition {
+export function createValueBlock(type: string, output: CheckValue, overrides?: Partial<BlockDefinition>): BlockDefinition {
 	return createBasicBlock(type, {
 		...overrides,
 		output
@@ -89,7 +89,7 @@ export function createOperatorBlock(
 	type: string,
 	symbol: string,
 	check: CheckValue,
-	output: ValueType,
+	output: CheckValue,
 	binary: boolean = true,
 	overrides?: Partial<BlockDefinition>
 ): BlockDefinition {

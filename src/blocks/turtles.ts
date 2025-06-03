@@ -1,6 +1,6 @@
 import { getTurteAgentSets } from "../data/context";
 import { BlockDefinition } from "./types";
-import { createStatementBlock, dynamicOptions, Order } from "./utilities";
+import { createStatementBlock, createValueBlock, dynamicOptions, Order } from "./utilities";
 
 
 const create_breeds: BlockDefinition = createStatementBlock("create_breeds", {
@@ -69,7 +69,7 @@ function createMovementBlock(name: string, netlogoCmd: string): BlockDefinition 
 			check: "Number"
 		}],
 		colour: "#2E7D32",
-		for : (block, generator) => {
+		for: (block, generator) => {
 			const distance = generator.valueToCode(block, "DISTANCE", Order.NONE) || "1";
 			return `${netlogoCmd} ${distance}`;
 		}
@@ -81,6 +81,28 @@ const back: BlockDefinition = createMovementBlock("back", "bk");
 const left: BlockDefinition = createMovementBlock("left", "lt");
 const right: BlockDefinition = createMovementBlock("right", "rt");
 
+const random_xcor = createValueBlock("random_xcor", "Number");
+const random_ycor = createValueBlock("random_ycor", "Number");
+const setxy = createStatementBlock("setxy", {
+	message0: "setxy %1 %2",
+	args0: [{
+		type: "input_value",
+		name: "X",
+		check: "Number"
+	},
+	{
+		type: "input_value",
+		name: "Y",
+		check: "Number"
+	}],
+	inputsInline: true,
+	for: (block, generator) => {
+		const X = generator.valueToCode(block, "X", Order.FUNCTION_CALL);
+		const Y = generator.valueToCode(block, "Y", Order.FUNCTION_CALL);
+		return [`setxy ${X} ${Y}`, Order.FUNCTION_CALL];
+	}
+});
+
 const turtleBlocks: BlockDefinition[] = [
 	create_breeds,
 	die,
@@ -88,7 +110,10 @@ const turtleBlocks: BlockDefinition[] = [
 	forward,
 	back,
 	left,
-	right
+	right,
+	random_xcor,
+	random_ycor,
+	setxy
 ];
 
 

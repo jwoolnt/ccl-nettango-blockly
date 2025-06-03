@@ -15,7 +15,7 @@ const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {
 	for: block => [block.getFieldValue("AGENTSET"), Order.ATOMIC]
 });
 
-const any: BlockDefinition = createValueBlock("any", "Color", {
+const any: BlockDefinition = createValueBlock("any", "Boolean", {
 	message0: "any? %1",
 	args0: [{
 		type: "input_value",
@@ -29,7 +29,8 @@ const any: BlockDefinition = createValueBlock("any", "Color", {
 	}
 });
 
-const one_of: BlockDefinition = createValueBlock("one_of", "Color", {
+// TODO: Output type should be Agentset or Array
+const one_of: BlockDefinition = createValueBlock("one_of", ["Array", "Agentset"], {
 	message0: "one-of %1",
 	args0: [{
 		type: "input_value",

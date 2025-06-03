@@ -6,7 +6,7 @@ export type ValueType =
 	| "Number"
 	| "Color"
 	| "String"
-	| "List"
+	| "Array"
 	| "Agent"
 	| "Agentset";
 
