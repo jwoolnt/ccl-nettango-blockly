@@ -16,6 +16,7 @@ const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
 	}
 });
 
+
 const and: BlockDefinition = createLogicalOperatorBlock("and");
 
 const or: BlockDefinition = createLogicalOperatorBlock("or");
@@ -166,6 +167,11 @@ const user_message: BlockDefinition = createStatementBlock("user_message", {
 	}
 });
 
+const netlogo_web: BlockDefinition = createValueBlock("netlogo_web", "Boolean", {
+	message0: "netlogo-web?",
+	for: () => ["netlogo-web?", Order.ATOMIC]
+});
+
 const logicBlocks: BlockDefinition[] = [
 	boolean,
 	and,
@@ -191,6 +197,8 @@ const logicBlocks: BlockDefinition[] = [
 	if_,
 	ifelse,
 	ask_agent_set,
+
+	netlogo_web
 ];
 
 

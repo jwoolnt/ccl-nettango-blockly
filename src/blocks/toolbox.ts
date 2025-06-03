@@ -1,15 +1,15 @@
 // Type definitions (unchanged)
 type PresetBlockData = {
-	type: string;
-	fields?: Record<string, any>;
+    type: string;
+    fields?: Record<string, any>;
 };
 
 type PreconnectedBlock = {
-	"block": PresetBlockData
+    "block": PresetBlockData
 };
 
 type ShadowBlock = {
-	"shadow": PresetBlockData
+    "shadow": PresetBlockData
 };
 
 type PresetBlock = PreconnectedBlock | ShadowBlock;
@@ -19,19 +19,19 @@ type PresetBlocks = Record<string, PresetBlock>;
 type PresetFields = Record<string, any>;
 
 interface Block {
-	kind: 'block';
-	type: string;
-	disabled?: boolean;
-	inputs?: PresetBlocks;
-	fields?: PresetFields;
+    kind: 'block';
+    type: string;
+    disabled?: boolean;
+    inputs?: PresetBlocks;
+    fields?: PresetFields;
 }
 
 interface Category {
-	kind: 'category';
-	name: string;
-	contents?: ToolboxItem[];
-	colour?: string;
-	categorystyle?: string;
+    kind: 'category';
+    name: string;
+    contents?: ToolboxItem[];
+    colour?: string;
+    categorystyle?: string;
 }
 
 type ToolboxItem = Block | Category;
@@ -39,8 +39,8 @@ type ToolboxItem = Block | Category;
 type ToolboxType = "flyoutToolbox" | "categoryToolbox";
 
 interface ToolboxBase<T extends ToolboxType, I extends ToolboxItem> {
-	kind: T;
-	contents: I[];
+    kind: T;
+    contents: I[];
 }
 
 type FlyoutToolbox = ToolboxBase<"flyoutToolbox", Block>;
@@ -50,8 +50,8 @@ type CategoryToolbox = ToolboxBase<"categoryToolbox", Category>;
 type Toolbox = FlyoutToolbox | CategoryToolbox;
 
 const toolbox: Toolbox = {
-	kind: 'categoryToolbox',
-	contents: [
+    kind: 'categoryToolbox',
+    contents: [
         {
             kind: "category",
             name: "Observer",
@@ -226,7 +226,7 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "number"
-                }, 
+                },
                 {
                     kind: "block",
                     type: "negation",
@@ -240,7 +240,7 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }, 
+                },
                 {
                     kind: "block",
                     type: "exponentiation",
@@ -262,7 +262,7 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }, 
+                },
                 {
                     kind: "block",
                     type: "multiplication",
@@ -284,7 +284,7 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }, 
+                },
                 {
                     kind: "block",
                     type: "division",
@@ -306,7 +306,7 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }, 
+                },
                 {
                     kind: "block",
                     type: "addition",
@@ -328,7 +328,7 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }, 
+                },
                 {
                     kind: "block",
                     type: "subtraction",
@@ -350,7 +350,7 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }, 
+                },
                 {
                     kind: "block",
                     type: "random",
@@ -615,6 +615,10 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
+                },
+                {
+                    "kind": "block",
+                    "type": "netlogo_web"
                 }
             ]
         },
@@ -650,7 +654,7 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }, 
+                },
                 {
                     kind: "block",
                     type: "lexical_variable_get"
@@ -673,11 +677,11 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "procedures_defnoreturn"
-                }, 
+                },
                 {
                     kind: "block",
                     type: "procedures_callnoreturn"
-                }, 
+                },
                 {
                     kind: "block",
                     type: "ask_agent_set",
