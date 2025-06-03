@@ -18,13 +18,7 @@ interface NetlogoContext {
 	turtles: string[];
 	patches: string[];
 	links: string[];
-	breeds: Breed[];
-	lists: Record<string, ListType>;
-}
-
-export interface ListType {
-	name: string;
-	elements: any[];
+	breeds?: Breed[];
 }
 
 const DEFAULT_VARIABLE_TYPES: DefaultVariableTypes[] = ["ui", "globals", "turtles", "patches", "links"];
@@ -33,20 +27,66 @@ function isDefaultVariableType(type: string): type is DefaultVariableTypes {
 	return DEFAULT_VARIABLE_TYPES.includes(type as DefaultVariableTypes);
 }
 
+
+const BUILT_IN_CONTEXT: NetlogoContext = {
+	ui: [],
+	globals: [],
+	turtles: [
+		"breed",
+		"color",
+		"heading",
+		"hidden?",
+		"label",
+		"label-color",
+		"pen-mode",
+		"pen-size",
+		"shape",
+		"size",
+		"who",
+		"xcor",
+		"ycor"
+	],
+	patches: [
+		"pcolor",
+		"plabel",
+		"plabel",
+		"color",
+		"pxcor",
+		"pycor"
+	],
+	links: [
+		"breed",
+		"color",
+		"end1",
+		"end2",
+		"hidden?",
+		"label",
+		"label-color",
+		"shape",
+		"thickness",
+		"tie-mode"
+	]
+};
+
 const DEFAULT_CONTEXT: NetlogoContext = {
 	ui: [],
 	globals: [],
 	turtles: [],
 	patches: [],
-	links: [],
-	breeds: [],
-	lists: {}
+	links: []
 };
+
+const DEFAULT_VARIABLE_MAP: Record<string, string> = {};
+DEFAULT_VARIABLE_TYPES.forEach(type =>
+	BUILT_IN_CONTEXT[type].forEach(variableName =>
+		DEFAULT_VARIABLE_MAP[variableName] = "built-in"
+	)
+);
 
 
 let context: NetlogoContext = { ...DEFAULT_CONTEXT };
 
-let variableType: Record<string, string> = {};
+let variableMap: Record<string, string> = { ...DEFAULT_VARIABLE_MAP };
 
 export let refreshMITPlugin = () => { };
 
@@ -54,8 +94,8 @@ export let refreshMITPlugin = () => { };
 export const CONTEXT_SERIALIZER: serialization.ISerializer = {
 	priority: serialization.priorities.VARIABLES,
 	clear: (workspace: Workspace) => {
-		context = DEFAULT_CONTEXT;
-		variableType = {};
+		context = { ...DEFAULT_CONTEXT };
+		variableMap = { ...DEFAULT_VARIABLE_MAP };
 
 		//@ts-expect-error
 		workspace.getWarningHandler().cacheGlobalNames = true;
@@ -68,14 +108,19 @@ export const CONTEXT_SERIALIZER: serialization.ISerializer = {
 		context = state;
 
 		DEFAULT_VARIABLE_TYPES.forEach(type =>
-			context[type].forEach(variableName =>
-				variableType[variableName] = type
+			context[type].forEach(variableName => {
+				if (variableMap[variableName]) {
+					variableMap[variableName] = type;
+				} else {
+					console.warn(`Invalid Variable: cannot use name "${variableName}"`);
+				}
+			}
 			)
 		);
 
-		context.breeds.forEach(breed =>
+		context.breeds?.forEach(breed =>
 			breed.variables?.forEach(variableName =>
-				variableType[variableName] = breed.pluralName
+				variableMap[variableName] = breed.pluralName
 			)
 		);
 
@@ -89,17 +134,17 @@ export function getGlobalVariables(): string[] {
 	return [...context.globals];
 }
 
-export function getVariables(type: string): string[] | undefined {
+export function getVariables(type: string, includeBuiltIn: boolean = false): string[] | undefined {
 	if (isDefaultVariableType(type)) {
-		return context[type];
+		return includeBuiltIn ? [...BUILT_IN_CONTEXT[type], ...context[type]] : [...context[type]];
 	} else {
 		let targetBreed = findBreed(type);
-		return targetBreed ? targetBreed.variables ?? [] : undefined;
+		return targetBreed?.variables ? [...targetBreed.variables] : undefined;
 	}
 }
 
 export function getAllVariables(): string[] {
-	return Object.keys(variableType);
+	return Object.keys(variableMap);
 }
 
 
@@ -124,13 +169,18 @@ export function addVariable(name: string, type: string = "globals"): void {
 		return;
 	}
 
-	variableType[name] = type;
+	variableMap[name] = type;
+	refreshMITPlugin();
 }
 
 export function updateVariable(currentName: string, updateData: string, updateName: boolean = true): void {
 	if (findVariable(currentName).length) {
-		if (updateName) {
-			let type = variableType[currentName];
+		let type = variableMap[currentName];
+
+		if (type == "built-in") {
+			console.error(`Built-In Variable: variable "${name}" cannot be updated`);
+			return;
+		} else if (updateName) {
 			removeVariable(currentName);
 			addVariable(updateData, type);
 		} else {
@@ -140,13 +190,17 @@ export function updateVariable(currentName: string, updateData: string, updateNa
 	} else {
 		console.error(`Invalid Variable: variable "${currentName}" could not be found`);
 	}
+	refreshMITPlugin();
 }
 
 export function removeVariable(name: string): void {
-	let type = variableType[name];
+	let type = variableMap[name];
 	let breed = findBreed(type);
 
-	if (!findVariable(name).length) {
+	if (type == "built-in") {
+		console.error(`Built-In Variable: variable "${name}" cannot be removed`);
+		return;
+	} else if (!findVariable(name).length) {
 		console.error(`Invalid Variable: variable "${name}" could not be found`);
 		return;
 	} else if (isDefaultVariableType(type)) {
@@ -159,25 +213,26 @@ export function removeVariable(name: string): void {
 		return;
 	}
 
-	delete variableType[name];
+	delete variableMap[name];
+	refreshMITPlugin();
 }
 
 
 export function getTurtleBreeds(): Breed[] {
-	return context.breeds.filter(({ type }) => type == "turtle");
+	return context.breeds?.filter(({ type }) => type == "turtle") || [];
 }
 
 export function getLinkBreeds(): Breed[] {
-	return context.breeds.filter(({ type }) => type != "turtle");
+	return context.breeds?.filter(({ type }) => type != "turtle") || [];
 }
 
 export function getAllBreeds(): Breed[] {
-	return [...context.breeds];
+	return context.breeds ? [...context.breeds] : [];
 }
 
 
 export function findBreed(name: string): Breed | undefined {
-	let result = context.breeds.find(({ pluralName }) => pluralName === name);
+	let result = context.breeds?.find(({ pluralName }) => pluralName === name);
 	return result ? { ...result } : undefined;
 }
 
@@ -186,10 +241,15 @@ export function addBreed(newBreed: Breed): void {
 	let usedVariables = findVariable(pluralName, singularName, variables);
 
 	if (usedVariables.length === 0) {
+		if (context.breeds == undefined) {
+			context.breeds = [];
+		}
 		context.breeds.push(newBreed);
 	} else {
 		console.error(`Invalid Breed: cannot reuse names ["${usedVariables.join(",\" \"")}"]`);
 	}
+
+	refreshMITPlugin();
 }
 
 export function updateBreed(currentName: string, breedUpdates: Partial<Breed>): void {
@@ -218,14 +278,18 @@ export function updateBreed(currentName: string, breedUpdates: Partial<Breed>): 
 	} else {
 		console.error(`Invalid Breed: breed "${currentName}}" could not be found`);
 	}
+
+	refreshMITPlugin();
 }
 
 export function removeBreed(breedName: string): void {
-	if (findBreed(breedName)) {
+	if (context.breeds && findBreed(breedName)) {
 		context.breeds = context.breeds.filter(({ pluralName }) => pluralName !== breedName);
 	} else {
 		console.error(`Invalid Breed: breed "${breedName}}" could not be found`);
 	}
+
+	refreshMITPlugin();
 }
 
 
@@ -246,16 +310,3 @@ export const getTurteAgentSets = getAgentSets(["turtles"], getTurtleBreeds);
 export const getLinkAgentSets = getAgentSets(["links"], getLinkBreeds);
 
 export const getAllAgentSets = getAgentSets(["turtles", "patches", "links"], getAllBreeds);
-
-export function addList(name: string, elements: any[] = []): void {
-	let list: ListType = { name, elements };
-	context.lists[name] = list;
-}
-
-export function removeList(name: string): void {
-	if (context.lists[name]) {
-		delete context.lists[name];
-	} else {
-		console.error(`Invalid List: list "${name}" could not be found`);
-	}
-}
