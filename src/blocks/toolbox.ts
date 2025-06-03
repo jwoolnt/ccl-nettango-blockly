@@ -104,6 +104,76 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "die"
                 },
+                {
+                    kind: "block",
+                    type: "hatch",
+                    inputs: {
+                        "COUNT": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "forward",
+                    inputs: {
+                        "DISTANCE": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "back",
+                    inputs: {
+                        "DISTANCE": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "left",
+                    inputs: {
+                        "DISTANCE": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "right",
+                    inputs: {
+                        "DISTANCE": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
             ]
         },
         {
