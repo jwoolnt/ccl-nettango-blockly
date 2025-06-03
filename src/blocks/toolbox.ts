@@ -364,6 +364,34 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
+                },
+                {
+                    kind: "block",
+                    type: "round",
+                    inputs: {
+                        "N": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "count",
+                    inputs: {
+                        "AGENTSET": {
+                            "shadow": {
+                                type: "agentset",
+                                fields: {
+                                    "AGENTSET": "turtles"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },

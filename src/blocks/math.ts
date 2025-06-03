@@ -27,17 +27,37 @@ const addition: BlockDefinition = createMathOperatorBlock("addition", "+");
 
 const subtraction: BlockDefinition = createMathOperatorBlock("subtraction", "-");
 
-const random: BlockDefinition = createValueBlock("random", "Number", {
-	message0: "random %1",
+// helper function for random, round blocks
+function mathFunctionBlock(name: string, color: string = "#c72216"): BlockDefinition {
+	return createValueBlock(name, "Number", {
+		message0: `${name} %1`,
+		args0: [{
+			type: "input_value",
+			name: "N",
+			check: "Number"
+		}],
+		colour: color,
+		for: (block, generator) => {
+			const value = generator.valueToCode(block, "N", Order.FUNCTION_CALL);
+			return [`${name} ${value}`, Order.FUNCTION_CALL];
+		}
+	});
+}
+
+const random = mathFunctionBlock("random");
+const round = mathFunctionBlock("round");
+
+// count block, takes in an array or conditional blocks like
+const count: BlockDefinition = createValueBlock("count", "Number", {
+	message0: "count %1",
 	args0: [{
 		type: "input_value",
-		name: "N",
-		check: "Number"
+		name: "AGENTSET",
 	}],
 	colour: "#c72216",
 	for: (block, generator) => {
-		const number = generator.valueToCode(block, "N", Order.FUNCTION_CALL);
-		return [`random ${number}`, Order.FUNCTION_CALL];
+		const agentset = generator.valueToCode(block, "AGENTSET", Order.FUNCTION_CALL);
+		return [`count ${agentset}`, Order.FUNCTION_CALL];
 	}
 });
 
@@ -50,7 +70,9 @@ const mathBlocks: BlockDefinition[] = [
 	division,
 	addition,
 	subtraction,
-	random
+	random,
+	round,
+	count
 ];
 
 
