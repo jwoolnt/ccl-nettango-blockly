@@ -15,9 +15,39 @@ const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {
 	for: block => [block.getFieldValue("AGENTSET"), Order.ATOMIC]
 });
 
+const any: BlockDefinition = createValueBlock("any", "Color", {
+	message0: "any? %1",
+	args0: [{
+		type: "input_value",
+		name: "AGENT_SET",
+		check: "Agentset",
+	}],
+	colour: "#795548",
+	for: (block, generator) => {
+		const list = generator.valueToCode(block, "AGENT_SET", 0);
+		return [`any? ${list}`, 0];
+	}
+});
+
+const one_of: BlockDefinition = createValueBlock("one_of", "Color", {
+	message0: "one-of %1",
+	args0: [{
+		type: "input_value",
+		name: "LIST",
+		check: ["Array", "Agentset"],
+	}],
+	colour: "#795548",
+	for: (block, generator) => {
+		const list = generator.valueToCode(block, "LIST", 0);
+		return [`one-of ${list}`, 0];
+	}
+});
+
 
 const agentsetBlocks: BlockDefinition[] = [
-	agentset
+	agentset,
+	one_of,
+	any
 ];
 
 

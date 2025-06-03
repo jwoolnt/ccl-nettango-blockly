@@ -740,6 +740,14 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "agentset"
+                },
+                {
+                    kind: "block",
+                    type: "one_of",
+                },
+                {
+                    kind: "block",
+                    type: "any",
                 }
             ]
         },

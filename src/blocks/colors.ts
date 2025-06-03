@@ -49,23 +49,9 @@ const setPatchColor: BlockDefinition = createStatementBlock("set_patch_color", {
     }
 });
 
-const oneOf: BlockDefinition = createValueBlock("one_of", "Color", {
-    message0: "one-of %1",
-    args0: [{
-        type: "input_value",
-        name: "LIST",
-        check: "Array",
-    }],
-    colour: "#795548",
-    for: (block, generator) => {
-        const list = generator.valueToCode(block, "LIST", 0);
-        return [`one-of ${list}`, 0];
-    }
-});
 const colorBlocks: BlockDefinition[] = [
     color,
     setTurtleColor,
-    setPatchColor,
-    oneOf,
+    setPatchColor
 ];
 export default colorBlocks;
