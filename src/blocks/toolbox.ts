@@ -64,6 +64,10 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "reset_ticks"
+                },
+                {
+                    kind: "block",
+                    type: "tick"
                 }
             ]
         },
