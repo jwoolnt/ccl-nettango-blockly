@@ -151,6 +151,20 @@ const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
 	}
 });
 
+const stop: BlockDefinition = createStatementBlock("stop");
+const user_message: BlockDefinition = createStatementBlock("user_message", {
+	message0: "user message %1",
+	args0: [{
+		type: "input_value",
+		name: "MESSAGE",
+		check: "String"
+	}],
+	colour: "#0794a6",
+	for: (block, generator) => {
+		const message = generator.valueToCode(block, "MESSAGE", Order.NONE);
+		return `user message ${message}`;
+	}
+});
 
 const logicBlocks: BlockDefinition[] = [
 	boolean,
@@ -168,12 +182,15 @@ const logicBlocks: BlockDefinition[] = [
 	let_,
 	set,
 	get,
+	stop,
+	user_message,
 
 	to,
 	call_command,
+
 	if_,
 	ifelse,
-	ask_agent_set
+	ask_agent_set,
 ];
 
 

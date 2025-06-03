@@ -664,6 +664,14 @@ const toolbox: Toolbox = {
             contents: [
                 {
                     kind: "block",
+                    type: "stop",
+                },
+                {
+                    kind: "block",
+                    type: "user_message",
+                },
+                {
+                    kind: "block",
                     type: "procedures_defnoreturn"
                 }, 
                 {
