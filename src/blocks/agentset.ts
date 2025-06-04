@@ -29,25 +29,8 @@ const any: BlockDefinition = createValueBlock("any", "Boolean", {
 	}
 });
 
-// TODO: Output type should be Agentset or Array
-const one_of: BlockDefinition = createValueBlock("one_of", ["Array", "Agentset"], {
-	message0: "one-of %1",
-	args0: [{
-		type: "input_value",
-		name: "LIST",
-		check: ["Array", "Agentset"],
-	}],
-	colour: "#795548",
-	for: (block, generator) => {
-		const list = generator.valueToCode(block, "LIST", 0);
-		return [`one-of ${list}`, 0];
-	}
-});
-
-
 const agentsetBlocks: BlockDefinition[] = [
 	agentset,
-	one_of,
 	any
 ];
 
