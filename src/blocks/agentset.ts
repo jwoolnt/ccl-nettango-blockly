@@ -7,12 +7,12 @@ const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {
 	message0: "%1",
 	args0: [{
 		type: "field_dropdown",
-		name: "AGENTSET",
+		name: "AGENT_SET",
 		options: dynamicOptions(getAllAgentSets)
 	}],
 	colour: "#4C97FF", // Blue
 	tooltip: 'Choose an agentset.',
-	for: block => [block.getFieldValue("AGENTSET"), Order.ATOMIC]
+	for: block => [block.getFieldValue("AGENT_SET"), Order.ATOMIC]
 });
 
 const any: BlockDefinition = createValueBlock("any", "Boolean", {
@@ -24,8 +24,8 @@ const any: BlockDefinition = createValueBlock("any", "Boolean", {
 	}],
 	colour: "#795548",
 	for: (block, generator) => {
-		const list = generator.valueToCode(block, "AGENT_SET", 0);
-		return [`any? ${list}`, 0];
+		const list = generator.valueToCode(block, "AGENT_SET", Order.FUNCTION_CALL);
+		return [`any? ${list}`, Order.ATOMIC];
 	}
 });
 

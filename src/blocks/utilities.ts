@@ -49,6 +49,7 @@ export function createStatementBlock(type: string, overrides?: Partial<BlockDefi
 
 export function createValueBlock(type: string, output: CheckValue, overrides?: Partial<BlockDefinition>): BlockDefinition {
 	return createBasicBlock(type, {
+		for: () => [netlogoCommand(type), Order.ATOMIC],
 		...overrides,
 		output
 	});
