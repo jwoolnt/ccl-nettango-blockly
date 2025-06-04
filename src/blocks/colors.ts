@@ -2,7 +2,7 @@ import { createStatementBlock, createValueBlock, staticOptions } from "./utiliti
 import { BlockDefinition } from "./types";
 
 const netlogoColors = staticOptions([
-    "black", "gray", "red", "orange", "orange", "brown", "yellow", "green", "lime", "turquoise", "cyan", "sky", "blue", "violet", "magenta", "pink"
+    "black", "white", "gray", "red", "orange", "brown", "yellow", "green", "lime", "turquoise", "cyan", "sky", "blue", "violet", "magenta", "pink"
 ]);
 
 // color single variable block

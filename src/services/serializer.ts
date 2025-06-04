@@ -23,7 +23,7 @@ export function load(workspace: Workspace) {
   }
   catch (e) {
     console.error(`Serialization: cannot load workspace (${e})`);
-    reset(workspace);
+    // reset(workspace);
   }
   Events.enable();
 };

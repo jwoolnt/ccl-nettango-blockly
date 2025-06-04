@@ -149,7 +149,7 @@ export function createComparisonOperatorBlock(
 	symbol: string,
 	overrides?: Partial<BlockDefinition>
 ): BlockDefinition {
-	const check: ValueType[] = ["Number", "String", "Agent"];
+	const check: ValueType[] = ["Number", "String", "Agent", "Color"];
 	if (type == "equal" || type == "not_equal") {
 		check.push("Agentset");
 	}
