@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Monofett&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Monofett&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
   margin: 0;
@@ -15,15 +15,15 @@ body {
 }
 /* blockly */
 .blocklyText {
-  font-family: 'Fira Code', monospace !important;
+  font-family: "Fira Code", monospace !important;
   font-size: 14px !important;
 }
 .blocklyTreeLabel {
-  font-family: 'Fira Code', monospace !important;
+  font-family: "Fira Code", monospace !important;
   font-size: 15px !important;
 }
 .blocklyTextArea {
-  font-family: 'Fira Code', monospace !important;
+  font-family: "Fira Code", monospace !important;
   font-size: 12px !important;
 }
 
@@ -104,7 +104,7 @@ body {
 
 .auth-button {
   padding: 0.5rem 1rem;
-  background-color: #E74525;
+  background-color: #e74525;
   color: white;
   border: none;
   border-radius: 10px;
@@ -114,7 +114,8 @@ body {
 
 .auth-button:hover {
   background-color: #d95c43;
-  color: white;}
+  color: white;
+}
 
 /* Main container */
 .main-container {
@@ -145,7 +146,7 @@ body {
 
 .sidebar-category.active {
   background-color: rgba(219, 133, 52, 0.1);
-  color: #E74525;
+  color: #e74525;
 }
 
 .sidebar-item {
@@ -156,7 +157,7 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size:1rem;
+  font-size: 1rem;
   margin: 0.5rem 1rem;
 }
 
@@ -171,7 +172,9 @@ body {
   margin-right: 0.75rem;
 }
 
-.color-variables { background-color: #E74525; }
+.color-variables {
+  background-color: #e74525;
+}
 /* .color-control { background-color: #e67e22; }
 .color-math { background-color: #2ecc71; }
 .color-logic { background-color: #e74c3c; }
@@ -237,8 +240,46 @@ body {
   margin-top: 0.5rem;
 }
 
+.copy-container {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copy-button {
+  background-color: #e74525;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.copy-button:hover {
+  background-color: #d95c43;
+}
+
+.copy-button:active {
+  transform: scale(0.95);
+}
+
+.copy-button.copied {
+  background-color: #d95c43;
+}
+
+.copy-icon {
+  width: 14px;
+  height: 14px;
+}
+
 .generated-code {
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   font-size: 0.9rem;
   overflow-x: auto;
 }
@@ -361,7 +402,7 @@ body {
 }
 
 .dialog-button.primary {
-  background-color: #E74525;
+  background-color: #e74525;
   color: white;
 }
 
@@ -407,13 +448,13 @@ body {
 }
 
 .workspace-selector:hover {
-  border-color: #E74525;
+  border-color: #e74525;
   box-shadow: 0 0 0 2px rgba(231, 69, 37, 0.1);
 }
 
 .workspace-selector:focus {
   outline: none;
-  border-color: #E74525;
+  border-color: #e74525;
   box-shadow: 0 0 0 3px rgba(231, 69, 37, 0.2);
 }
 

@@ -72,11 +72,49 @@
             <!-- Blockly will be injected here -->
           </div>
           <div class="output">
-            <pre><code class="generated-code">// generated code will appear here</code></pre>
-            <sub>NOTE: Only generates code for procedure blocks</sub>
+            <pre><code class="generated-code" id="generated-code">// generated code will appear here</code></pre>
+            <div class="copy-container">
+              <sub>NOTE: Only generates code for procedure blocks</sub>
+              <button class="copy-button" id="copy-button">
+                <svg class="copy-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                  />
+                </svg>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const copyButton = document.getElementById("copy-button");
+        const codeElement = document.getElementById("generated-code");
+
+        copyButton.addEventListener("click", async () => {
+          const code = codeElement.textContent.trim();
+          if (!code) return;
+
+          try {
+            await navigator.clipboard.writeText(code);
+            copyButton.textContent = "Copied!";
+            setTimeout(() => (copyButton.textContent = "Copy"), 2000);
+          } catch (err) {
+            console.error("Copy failed:", err);
+            copyButton.textContent = "Failed";
+            setTimeout(() => (copyButton.textContent = "Copy"), 2000);
+          }
+        });
+
+        function updateGeneratedCode(newCode) {
+          codeElement.textContent = newCode;
+        }
+
+        window.updateGeneratedCode = updateGeneratedCode;
+      });
+    </script>
   </body>
 </html>

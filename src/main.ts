@@ -73,7 +73,14 @@ if (blockEditor && codeOutput) {
 
   const displayCode = () => {
     refreshMITPlugin();
-    codeOutput.textContent = generateCodePrefix() + netlogoGenerator.workspaceToCode(ws);
+    const generatedCode = generateCodePrefix() + netlogoGenerator.workspaceToCode(ws);
+    codeOutput.textContent = generatedCode;
+    
+    // Update the clipboard manager with the new code
+    if ((window as any).updateGeneratedCode) {
+      (window as any).updateGeneratedCode(generatedCode);
+    }
+    
     save(ws);
   };
 
