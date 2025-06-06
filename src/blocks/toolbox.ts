@@ -54,6 +54,11 @@ const toolbox: Toolbox = {
     contents: [
         {
             kind: "category",
+            name: "Custom Blocks",
+            colour: "#673AB7", // Deep Purple
+        },
+        {
+            kind: "category",
             name: "Observer",
             colour: "#4527A0", // Deep Purple
             contents: [
@@ -89,26 +94,6 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                },
-                {
-                    kind: "block",
-                    type: "setxy",
-                    inputs: {
-                        "X": {
-                            "shadow": {
-                                type: "random_xcor"
-                            }
-                        },
-                        "Y": {
-                            "shadow": {
-                                type: "random_ycor"
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "die"
                 },
                 {
                     kind: "block",
@@ -182,12 +167,32 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "setxy",
+                    inputs: {
+                        "X": {
+                            "shadow": {
+                                type: "random_xcor"
+                            }
+                        },
+                        "Y": {
+                            "shadow": {
+                                type: "random_ycor"
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
                     type: "random_xcor"
                 },
                 {
                     kind: "block",
                     type: "random_ycor"
-                }
+                },
+                                {
+                    kind: "block",
+                    type: "die"
+                },
             ]
         },
         {

@@ -83,6 +83,7 @@ const right: BlockDefinition = createMovementBlock("right", "rt");
 
 const random_xcor = createValueBlock("random_xcor", "Number");
 const random_ycor = createValueBlock("random_ycor", "Number");
+
 const setxy = createStatementBlock("setxy", {
 	message0: "setxy %1 %2",
 	args0: [{
@@ -97,9 +98,9 @@ const setxy = createStatementBlock("setxy", {
 	}],
 	inputsInline: true,
 	for: (block, generator) => {
-		const X = generator.valueToCode(block, "X", Order.FUNCTION_CALL);
-		const Y = generator.valueToCode(block, "Y", Order.FUNCTION_CALL);
-		return [`setxy ${X} ${Y}`, Order.FUNCTION_CALL];
+		const X = generator.valueToCode(block, "X", Order.NONE);
+		const Y = generator.valueToCode(block, "Y", Order.NONE);
+		return `setxy ${X} ${Y}`;
 	}
 });
 
