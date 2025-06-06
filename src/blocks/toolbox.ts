@@ -758,6 +758,10 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "agentset_here"
+                },
+                {
+                    kind: "block",
                     type: "one_of",
                 },
                 {
