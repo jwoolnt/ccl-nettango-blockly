@@ -109,11 +109,10 @@ export const CONTEXT_SERIALIZER: serialization.ISerializer = {
 
 		DEFAULT_VARIABLE_TYPES.forEach(type =>
 			context[type].forEach(variableName => {
-				if (variableMap[variableName]) {
-					variableMap[variableName] = type;
-				} else {
-					console.warn(`Invalid Variable: cannot use name "${variableName}"`);
+				if (variableMap[variableName] === "built-in") {
+					console.warn(`"${variableName}" shadows a built-in`);
 				}
+				variableMap[variableName] = type;
 			}
 			)
 		);
