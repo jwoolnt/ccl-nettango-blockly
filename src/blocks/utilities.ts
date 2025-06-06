@@ -99,13 +99,13 @@ export function createOperatorBlock(
 	const args0: Argument[] = [{
 		type: "input_value",
 		name: "A",
-		check: ["Number", "Color"]
+		check
 	}];
 	if (binary) {
 		args0.push({
 			type: "input_value",
 			name: "B",
-			check: ["Number", "Color"]
+			check
 		});
 	}
 

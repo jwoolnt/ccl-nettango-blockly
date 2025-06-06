@@ -163,7 +163,7 @@ const user_message: BlockDefinition = createStatementBlock("user_message", {
 	colour: "#0794a6",
 	for: (block, generator) => {
 		const message = generator.valueToCode(block, "MESSAGE", Order.NONE);
-		return `user message ${message}`;
+		return `user-message ${message}`;
 	}
 });
 

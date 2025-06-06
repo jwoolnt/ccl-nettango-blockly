@@ -74,10 +74,6 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "tick"
                 },
-                {
-                    kind: "block",
-                    type: "display_labels"
-                }
             ]
         },
         {
