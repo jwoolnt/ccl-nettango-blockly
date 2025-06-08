@@ -1,5 +1,5 @@
 import { BlockDefinition } from "./types";
-import { createMathOperatorBlock, createValueBlock, Order } from "./utilities";
+import { createMathOperatorBlock, createValueBlock, netlogoCommand, Order } from "./utilities";
 
 
 const number: BlockDefinition = createValueBlock("number", "Number", {
@@ -30,7 +30,7 @@ const subtraction: BlockDefinition = createMathOperatorBlock("subtraction", "-")
 // helper function for random, round blocks
 function mathFunctionBlock(name: string, color: string = "#c72216"): BlockDefinition {
 	return createValueBlock(name, "Number", {
-		message0: `${name} %1`,
+		message0: `${netlogoCommand(name)} %1`,
 		args0: [{
 			type: "input_value",
 			name: "N",
@@ -45,6 +45,7 @@ function mathFunctionBlock(name: string, color: string = "#c72216"): BlockDefini
 }
 
 const random = mathFunctionBlock("random");
+const random_float = mathFunctionBlock("random_float");
 const round = mathFunctionBlock("round");
 
 // count block, takes in an array or conditional blocks like
@@ -71,6 +72,7 @@ const mathBlocks: BlockDefinition[] = [
 	addition,
 	subtraction,
 	random,
+	random_float,
 	round,
 	count
 ];

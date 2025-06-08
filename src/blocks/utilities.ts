@@ -23,7 +23,7 @@ export function dynamicOptions(optionGenerator: () => string[]): DynamicDropdown
 }
 
 
-function netlogoCommand(type: string): string {
+export function netlogoCommand(type: string): string {
 	return (type.endsWith("_") ? type.slice(0, -1) : type).replace("_", "-");
 }
 

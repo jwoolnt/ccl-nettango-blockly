@@ -189,7 +189,7 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "random_ycor"
                 },
-                                {
+                {
                     kind: "block",
                     type: "die"
                 },
@@ -369,6 +369,20 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "random",
+                    inputs: {
+                        "N": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "random_float",
                     inputs: {
                         "N": {
                             "shadow": {
@@ -695,7 +709,15 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "procedures_defreturn"
+                },
+                {
+                    kind: "block",
                     type: "procedures_callnoreturn"
+                },
+                {
+                    kind: "block",
+                    type: "procedures_callreturn"
                 },
                 {
                     kind: "block",
@@ -752,6 +774,10 @@ const toolbox: Toolbox = {
             name: "Agentsets",
             colour: "#2196F3", // Blue
             contents: [
+                {
+                    kind: "block",
+                    type: "nobody"
+                },
                 {
                     kind: "block",
                     type: "agentset"

@@ -94,6 +94,38 @@ const call_command: BlockDefinition = function procedures_callnoreturn(block: an
 	return procedure + args;
 }
 
+const to_report: BlockDefinition = function procedures_defreturn(block: any, generator) { // TODO: remove any
+	const prefix = `to ${block.getFieldValue("NAME")}`;
+
+	let parameters = "";
+	if (block.arguments_.length) {
+		parameters += " [ "
+
+		for (const parameter of block.arguments_) {
+			parameters += `${parameter} `
+		}
+
+		parameters += "]"
+	}
+
+	const body = generator.statementToCode(block, "RETURN");
+
+	const suffix = "end";
+
+	return `\n${prefix}${parameters}\n${body}\n${suffix}\n`;
+}
+
+const call_report: BlockDefinition = function procedures_callreturn(block: any, generator) { // TODO: remove any
+	const procedure = block.getFieldValue("PROCNAME");
+
+	let args = "";
+	for (let i = 0; i < block.arguments_.length; i++) {
+		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL) || "0"}`; // TODO: add zero shadow block
+	}
+
+	return [procedure + args, Order.FUNCTION_CALL];
+}
+
 const if_: BlockDefinition = createStatementBlock("if_", {
 	message0: "if %1\n %2",
 	args0: [{
@@ -193,6 +225,8 @@ const logicBlocks: BlockDefinition[] = [
 
 	to,
 	call_command,
+	to_report,
+	call_report,
 
 	if_,
 	ifelse,
