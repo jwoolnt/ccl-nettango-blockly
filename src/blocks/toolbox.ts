@@ -412,11 +412,11 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "count",
                     inputs: {
-                        "AGENTSET": {
+                        "AGENT_SET": {
                             "shadow": {
                                 type: "agentset",
                                 fields: {
-                                    "AGENTSET": "turtles"
+                                    "AGENT_SET": "turtles"
                                 }
                             }
                         }
@@ -731,11 +731,11 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "ask_agent_set",
                     inputs: {
-                        "AGENTSET": {
+                        "AGENT_SET": {
                             "shadow": {
                                 type: "agentset",
                                 fields: {
-                                    "AGENTSET": "turtles"
+                                    "AGENT_SET": "turtles"
                                 }
                             }
                         }
@@ -789,6 +789,20 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "agentset"
+                },
+                {
+                    kind: "block",
+                    type: "with_manual",
+                    inputs: {
+                        "AGENT_SET": {
+                            "shadow": {
+                                type: "agentset",
+                                fields: {
+                                    "AGENT_SET": "turtles"
+                                }
+                            }
+                        }
+                    }
                 },
                 {
                     kind: "block",

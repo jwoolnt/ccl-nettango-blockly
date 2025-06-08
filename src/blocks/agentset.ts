@@ -17,6 +17,23 @@ const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {
 	for: block => [block.getFieldValue("AGENT_SET"), Order.ATOMIC]
 });
 
+const with_manual: BlockDefinition = createValueBlock("with_manual", null, {
+	message0: "%1 with [%2]",
+	args0: [{
+		type: "input_value",
+		name: "AGENT_SET",
+		check: "Agentset"
+	}, {
+		type: "field_input",
+		name: "CONDITION"
+	}],
+	inputsInline: true,
+	for: (block) => [
+		`${block.getFieldValue("AGENT_SET")} with [${block.getFieldValue("CONDITION")}]`,
+		Order.FUNCTION_CALL
+	]
+});
+
 const agentset_here: BlockDefinition = createValueBlock("agentset_here", "Agentset", {
 	message0: "%1-here",
 	args0: [{
@@ -46,6 +63,7 @@ const any: BlockDefinition = createValueBlock("any", "Boolean", {
 const agentsetBlocks: BlockDefinition[] = [
 	nobody,
 	agentset,
+	with_manual,
 	agentset_here,
 	any
 ];
