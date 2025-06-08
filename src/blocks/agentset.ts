@@ -24,14 +24,19 @@ const with_manual: BlockDefinition = createValueBlock("with_manual", null, {
 		name: "AGENT_SET",
 		check: "Agentset"
 	}, {
-		type: "field_input",
-		name: "CONDITION"
+		type: "input_value",
+		name: "CONDITION",
+		check: "Boolean"
 	}],
 	inputsInline: true,
-	for: (block) => [
-		`${block.getFieldValue("AGENT_SET")} with [${block.getFieldValue("CONDITION")}]`,
-		Order.FUNCTION_CALL
-	]
+	for: (block, generator) => {
+		const ag = generator.valueToCode(block, "AGENT_SET", Order.FUNCTION_CALL);
+		const c = generator.valueToCode(block, "CONDITION", Order.NONE);
+		return [
+			`${ag} with [${c}]`,
+			Order.FUNCTION_CALL
+		];
+	}
 });
 
 const agentset_here: BlockDefinition = createValueBlock("agentset_here", "Agentset", {

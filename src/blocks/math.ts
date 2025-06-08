@@ -53,11 +53,11 @@ const count: BlockDefinition = createValueBlock("count", "Number", {
 	message0: "count %1",
 	args0: [{
 		type: "input_value",
-		name: "AGENTSET",
+		name: "AGENT_SET",
 	}],
 	colour: "#c72216",
 	for: (block, generator) => {
-		const agentset = generator.valueToCode(block, "AGENTSET", Order.FUNCTION_CALL);
+		const agentset = generator.valueToCode(block, "AGENT_SET", Order.FUNCTION_CALL);
 		return [`count ${agentset}`, Order.FUNCTION_CALL];
 	}
 });

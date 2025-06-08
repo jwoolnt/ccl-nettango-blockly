@@ -90,9 +90,9 @@ const report: BlockDefinition = createStatementBlock("report", {
 	message0: "report %1",
 	args0: [{
 		type: "input_value",
-		name: "PROCNAME"
+		name: "VALUE"
 	}],
-	for: (block) => `report ${block.getFieldValue("VALUE") || "0"}`
+	for: (block, generator) => `report ${generator.valueToCode(block, "VALUE", Order.NONE)}`
 });
 
 const call_command: BlockDefinition = function procedures_callnoreturn(block: any, generator) { // TODO: remove any
@@ -198,7 +198,7 @@ const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
 	message0: "ask %1\n %2",
 	args0: [{
 		type: "input_value",
-		name: "AGENTSET",
+		name: "AGENT_SET",
 		check: "Agentset"
 	}, {
 		type: "input_statement",
@@ -206,7 +206,7 @@ const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
 	}],
 	colour: "#0794a6",
 	for: (block, generator) => {
-		const agentSet = generator.valueToCode(block, "AGENTSET", Order.NONE);
+		const agentSet = generator.valueToCode(block, "AGENT_SET", Order.NONE);
 		const commands = generator.statementToCode(block, "COMMANDS");
 		return `ask ${agentSet} [\n${commands}\n]`
 	}

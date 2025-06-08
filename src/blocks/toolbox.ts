@@ -801,6 +801,29 @@ const toolbox: Toolbox = {
                                     "AGENT_SET": "turtles"
                                 }
                             }
+                        },
+                        "CONDITION": {
+                            "shadow": {
+                                type: "equal",
+                                fields: {
+                                    "A": {
+                                        "shadow": {
+                                            type: "number",
+                                            fields: {
+                                                "NUMBER": 0
+                                            }
+                                        }
+                                    },
+                                    "B": {
+                                        "shadow": {
+                                            type: "number",
+                                            fields: {
+                                                "NUMBER": 0
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 },
