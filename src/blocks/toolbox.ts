@@ -202,13 +202,13 @@ const toolbox: Toolbox = {
             contents: [
                 {
                     kind: "block",
-                    type: "set_patch_color",
+                    type: "lexical_variable_set",
                     inputs: {
                         "VALUE": {
                             "shadow": {
-                                type: "color",
+                                type: "number",
                                 fields: {
-                                    "COLOR": "#000000"
+                                    "NUMBER": 0
                                 }
                             }
                         }
@@ -709,15 +709,23 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
-                    type: "procedures_defreturn"
+                    type: "report"
                 },
+                // {
+                //     kind: "block",
+                //     type: "procedures_defreturn"
+                // },
                 {
                     kind: "block",
                     type: "procedures_callnoreturn"
                 },
+                // {
+                //     kind: "block",
+                //     type: "procedures_callreturn"
+                // },
                 {
                     kind: "block",
-                    type: "procedures_callreturn"
+                    type: "call_manual"
                 },
                 {
                     kind: "block",

@@ -63,7 +63,7 @@ const get: BlockDefinition = function lexical_variable_get(block) {
 
 
 const to: BlockDefinition = function procedures_defnoreturn(block: any, generator) { // TODO: remove any
-	const prefix = `to ${block.getFieldValue("NAME")}`;
+	let prefix = `to ${block.getFieldValue("NAME")}`;
 
 	let parameters = "";
 	if (block.arguments_.length) {
@@ -77,11 +77,23 @@ const to: BlockDefinition = function procedures_defnoreturn(block: any, generato
 	}
 
 	const body = generator.statementToCode(block, "STACK");
+	if (body.includes("report")) {
+		prefix = `to-report ${block.getFieldValue("NAME")}`;
+	}
 
 	const suffix = "end";
 
 	return `\n${prefix}${parameters}\n${body}\n${suffix}\n`;
 }
+
+const report: BlockDefinition = createStatementBlock("report", {
+	message0: "report %1",
+	args0: [{
+		type: "input_value",
+		name: "PROCNAME"
+	}],
+	for: (block) => `report ${block.getFieldValue("VALUE") || "0"}`
+});
 
 const call_command: BlockDefinition = function procedures_callnoreturn(block: any, generator) { // TODO: remove any
 	const procedure = block.getFieldValue("PROCNAME");
@@ -94,37 +106,53 @@ const call_command: BlockDefinition = function procedures_callnoreturn(block: an
 	return procedure + args;
 }
 
-const to_report: BlockDefinition = function procedures_defreturn(block: any, generator) { // TODO: remove any
-	const prefix = `to ${block.getFieldValue("NAME")}`;
+// const to_report: BlockDefinition = function procedures_defreturn(block: any, generator) { // TODO: remove any
+// 	const prefix = `to ${block.getFieldValue("NAME")}`;
 
-	let parameters = "";
-	if (block.arguments_.length) {
-		parameters += " [ "
+// 	let parameters = "";
+// 	if (block.arguments_.length) {
+// 		parameters += " [ "
 
-		for (const parameter of block.arguments_) {
-			parameters += `${parameter} `
-		}
+// 		for (const parameter of block.arguments_) {
+// 			parameters += `${parameter} `
+// 		}
 
-		parameters += "]"
-	}
+// 		parameters += "]"
+// 	}
 
-	const body = generator.statementToCode(block, "RETURN");
+// 	const body = generator.statementToCode(block, "RETURN");
 
-	const suffix = "end";
+// 	const suffix = "end";
 
-	return `\n${prefix}${parameters}\n${body}\n${suffix}\n`;
-}
+// 	return `\n${prefix}${parameters}\n${body}\n${suffix}\n`;
+// }
 
-const call_report: BlockDefinition = function procedures_callreturn(block: any, generator) { // TODO: remove any
-	const procedure = block.getFieldValue("PROCNAME");
+// const call_report: BlockDefinition = function procedures_callreturn(block: any, generator) { // TODO: remove any
+// 	const procedure = block.getFieldValue("PROCNAME");
 
-	let args = "";
-	for (let i = 0; i < block.arguments_.length; i++) {
-		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL) || "0"}`; // TODO: add zero shadow block
-	}
+// 	let args = "";
+// 	for (let i = 0; i < block.arguments_.length; i++) {
+// 		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL) || "0"}`; // TODO: add zero shadow block
+// 	}
 
-	return [procedure + args, Order.FUNCTION_CALL];
-}
+// 	return [procedure + args, Order.FUNCTION_CALL];
+// }
+
+const call_manual: BlockDefinition = createValueBlock("call_manual", null, {
+	message0: "call %1 %2",
+	args0: [{
+		type: "field_input",
+		name: "PROCNAME"
+	}, {
+		type: "field_input",
+		name: "ARGS"
+	}],
+	inputsInline: true,
+	for: (block) => [
+		[block.getFieldValue("PROCNAME"), block.getFieldValue("ARGS")].join(" "),
+		Order.FUNCTION_CALL
+	]
+});
 
 const if_: BlockDefinition = createStatementBlock("if_", {
 	message0: "if %1\n %2",
@@ -224,9 +252,11 @@ const logicBlocks: BlockDefinition[] = [
 	user_message,
 
 	to,
+	report,
 	call_command,
-	to_report,
-	call_report,
+	// to_report,
+	// call_report,
+	call_manual,
 
 	if_,
 	ifelse,
