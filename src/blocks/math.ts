@@ -39,7 +39,7 @@ function mathFunctionBlock(name: string, color: string = "#c72216"): BlockDefini
 		colour: color,
 		for: (block, generator) => {
 			const value = generator.valueToCode(block, "N", Order.FUNCTION_CALL);
-			return [`${name} ${value}`, Order.FUNCTION_CALL];
+			return [`${netlogoCommand(name)} ${value}`, Order.FUNCTION_CALL];
 		}
 	});
 }
@@ -49,6 +49,7 @@ const random_float = mathFunctionBlock("random_float");
 const round = mathFunctionBlock("round");
 
 // count block, takes in an array or conditional blocks like
+// change checkvalue to null to build the wolf-sheep model
 const count: BlockDefinition = createValueBlock("count", "Number", {
 	message0: "count %1",
 	args0: [{

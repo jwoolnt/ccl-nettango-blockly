@@ -3,7 +3,7 @@ import { BlockDefinition } from "./types";
 import { createValueBlock, dynamicOptions, Order } from "./utilities";
 
 
-const nobody: BlockDefinition = createValueBlock("nobody", "Agent");
+const nobody: BlockDefinition = createValueBlock("nobody", ["Agent", "Boolean"]);
 
 const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {
 	message0: "%1",

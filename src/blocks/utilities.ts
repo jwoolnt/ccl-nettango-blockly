@@ -24,7 +24,8 @@ export function dynamicOptions(optionGenerator: () => string[]): DynamicDropdown
 
 
 export function netlogoCommand(type: string): string {
-	return (type.endsWith("_") ? type.slice(0, -1) : type).replace("_", "-");
+	// return (type.endsWith("_") ? type.slice(0, -1) : type).replace("_", "-");
+	return type.replace(/_/g, "-");
 }
 
 export function createBasicBlock(type: string, overrides?: Partial<BlockDefinition>): BlockDefinition {
@@ -150,7 +151,7 @@ export function createComparisonOperatorBlock(
 	symbol: string,
 	overrides?: Partial<BlockDefinition>
 ): BlockDefinition {
-	const check: ValueType[] = ["Number", "String", "Agent", "Color"];
+	const check: ValueType[] = ["Number", "String", "Agent", "Color", "Agentset"];
 	if (type == "equal" || type == "not_equal") {
 		check.push("Agentset");
 	}

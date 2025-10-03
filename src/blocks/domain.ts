@@ -105,6 +105,26 @@ export const DOMAIN_BLOCKS: { [key: string]: DomainBlocks } = {
           const target = generator.valueToCode(block, 'TARGET', Order.ATOMIC) || '';
           return `hunt ${target}`;
         }
+      },
+      {
+        type: 'ask_near_by_sheep',
+        message0: 'ask nearby sheep %1',
+        args0: [
+          {
+            type: 'input_value',
+            name: 'COMMANDS',
+            check: 'String'
+          },
+        ],
+        previousStatement: null,
+        nextStatement: null,
+        colour: 30,
+        tooltip: 'Ask nearby sheep to perform a command',
+        helpUrl: '',
+        for: (block, generator) => {
+          const commands = generator.valueToCode(block, 'COMMANDS', Order.NONE) || '';
+          return `sheep-actions[${commands}]`;
+        }
       }
     ]
   },
