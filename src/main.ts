@@ -1,7 +1,7 @@
 import * as Blockly from "blockly";
 import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
-import { save, load, downloadWorkspace, uploadWorkspace, reset, exportWithCode } from "./services/serializer";
+import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
@@ -137,7 +137,7 @@ function initWorkspaceSelector(workspace: Blockly.WorkspaceSvg, displayCodeCallb
   updateWorkspaceForDomain(workspace, 'default', displayCodeCallback);
 }
 
-// Initialize file operations (save, load, export, clear)
+// Initialize file operations (save, load, clear)
 function initFileOperations(workspace: Blockly.WorkspaceSvg, displayCodeCallback: () => void) {
   // Save workspace to file
   const saveBtn = document.getElementById('saveBtn');
@@ -166,26 +166,6 @@ function initFileOperations(workspace: Blockly.WorkspaceSvg, displayCodeCallback
       } catch (error) {
         if (error instanceof Error && error.message !== 'No file selected') {
           showNotification('Error loading workspace: ' + error.message, 'error');
-        }
-      }
-    });
-  }
-
-  // Export workspace with generated code
-  const exportBtn = document.getElementById('exportBtn');
-  if (exportBtn) {
-    exportBtn.addEventListener('click', () => {
-      const filename = prompt('Enter project name:', 'my-nettango-project');
-      if (filename) {
-        try {
-          const prefix = generateCodePrefix();
-          const code = netlogoGenerator.workspaceToCode(workspace);
-          const fullCode = prefix + code;
-          
-          exportWithCode(workspace, fullCode, filename);
-          showNotification('Project exported successfully!', 'success');
-        } catch (error) {
-          showNotification('Error exporting project: ' + (error instanceof Error ? error.message : 'Unknown error'), 'error');
         }
       }
     });
