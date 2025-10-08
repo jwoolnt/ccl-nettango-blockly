@@ -117,6 +117,51 @@ body {
   color: white;
 }
 
+
+/* Dropdown divider */
+.dropdown-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 4px 0;
+}
+
+/* Notification styles */
+.notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  padding: 14px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 10000;
+  opacity: 0;
+  transform: translateX(400px);
+  transition: all 0.3s ease;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification-success {
+  background: #4caf50;
+  color: white;
+}
+
+.notification-error {
+  background: #f44336;
+  color: white;
+}
+
+.notification-info {
+  background: #2196f3;
+  color: white;
+}
+
 /* Main container */
 .main-container {
   display: flex;

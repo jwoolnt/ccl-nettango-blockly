@@ -1,7 +1,7 @@
 import * as Blockly from "blockly";
 import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
-import { save, load } from "./services/serializer";
+import { save, load, downloadWorkspace, uploadWorkspace, reset, exportWithCode } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
@@ -93,6 +93,9 @@ if (blockEditor && codeOutput) {
   // Initialize workspace selector
   initWorkspaceSelector(ws, displayCode);
 
+  // Initialize file operations
+  initFileOperations(ws, displayCode);
+
   ws.addChangeListener((e) => {
     if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING || ws.isDragging()) {
       return;
@@ -132,4 +135,95 @@ function initWorkspaceSelector(workspace: Blockly.WorkspaceSvg, displayCodeCallb
 
   // Set initial state to default
   updateWorkspaceForDomain(workspace, 'default', displayCodeCallback);
+}
+
+// Initialize file operations (save, load, export, clear)
+function initFileOperations(workspace: Blockly.WorkspaceSvg, displayCodeCallback: () => void) {
+  // Save workspace to file
+  const saveBtn = document.getElementById('saveBtn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const filename = prompt('Enter filename:', 'my-nettango-project');
+      if (filename) {
+        try {
+          downloadWorkspace(workspace, filename);
+          showNotification('Workspace saved successfully!', 'success');
+        } catch (error) {
+          showNotification('Error saving workspace: ' + (error instanceof Error ? error.message : 'Unknown error'), 'error');
+        }
+      }
+    });
+  }
+
+  // Load workspace from file
+  const loadBtn = document.getElementById('loadBtn');
+  if (loadBtn) {
+    loadBtn.addEventListener('click', async () => {
+      try {
+        const filename = await uploadWorkspace(workspace);
+        displayCodeCallback(); // Refresh the generated code
+        showNotification(`Workspace "${filename}" loaded successfully!`, 'success');
+      } catch (error) {
+        if (error instanceof Error && error.message !== 'No file selected') {
+          showNotification('Error loading workspace: ' + error.message, 'error');
+        }
+      }
+    });
+  }
+
+  // Export workspace with generated code
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const filename = prompt('Enter project name:', 'my-nettango-project');
+      if (filename) {
+        try {
+          const prefix = generateCodePrefix();
+          const code = netlogoGenerator.workspaceToCode(workspace);
+          const fullCode = prefix + code;
+          
+          exportWithCode(workspace, fullCode, filename);
+          showNotification('Project exported successfully!', 'success');
+        } catch (error) {
+          showNotification('Error exporting project: ' + (error instanceof Error ? error.message : 'Unknown error'), 'error');
+        }
+      }
+    });
+  }
+
+  // Clear workspace
+  const clearBtn = document.getElementById('clearBtn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear the workspace?\n\nThis will delete all blocks and cannot be undone.\n\nSaving your work first.')) {
+        try {
+          reset(workspace);
+          displayCodeCallback(); // Refresh the generated code
+          showNotification('Workspace cleared', 'info');
+        } catch (error) {
+          showNotification('Error clearing workspace: ' + (error instanceof Error ? error.message : 'Unknown error'), 'error');
+        }
+      }
+    });
+  }
+}
+
+// Show notification to user
+function showNotification(message: string, type: 'success' | 'error' | 'info' = 'info') {
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+  
+  // Add to body
+  document.body.appendChild(notification);
+  
+  // Trigger animation
+  setTimeout(() => notification.classList.add('show'), 10);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
 }
