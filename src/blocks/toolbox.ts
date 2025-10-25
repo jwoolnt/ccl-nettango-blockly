@@ -54,11 +54,6 @@ const toolbox: Toolbox = {
     contents: [
         {
             kind: "category",
-            name: "Custom Blocks",
-            colour: "#673AB7", // Deep Purple
-        },
-        {
-            kind: "category",
             name: "Observer",
             colour: "#4527A0", // Deep Purple
             contents: [

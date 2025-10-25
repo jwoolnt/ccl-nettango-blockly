@@ -130,18 +130,8 @@ function setupFileMenu(workspace: any) {
             });
             break;
           case 'Save':
-            // Create a file download
-            const workspaceXml = Blockly.serialization.workspaces.save(workspace);
-            const blob = new Blob([JSON.stringify(workspaceXml)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'nettango-workspace.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // Let the main.ts file operations handle this to avoid duplicate prompts
+            document.getElementById('saveBtn')?.click();
             break;
         }
 
