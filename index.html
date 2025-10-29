@@ -26,7 +26,6 @@
             <a href="#" class="dropdown-item" id="loadBtn">Load</a>
             <a href="#" class="dropdown-item" id="saveBtn">Save</a>
             <div class="dropdown-divider"></div>
-            <!-- <a href="#" class="dropdown-item" id="exportBtn">Export All</a> -->
           </div>
         </li>
         <li class="nav-item">
@@ -67,30 +66,55 @@
         <div class="sidebar-item" id="reset">Reset</div>
       </aside>
 
-      <!-- Content Area -->
-      <div class="content-area">
-        <div class="workspace">
-          <div class="block-editor">
-            <!-- Blockly will be injected here -->
-          </div>
-          <div class="output">
-            <pre><code class="generated-code" id="generated-code">// generated code will appear here</code></pre>
-            <div class="copy-container">
-              <sub>NOTE: Only generates code for procedure blocks</sub>
-              <button class="copy-button" id="copy-button">
-                <svg class="copy-icon" viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
-                  />
-                </svg>
-                Copy
-              </button>
+      <!-- Main Wrapper for Blockly and NetLogo -->
+      <div class="main-wrapper">
+        <!-- Content Area (Blockly) -->
+        <div class="content-area">
+          <div class="workspace">
+            <div class="block-editor">
+              <!-- Blockly will be injected here -->
             </div>
+            <div class="output">
+              <pre><code class="generated-code" id="generated-code">// generated code will appear here</code></pre>
+              <div class="copy-container">
+                <sub>NOTE: Only generates code for procedure blocks</sub>
+                <button class="copy-button" id="copy-button">
+                  <svg class="copy-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                    />
+                  </svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right side: NetLogo Web -->
+        <div class="netlogo-panel">
+          <!-- <iframe 
+            id="netlogo-iframe" 
+            src="https://www.netlogoweb.org/launch#https://www.netlogoweb.org/assets/modelslib/Sample%20Models/Biology/Wolf%20Sheep%20Predation.nlogox"
+            title="NetLogo Web">
+          </iframe> -->
+          <iframe 
+            id="netlogo-iframe" 
+            src="https://netlogoweb.org/launch#NewModel"
+            title="NetLogo Web">
+          </iframe>
+          
+          <div class="netlogo-controls">
+            <button id="compile-run-btn" class="primary-btn">▶ Run</button>
+            <button id="setup-btn">Setup</button>
+            <button id="go-btn">Go</button>
+            <button id="stop-btn">Stop</button>
+            <span id="netlogo-status" class="status">Ready</span>
           </div>
         </div>
       </div>
     </div>
-
+  
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const copyButton = document.getElementById("copy-button");

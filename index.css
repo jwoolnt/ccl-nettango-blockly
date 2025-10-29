@@ -125,7 +125,7 @@ body {
   margin: 4px 0;
 }
 
-/* Notification styles */
+/* Notification */
 .notification {
   position: fixed;
   top: 80px;
@@ -166,6 +166,22 @@ body {
 .main-container {
   display: flex;
   height: calc(100vh - 60px);
+}
+
+/* Wrapper for Blockly and NetLogo */
+.main-wrapper {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+}
+
+/* Content area */
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Sidebar styles */
@@ -220,15 +236,6 @@ body {
 .color-variables {
   background-color: #e74525;
 }
-/* .color-control { background-color: #e67e22; }
-.color-math { background-color: #2ecc71; }
-.color-logic { background-color: #e74c3c; }
-.color-agents { background-color: #f1c40f; }
-.color-turtles { background-color: #1abc9c; }
-.color-patches { background-color: #3498db; }
-.color-lists { background-color: #d35400; }
-.color-strings { background-color: #8e44ad; } */
-
 /* Content area */
 .content-area {
   flex-grow: 1;
@@ -239,36 +246,16 @@ body {
 
 .workspace {
   display: flex;
-  height: 100%;
-}
-
-.block-editor {
+  flex-direction: column;
   flex: 2;
   height: 100%;
-  border-right: 1px solid #dce1e8;
-}
-/* Content Area */
-.content-area {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.workspace {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 }
 
 .block-editor {
-  flex-grow: 1;
-  border-bottom: 1px solid var(--border-color);
-  position: relative;
-  overflow: hidden;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  flex: 1;
+  height: 100%;
 }
+
 
 .output {
   height: 200px;
@@ -518,4 +505,80 @@ body {
 
 .sidebar-category:first-child:hover {
   background-color: rgba(231, 69, 37, 0.08);
+}
+
+.block-editor {
+  overflow: hidden;
+  background-color: #f9f9f9;
+  border-right: 1px solid #dce1e8;
+}
+
+/* Right Panel - NetLogo */
+.netlogo-panel {
+  width: 450px;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  border-left: 1px solid #dce1e8;
+}
+
+#netlogo-iframe {
+  flex: 1;
+  border: none;
+  width: 100%;
+  min-height: 300px;
+  order: 1;
+}
+
+.netlogo-controls {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #ffffff;
+  border-top: 1px solid #dce1e8;
+  align-items: center;
+  order: 2;
+}
+
+.netlogo-controls button {
+  padding: 10px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.primary-btn {
+  background: #4CAF50 !important;
+  color: white !important;
+  font-weight: bold;
+  border: none !important;
+}
+
+.primary-btn:hover {
+  background: #45a049 !important;
+}
+
+.netlogo-controls button:hover {
+  background: #e0e0e0;
+}
+
+.status {
+  margin-left: auto;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.status.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.error {
+  background: #f8d7da;
+  color: #721c24;
 }

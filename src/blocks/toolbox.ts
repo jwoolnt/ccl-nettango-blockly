@@ -706,6 +706,10 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "report"
                 },
+                {
+                    kind: "block",
+                    type: "show"
+                },
                 // {
                 //     kind: "block",
                 //     type: "procedures_defreturn"

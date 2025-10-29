@@ -94,6 +94,15 @@ const report: BlockDefinition = createStatementBlock("report", {
 	}],
 	for: (block, generator) => `report ${generator.valueToCode(block, "VALUE", Order.NONE)}`
 });
+const show: BlockDefinition = createStatementBlock("show", {
+	message0: "show %1",
+	args0: [{
+		type: "input_value",
+		name: "VALUE"
+	}],
+	for: (block, generator) => `show ${generator.valueToCode(block, "VALUE", Order.NONE)}`
+});
+
 
 const call_command: BlockDefinition = function procedures_callnoreturn(block: any, generator) { // TODO: remove any
 	const procedure = block.getFieldValue("PROCNAME");
@@ -227,6 +236,8 @@ const user_message: BlockDefinition = createStatementBlock("user_message", {
 	}
 });
 
+
+
 const netlogo_web: BlockDefinition = createValueBlock("netlogo_web", "Boolean", {
 	message0: "netlogo-web?",
 	for: () => ["netlogo-web?", Order.ATOMIC]
@@ -253,6 +264,7 @@ const logicBlocks: BlockDefinition[] = [
 
 	to,
 	report,
+	show,
 	call_command,
 	// to_report,
 	// call_report,
