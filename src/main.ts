@@ -145,7 +145,7 @@ function initFileOperations(workspace: Blockly.WorkspaceSvg, displayCodeCallback
   const saveBtn = document.getElementById('saveBtn');
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-      const filename = prompt('Enter filename:', 'my-nettango-project');
+      const filename = prompt('Enter filename:', 'project');
       if (filename) {
         try {
           downloadWorkspace(workspace, filename);

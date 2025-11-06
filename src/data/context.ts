@@ -41,6 +41,7 @@ const BUILT_IN_CONTEXT: NetlogoContext = {
 		"pen-mode",
 		"pen-size",
 		"shape",
+		"-default-shape",
 		"size",
 		"who",
 		"xcor",
@@ -308,4 +309,4 @@ export const getTurteAgentSets = getAgentSets(["turtles"], getTurtleBreeds);
 
 export const getLinkAgentSets = getAgentSets(["links"], getLinkBreeds);
 
-export const getAllAgentSets = getAgentSets(["turtles", "patches", "links"], getAllBreeds);
+export const getAllAgentSets = getAgentSets(["turtles", "patches", "links", "neighbors4"], getAllBreeds);
