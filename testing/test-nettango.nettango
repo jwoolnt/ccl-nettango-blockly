@@ -1,0 +1,165 @@
+{
+  "version": "1.0.0",
+  "timestamp": 1761714429511,
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "procedures_defnoreturn",
+          "id": "`Q[c*MdLB^IplTlP@[n7",
+          "x": 20,
+          "y": 140,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "setup"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "clear_all",
+                "id": "7;|fsp,|;V{YdpqyP#?9",
+                "next": {
+                  "block": {
+                    "type": "lexical_variable_set",
+                    "id": "79+4M==ZQBA~[Urzztr-",
+                    "fields": {
+                      "VAR": "global counter"
+                    },
+                    "inputs": {
+                      "VALUE": {
+                        "shadow": {
+                          "type": "number",
+                          "id": "_8f8Kgv:bRo`}]d=Q@=F",
+                          "fields": {
+                            "NUMBER": 0
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "reset_ticks",
+                        "id": "h(b5_`S!NxGDlERyIUPz"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "zZ6}%2-mA`}cl$8N1{md",
+          "x": 20,
+          "y": 300,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "go"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "lexical_variable_set",
+                "id": "[7{jX8K:p,wSfUCgxEAS",
+                "fields": {
+                  "VAR": "global counter"
+                },
+                "inputs": {
+                  "VALUE": {
+                    "shadow": {
+                      "type": "number",
+                      "id": "|.T[XGTN/~{oz=^2KX~d",
+                      "fields": {
+                        "NUMBER": 0
+                      }
+                    },
+                    "block": {
+                      "type": "addition",
+                      "id": "e5J!_-g0`Bss6%FcpbkJ",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "@?-9@,F1Esu76,llnT.7",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "lexical_variable_get",
+                            "id": "hMdWvz:{V/im5N}~(t|$",
+                            "fields": {
+                              "VAR": "global counter"
+                            }
+                          }
+                        },
+                        "B": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "D4KA;]^$2qGKg^%Eh27!",
+                            "fields": {
+                              "NUMBER": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "show",
+                    "id": "o01Htz{0Ej{V`{zEq9tx",
+                    "inputs": {
+                      "VALUE": {
+                        "block": {
+                          "type": "lexical_variable_get",
+                          "id": "v(_mMW4old}n,bYRbWP9",
+                          "fields": {
+                            "VAR": "global counter"
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "tick",
+                        "id": "nAC6Lrgqu3%O_@Z~/T74"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "counter",
+        "id": ")w}4ZJYGec3CaYemDXYA"
+      }
+    ],
+    "nettango-context": {
+      "ui": [],
+      "globals": [
+        "counter"
+      ],
+      "turtles": [],
+      "patches": [],
+      "links": []
+    }
+  },
+  "context": {
+    "ui": [],
+    "globals": [
+      "counter"
+    ],
+    "turtles": [],
+    "patches": [],
+    "links": []
+  }
+}

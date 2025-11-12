@@ -1,0 +1,2961 @@
+{
+  "version": "1.0.0",
+  "timestamp": 1759942298661,
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "procedures_defnoreturn",
+          "id": "l03}4AER4g5x-tAQw,tF",
+          "x": 149,
+          "y": 154,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "setup"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "clear_all",
+                "id": "-Rha9Q)DBckBpsAbgiQt",
+                "next": {
+                  "block": {
+                    "type": "ifelse",
+                    "id": "69CNQs5IBUDB#b|#RmL[",
+                    "inputs": {
+                      "CONDITION": {
+                        "shadow": {
+                          "type": "boolean",
+                          "id": "DwDbGv7V#iz%rxNk=Q00",
+                          "fields": {
+                            "BOOLEAN": "true"
+                          }
+                        },
+                        "block": {
+                          "type": "netlogo_web",
+                          "id": "a*R!@d0!eF8m!.,IB]Tx"
+                        }
+                      },
+                      "IF_COMMANDS": {
+                        "block": {
+                          "type": "lexical_variable_set",
+                          "id": "v$Ph5y/kYPMN#^{a8}i}",
+                          "fields": {
+                            "VAR": "global max-sheep"
+                          },
+                          "inputs": {
+                            "VALUE": {
+                              "shadow": {
+                                "type": "number",
+                                "id": "A`hT.*adkf%jF)tG*#,Y",
+                                "fields": {
+                                  "NUMBER": 10000
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "ELSE_COMMANDS": {
+                        "block": {
+                          "type": "lexical_variable_set",
+                          "id": "2)B0}}~o+7kXC{02Ic^Q",
+                          "fields": {
+                            "VAR": "global max-sheep"
+                          },
+                          "inputs": {
+                            "VALUE": {
+                              "shadow": {
+                                "type": "number",
+                                "id": "qEs?8ou;aldCY1dr/K{[",
+                                "fields": {
+                                  "NUMBER": 30000
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "ifelse",
+                        "id": "B+Diz}s6Z2jt,W.l+]HX",
+                        "inputs": {
+                          "CONDITION": {
+                            "shadow": {
+                              "type": "boolean",
+                              "id": "DwDbGv7V#iz%rxNk=Q00",
+                              "fields": {
+                                "BOOLEAN": "true"
+                              }
+                            },
+                            "block": {
+                              "type": "equal",
+                              "id": "lCXX^*]$X^?*yizHKnpu",
+                              "inputs": {
+                                "A": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "#N31-W:64z5pQc?p*:~2",
+                                    "fields": {
+                                      "NUMBER": 0
+                                    }
+                                  },
+                                  "block": {
+                                    "type": "lexical_variable_get",
+                                    "id": "Id?p8*v5?al![8(c%rqj",
+                                    "fields": {
+                                      "VAR": "global model-version"
+                                    }
+                                  }
+                                },
+                                "B": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "T#?}}VYf:}Oe=7X{l.%5",
+                                    "fields": {
+                                      "NUMBER": 0
+                                    }
+                                  },
+                                  "block": {
+                                    "type": "string",
+                                    "id": "`@;b2F{,sA:c9THj`RYQ",
+                                    "fields": {
+                                      "STRING": "sheep-wolves-grass"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "IF_COMMANDS": {
+                            "block": {
+                              "type": "ask_agent_set",
+                              "id": "B%q-*;qw=*P2bkJHseMs",
+                              "inputs": {
+                                "AGENT_SET": {
+                                  "shadow": {
+                                    "type": "agentset",
+                                    "id": "IL+0EqBzP/3G/O/sbgW@",
+                                    "fields": {
+                                      "AGENT_SET": "patches"
+                                    }
+                                  }
+                                },
+                                "COMMANDS": {
+                                  "block": {
+                                    "type": "lexical_variable_set",
+                                    "id": ",Ee]14A[,/f`;PBAJpgN",
+                                    "fields": {
+                                      "VAR": "global pcolor"
+                                    },
+                                    "inputs": {
+                                      "VALUE": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "|!97,ZiDH,qn+v{Sldj1",
+                                          "fields": {
+                                            "NUMBER": 10000
+                                          }
+                                        },
+                                        "block": {
+                                          "type": "one_of",
+                                          "id": "X`{hT60(/@a/m`[76q(%",
+                                          "inputs": {
+                                            "LIST": {
+                                              "block": {
+                                                "type": "lists_create_with",
+                                                "id": "3D^#j|d-8Wra_M%v:v}u",
+                                                "extraState": {
+                                                  "itemCount": 2
+                                                },
+                                                "inputs": {
+                                                  "ADD0": {
+                                                    "block": {
+                                                      "type": "color",
+                                                      "id": "kmypJs,$4FJVd?fMR^m4",
+                                                      "fields": {
+                                                        "COLOR": "green"
+                                                      }
+                                                    }
+                                                  },
+                                                  "ADD1": {
+                                                    "block": {
+                                                      "type": "color",
+                                                      "id": "~A.pR)?ig@Qt#8FJXAxD",
+                                                      "fields": {
+                                                        "COLOR": "brown"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "next": {
+                                      "block": {
+                                        "type": "ifelse",
+                                        "id": "(uDG-[;s?2t/vn+(QF=G",
+                                        "inputs": {
+                                          "CONDITION": {
+                                            "shadow": {
+                                              "type": "boolean",
+                                              "id": ";Et8[W/p6`=r*:T8Xe48",
+                                              "fields": {
+                                                "BOOLEAN": "true"
+                                              }
+                                            },
+                                            "block": {
+                                              "type": "equal",
+                                              "id": "USS3_tguKnVcMJ$eN:/J",
+                                              "inputs": {
+                                                "A": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "#N31-W:64z5pQc?p*:~2",
+                                                    "fields": {
+                                                      "NUMBER": 0
+                                                    }
+                                                  },
+                                                  "block": {
+                                                    "type": "lexical_variable_get",
+                                                    "id": "y@tt+:2#`kO]k_DuyK(@",
+                                                    "fields": {
+                                                      "VAR": "global pcolor"
+                                                    }
+                                                  }
+                                                },
+                                                "B": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "T#?}}VYf:}Oe=7X{l.%5",
+                                                    "fields": {
+                                                      "NUMBER": 0
+                                                    }
+                                                  },
+                                                  "block": {
+                                                    "type": "color",
+                                                    "id": "aDZu~96tqX_2cBd8dN)g",
+                                                    "fields": {
+                                                      "COLOR": "green"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "IF_COMMANDS": {
+                                            "block": {
+                                              "type": "lexical_variable_set",
+                                              "id": "VqH}k~Iij=yhY+Y2o[f.",
+                                              "fields": {
+                                                "VAR": "global countdown"
+                                              },
+                                              "inputs": {
+                                                "VALUE": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "|!97,ZiDH,qn+v{Sldj1",
+                                                    "fields": {
+                                                      "NUMBER": 10000
+                                                    }
+                                                  },
+                                                  "block": {
+                                                    "type": "lexical_variable_get",
+                                                    "id": "/E%QmFro[zBo4vjoU;4R",
+                                                    "fields": {
+                                                      "VAR": "global grass-regrowth-time"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "ELSE_COMMANDS": {
+                                            "block": {
+                                              "type": "lexical_variable_set",
+                                              "id": "T2bm5`g5N(9DshZEaQc$",
+                                              "fields": {
+                                                "VAR": "global countdown"
+                                              },
+                                              "inputs": {
+                                                "VALUE": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "|!97,ZiDH,qn+v{Sldj1",
+                                                    "fields": {
+                                                      "NUMBER": 10000
+                                                    }
+                                                  },
+                                                  "block": {
+                                                    "type": "random",
+                                                    "id": "jeSfB|qc7$Diw7vjQD2o",
+                                                    "inputs": {
+                                                      "N": {
+                                                        "shadow": {
+                                                          "type": "number",
+                                                          "id": "Q:h)RFS[bV2eNSo0_o]v",
+                                                          "fields": {
+                                                            "NUMBER": 0
+                                                          }
+                                                        },
+                                                        "block": {
+                                                          "type": "lexical_variable_get",
+                                                          "id": "HzAKZb;@d*[e{LLhO^WO",
+                                                          "fields": {
+                                                            "VAR": "global grass-regrowth-time"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "ELSE_COMMANDS": {
+                            "block": {
+                              "type": "ask_agent_set",
+                              "id": "0v_iDs{{R}F{t:[_s*S3",
+                              "inputs": {
+                                "AGENT_SET": {
+                                  "shadow": {
+                                    "type": "agentset",
+                                    "id": "7R;1$t%a,gbo6n{OgO-X",
+                                    "fields": {
+                                      "AGENT_SET": "patches"
+                                    }
+                                  }
+                                },
+                                "COMMANDS": {
+                                  "block": {
+                                    "type": "lexical_variable_set",
+                                    "id": "FCZ|YB!ff.STw7#mzM;_",
+                                    "fields": {
+                                      "VAR": "global pcolor"
+                                    },
+                                    "inputs": {
+                                      "VALUE": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "|!97,ZiDH,qn+v{Sldj1",
+                                          "fields": {
+                                            "NUMBER": 10000
+                                          }
+                                        },
+                                        "block": {
+                                          "type": "color",
+                                          "id": "wo#*Cirkr7#v?J/pq3{J",
+                                          "fields": {
+                                            "COLOR": "green"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "next": {
+                          "block": {
+                            "type": "create_breeds",
+                            "id": "p::9hH:wsWQ(:E-UxHl=",
+                            "fields": {
+                              "BREED": "sheep"
+                            },
+                            "inputs": {
+                              "COUNT": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "Sd@^{K|Y9=@ZolJ32a.o",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                },
+                                "block": {
+                                  "type": "lexical_variable_get",
+                                  "id": "#!qu]Q+PslLZ3eGhuy9[",
+                                  "fields": {
+                                    "VAR": "global initial-number-sheep"
+                                  }
+                                }
+                              },
+                              "COMMANDS": {
+                                "block": {
+                                  "type": "lexical_variable_set",
+                                  "id": "#2@[{.xPnq-n?/a{FeZy",
+                                  "fields": {
+                                    "VAR": "global shape"
+                                  },
+                                  "inputs": {
+                                    "VALUE": {
+                                      "shadow": {
+                                        "type": "number",
+                                        "id": "|!97,ZiDH,qn+v{Sldj1",
+                                        "fields": {
+                                          "NUMBER": 10000
+                                        }
+                                      },
+                                      "block": {
+                                        "type": "string",
+                                        "id": "#U/AF^xy6nN{yDb{+#Q#",
+                                        "fields": {
+                                          "STRING": "sheep"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "next": {
+                                    "block": {
+                                      "type": "lexical_variable_set",
+                                      "id": "3|V_CR[MB]-Yv{ag/(3o",
+                                      "fields": {
+                                        "VAR": "global color"
+                                      },
+                                      "inputs": {
+                                        "VALUE": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "|!97,ZiDH,qn+v{Sldj1",
+                                            "fields": {
+                                              "NUMBER": 10000
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "color",
+                                            "id": "VXa$(zq9Xo0J~DJM^C9/",
+                                            "fields": {
+                                              "COLOR": "white"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "next": {
+                                        "block": {
+                                          "type": "lexical_variable_set",
+                                          "id": "$$}9+lVEzTH|pa_5H:2Z",
+                                          "fields": {
+                                            "VAR": "global size"
+                                          },
+                                          "inputs": {
+                                            "VALUE": {
+                                              "shadow": {
+                                                "type": "number",
+                                                "id": "|!97,ZiDH,qn+v{Sldj1",
+                                                "fields": {
+                                                  "NUMBER": 1.5
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "next": {
+                                            "block": {
+                                              "type": "lexical_variable_set",
+                                              "id": "A66#@6bS]sDs4D]YlV]k",
+                                              "fields": {
+                                                "VAR": "global label-color"
+                                              },
+                                              "inputs": {
+                                                "VALUE": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "wutVW=Yw8XWbci}p`3x*",
+                                                    "fields": {
+                                                      "NUMBER": 1.5
+                                                    }
+                                                  },
+                                                  "block": {
+                                                    "type": "color",
+                                                    "id": "+X/#YpZI9M-3b:Ccn@)%",
+                                                    "fields": {
+                                                      "COLOR": "blue"
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "next": {
+                                                "block": {
+                                                  "type": "lexical_variable_set",
+                                                  "id": "2QO~BDI_@WPR/lE53m~+",
+                                                  "fields": {
+                                                    "VAR": "global energy"
+                                                  },
+                                                  "inputs": {
+                                                    "VALUE": {
+                                                      "shadow": {
+                                                        "type": "number",
+                                                        "id": "wutVW=Yw8XWbci}p`3x*",
+                                                        "fields": {
+                                                          "NUMBER": 1.5
+                                                        }
+                                                      },
+                                                      "block": {
+                                                        "type": "random",
+                                                        "id": "!HQxFc1d+r?iZa~NJq!i",
+                                                        "inputs": {
+                                                          "N": {
+                                                            "shadow": {
+                                                              "type": "number",
+                                                              "id": "Q:h)RFS[bV2eNSo0_o]v",
+                                                              "fields": {
+                                                                "NUMBER": 0
+                                                              }
+                                                            },
+                                                            "block": {
+                                                              "type": "multiplication",
+                                                              "id": "EP-yi;VF7I47`[JBV:+t",
+                                                              "inputs": {
+                                                                "A": {
+                                                                  "shadow": {
+                                                                    "type": "number",
+                                                                    "id": "7Nbj?c^CT4Xj?}RG~]J9",
+                                                                    "fields": {
+                                                                      "NUMBER": 2
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "B": {
+                                                                  "block": {
+                                                                    "type": "lexical_variable_get",
+                                                                    "id": "*_=g+q;eD4bLnhWltZ#=",
+                                                                    "fields": {
+                                                                      "VAR": "global sheep-gain-from-food"
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "next": {
+                                                    "block": {
+                                                      "type": "setxy",
+                                                      "id": "u@5BHJH{YyewbE1t^k|w",
+                                                      "inputs": {
+                                                        "X": {
+                                                          "shadow": {
+                                                            "type": "random_xcor",
+                                                            "id": "PnJ2j9$sP1#ca~CXx:!*"
+                                                          }
+                                                        },
+                                                        "Y": {
+                                                          "shadow": {
+                                                            "type": "random_ycor",
+                                                            "id": ")AOZ#n;(71)@B2-/Y{G~"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "next": {
+                              "block": {
+                                "type": "create_breeds",
+                                "id": "BOS?B-8s=((k%+AZR-hD",
+                                "fields": {
+                                  "BREED": "wolves"
+                                },
+                                "inputs": {
+                                  "COUNT": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "Sd@^{K|Y9=@ZolJ32a.o",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "aEx#)se#Ix}]is)c_E`!",
+                                      "fields": {
+                                        "VAR": "global initial-number-wolves"
+                                      }
+                                    }
+                                  },
+                                  "COMMANDS": {
+                                    "block": {
+                                      "type": "lexical_variable_set",
+                                      "id": "j[@fw5,!lm|s.7}Cjr|n",
+                                      "fields": {
+                                        "VAR": "global shape"
+                                      },
+                                      "inputs": {
+                                        "VALUE": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "rntm+?CwL3daBSE1EDfH",
+                                            "fields": {
+                                              "NUMBER": 10000
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "string",
+                                            "id": "RqU#mX[H/@/2~,fjEr$(",
+                                            "fields": {
+                                              "STRING": "wolf"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "next": {
+                                        "block": {
+                                          "type": "lexical_variable_set",
+                                          "id": "TquM-f}F3z4Q0OzJN@l!",
+                                          "fields": {
+                                            "VAR": "global color"
+                                          },
+                                          "inputs": {
+                                            "VALUE": {
+                                              "shadow": {
+                                                "type": "number",
+                                                "id": "vAPA!z70u-d}Rn6)wAuT",
+                                                "fields": {
+                                                  "NUMBER": 10000
+                                                }
+                                              },
+                                              "block": {
+                                                "type": "color",
+                                                "id": "BlUS]67.Ubqp2?SD=Uxf",
+                                                "fields": {
+                                                  "COLOR": "black"
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "next": {
+                                            "block": {
+                                              "type": "lexical_variable_set",
+                                              "id": "XMq[_.cO@6SS;#.J6Gb$",
+                                              "fields": {
+                                                "VAR": "global size"
+                                              },
+                                              "inputs": {
+                                                "VALUE": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "V8iP,hmf~.?NoC679uS3",
+                                                    "fields": {
+                                                      "NUMBER": 2
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "next": {
+                                                "block": {
+                                                  "type": "lexical_variable_set",
+                                                  "id": "[vd9HqCDaNJ!+07q}u`W",
+                                                  "fields": {
+                                                    "VAR": "global energy"
+                                                  },
+                                                  "inputs": {
+                                                    "VALUE": {
+                                                      "shadow": {
+                                                        "type": "number",
+                                                        "id": "wutVW=Yw8XWbci}p`3x*",
+                                                        "fields": {
+                                                          "NUMBER": 1.5
+                                                        }
+                                                      },
+                                                      "block": {
+                                                        "type": "random",
+                                                        "id": "TAt]FlYB6BNS-iWo5S_y",
+                                                        "inputs": {
+                                                          "N": {
+                                                            "shadow": {
+                                                              "type": "number",
+                                                              "id": "Q:h)RFS[bV2eNSo0_o]v",
+                                                              "fields": {
+                                                                "NUMBER": 0
+                                                              }
+                                                            },
+                                                            "block": {
+                                                              "type": "multiplication",
+                                                              "id": "Ev%L(P(vN!NI,Mzvli$5",
+                                                              "inputs": {
+                                                                "A": {
+                                                                  "shadow": {
+                                                                    "type": "number",
+                                                                    "id": "_J!:c{B7GFu3qDCD}v9~",
+                                                                    "fields": {
+                                                                      "NUMBER": 2
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "B": {
+                                                                  "block": {
+                                                                    "type": "lexical_variable_get",
+                                                                    "id": "sGv~Th]H]yOL1`Fu.Wud",
+                                                                    "fields": {
+                                                                      "VAR": "global wolf-gain-from-food"
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "next": {
+                                                    "block": {
+                                                      "type": "setxy",
+                                                      "id": "xa}BXwBK`7i,E/mRw00f",
+                                                      "inputs": {
+                                                        "X": {
+                                                          "shadow": {
+                                                            "type": "random_xcor",
+                                                            "id": "eJJ1|9o53AA^icD=Lm~T"
+                                                          }
+                                                        },
+                                                        "Y": {
+                                                          "shadow": {
+                                                            "type": "random_ycor",
+                                                            "id": "~j#6%%[sdroG#(JyBf]g"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "next": {
+                                  "block": {
+                                    "type": "procedures_callnoreturn",
+                                    "id": "Ki}l-euhu6/Sd8_8_*Q6",
+                                    "extraState": "<mutation name=\"displaylabels\"></mutation>",
+                                    "fields": {
+                                      "PROCNAME": "displaylabels"
+                                    },
+                                    "next": {
+                                      "block": {
+                                        "type": "reset_ticks",
+                                        "id": "g3}7({.yaa.(2/2sex25"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "G##85%^.Uve:nMt9H{/6",
+          "x": 860,
+          "y": 1300,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "move"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "right",
+                "id": "#:am:utXnC,!5.U$W-a+",
+                "inputs": {
+                  "DISTANCE": {
+                    "shadow": {
+                      "type": "number",
+                      "id": "ge~aVmukd.|ZHTc3nY#w",
+                      "fields": {
+                        "NUMBER": 0
+                      }
+                    },
+                    "block": {
+                      "type": "random",
+                      "id": "Fv^F+,OXBz(!V2Jx1^8^",
+                      "inputs": {
+                        "N": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "dk=y-I_{-gN=Ue4#q^O/",
+                            "fields": {
+                              "NUMBER": 50
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "left",
+                    "id": "L7GUT)C_*$tRY!gl?sHt",
+                    "inputs": {
+                      "DISTANCE": {
+                        "shadow": {
+                          "type": "number",
+                          "id": "qRC#:q6Y1X@UUrIrqj,?",
+                          "fields": {
+                            "NUMBER": 0
+                          }
+                        },
+                        "block": {
+                          "type": "random",
+                          "id": "E%/#0)|aHC:+]@AWA8i6",
+                          "inputs": {
+                            "N": {
+                              "shadow": {
+                                "type": "number",
+                                "id": "44(-LIEfScrzBWTV7GQi",
+                                "fields": {
+                                  "NUMBER": 50
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "forward",
+                        "id": "BP,[M)cdF`c4ll(0YVzA",
+                        "inputs": {
+                          "DISTANCE": {
+                            "shadow": {
+                              "type": "number",
+                              "id": "e*QB_;:9R$7HfVd;4k{v",
+                              "fields": {
+                                "NUMBER": 1
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "gG!)~i01[_+Q5SLZ8Qa,",
+          "x": 900,
+          "y": 220,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "go"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "m`!F.ze/I]#vCq`*bz::",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "6kx[TtBV;%k-`!W1-R~+",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "not",
+                      "id": "IikAjP3x_.XwJL4,e*Ux",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "boolean",
+                            "id": "i{A8-,Og(un]3;RQ$B.m",
+                            "fields": {
+                              "BOOLEAN": "true"
+                            }
+                          },
+                          "block": {
+                            "type": "any",
+                            "id": "[9cbE,)UY|/wF9R.%Z?m",
+                            "inputs": {
+                              "AGENT_SET": {
+                                "block": {
+                                  "type": "agentset",
+                                  "id": "jrz.rDEOqT|3XxbI_4lk",
+                                  "fields": {
+                                    "AGENT_SET": "turtles"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "stop",
+                      "id": "$f|[/lKKZl@72.vRE_ia"
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "if_",
+                    "id": "mi_Icv7IG^-h8r|zNoG+",
+                    "inputs": {
+                      "CONDITION": {
+                        "shadow": {
+                          "type": "boolean",
+                          "id": "6kx[TtBV;%k-`!W1-R~+",
+                          "fields": {
+                            "BOOLEAN": "true"
+                          }
+                        },
+                        "block": {
+                          "type": "and",
+                          "id": "CXRAZsK.^3PE/#VWSbp}",
+                          "inputs": {
+                            "A": {
+                              "shadow": {
+                                "type": "boolean",
+                                "id": "Qm#]hO1nq.@L,X3wWqa}",
+                                "fields": {
+                                  "BOOLEAN": "true"
+                                }
+                              },
+                              "block": {
+                                "type": "not",
+                                "id": "qlX]pMEi{O],1OLz3Fh+",
+                                "inputs": {
+                                  "A": {
+                                    "shadow": {
+                                      "type": "boolean",
+                                      "id": "i{A8-,Og(un]3;RQ$B.m",
+                                      "fields": {
+                                        "BOOLEAN": "true"
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "any",
+                                      "id": "hZ{])zy*GSz6|X4*]^GO",
+                                      "inputs": {
+                                        "AGENT_SET": {
+                                          "block": {
+                                            "type": "agentset",
+                                            "id": "c*U/xqBU?6AbZEb_`cW(",
+                                            "fields": {
+                                              "AGENT_SET": "wolves"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "B": {
+                              "shadow": {
+                                "type": "boolean",
+                                "id": "+nN3-H]B[CpRFh)#ypTN",
+                                "fields": {
+                                  "BOOLEAN": "true"
+                                }
+                              },
+                              "block": {
+                                "type": "greater_than",
+                                "id": "#uUV,$Y55N_{zM9.Soy]",
+                                "inputs": {
+                                  "A": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "vMCkZFBT)bC1?U:+/o%$",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "count",
+                                      "id": "pMa@,l?IGKlddB-_g+?^",
+                                      "inputs": {
+                                        "AGENT_SET": {
+                                          "shadow": {
+                                            "type": "agentset",
+                                            "id": "JcjzfSLy;WtS%-zy:WP3",
+                                            "fields": {
+                                              "AGENT_SET": "sheep"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "B": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "QqND?(wS[f_Vrnvu6Bw}",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "sR.1`ktuJ)LHZzrcU.]:",
+                                      "fields": {
+                                        "VAR": "global max-sheep"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "COMMANDS": {
+                        "block": {
+                          "type": "user_message",
+                          "id": "Mpa^O;Q`Hd{UmY-yISsq",
+                          "inputs": {
+                            "MESSAGE": {
+                              "block": {
+                                "type": "string",
+                                "id": "j$g5LED}XFjaF@*Rc;x#",
+                                "fields": {
+                                  "STRING": "The sheep have inherited the earth"
+                                }
+                              }
+                            }
+                          },
+                          "next": {
+                            "block": {
+                              "type": "stop",
+                              "id": "RF%@#B~uagP`@#,7g{40"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "ask_agent_set",
+                        "id": "%ejVmhrA5VPXaoQZTg$C",
+                        "inputs": {
+                          "AGENT_SET": {
+                            "shadow": {
+                              "type": "agentset",
+                              "id": "qQpIeBnYHhBgquc3Z}78",
+                              "fields": {
+                                "AGENT_SET": "sheep"
+                              }
+                            }
+                          },
+                          "COMMANDS": {
+                            "block": {
+                              "type": "procedures_callnoreturn",
+                              "id": "oQq:fy6*9y~|g)XfiXsv",
+                              "extraState": "<mutation name=\"move\"></mutation>",
+                              "fields": {
+                                "PROCNAME": "move"
+                              },
+                              "next": {
+                                "block": {
+                                  "type": "if_",
+                                  "id": "K*2p=1y1CIEB66gjC2Vj",
+                                  "inputs": {
+                                    "CONDITION": {
+                                      "shadow": {
+                                        "type": "boolean",
+                                        "id": "W(55cTX2MsZI4%Pf7Iw+",
+                                        "fields": {
+                                          "BOOLEAN": "true"
+                                        }
+                                      },
+                                      "block": {
+                                        "type": "equal",
+                                        "id": "WO_9514}t$o^N{bZ|bzo",
+                                        "inputs": {
+                                          "A": {
+                                            "shadow": {
+                                              "type": "number",
+                                              "id": "#N31-W:64z5pQc?p*:~2",
+                                              "fields": {
+                                                "NUMBER": 0
+                                              }
+                                            },
+                                            "block": {
+                                              "type": "lexical_variable_get",
+                                              "id": "_HcKb-)qdgUYLS@5I~9`",
+                                              "fields": {
+                                                "VAR": "global model-version"
+                                              }
+                                            }
+                                          },
+                                          "B": {
+                                            "shadow": {
+                                              "type": "number",
+                                              "id": "T#?}}VYf:}Oe=7X{l.%5",
+                                              "fields": {
+                                                "NUMBER": 0
+                                              }
+                                            },
+                                            "block": {
+                                              "type": "string",
+                                              "id": ",ic:yH?H,e:ZCOk/+dVl",
+                                              "fields": {
+                                                "STRING": "sheep-wolves-grass"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "COMMANDS": {
+                                      "block": {
+                                        "type": "lexical_variable_set",
+                                        "id": "uyhFNiZeuyKurf28DB5`",
+                                        "fields": {
+                                          "VAR": "global energy"
+                                        },
+                                        "inputs": {
+                                          "VALUE": {
+                                            "shadow": {
+                                              "type": "number",
+                                              "id": "S#Rhw0O0r+G=K@(SCD;7",
+                                              "fields": {
+                                                "NUMBER": 0
+                                              }
+                                            },
+                                            "block": {
+                                              "type": "subtraction",
+                                              "id": "oKEVK~2v)U^P0E;!p=9`",
+                                              "inputs": {
+                                                "A": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "R5|M..ClxU[_QZ-uH!%x",
+                                                    "fields": {
+                                                      "NUMBER": 0
+                                                    }
+                                                  },
+                                                  "block": {
+                                                    "type": "lexical_variable_get",
+                                                    "id": "EF%%*9m=c@.iROf{l3K}",
+                                                    "fields": {
+                                                      "VAR": "global energy"
+                                                    }
+                                                  }
+                                                },
+                                                "B": {
+                                                  "shadow": {
+                                                    "type": "number",
+                                                    "id": "6z?6fj5aw3TSfzEz(Q^=",
+                                                    "fields": {
+                                                      "NUMBER": 1
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "next": {
+                                          "block": {
+                                            "type": "procedures_callnoreturn",
+                                            "id": "Cq{jR?0%G*bKgTtzpjKX",
+                                            "extraState": "<mutation name=\"eatgrass\"></mutation>",
+                                            "fields": {
+                                              "PROCNAME": "eatgrass"
+                                            },
+                                            "next": {
+                                              "block": {
+                                                "type": "procedures_callnoreturn",
+                                                "id": "(Aicu,v1r0@IH3`{Rhf2",
+                                                "extraState": "<mutation name=\"death\"></mutation>",
+                                                "fields": {
+                                                  "PROCNAME": "death"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "next": {
+                                    "block": {
+                                      "type": "procedures_callnoreturn",
+                                      "id": "vv63UY-BZ|~y{!ggxrb_",
+                                      "extraState": "<mutation name=\"reproducesheep\"></mutation>",
+                                      "fields": {
+                                        "PROCNAME": "reproducesheep"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "next": {
+                          "block": {
+                            "type": "ask_agent_set",
+                            "id": "8M%4(+0a1RO^gpun.AA!",
+                            "inputs": {
+                              "AGENT_SET": {
+                                "shadow": {
+                                  "type": "agentset",
+                                  "id": "35a51@0GC}B*F!OE7D5a",
+                                  "fields": {
+                                    "AGENT_SET": "wolves"
+                                  }
+                                }
+                              },
+                              "COMMANDS": {
+                                "block": {
+                                  "type": "procedures_callnoreturn",
+                                  "id": "v=}`CAIy8.yu2x9A8^e?",
+                                  "extraState": "<mutation name=\"move\"></mutation>",
+                                  "fields": {
+                                    "PROCNAME": "move"
+                                  },
+                                  "next": {
+                                    "block": {
+                                      "type": "lexical_variable_set",
+                                      "id": "~:88VN{f,4`3wQ6Sb|Kf",
+                                      "fields": {
+                                        "VAR": "global energy"
+                                      },
+                                      "inputs": {
+                                        "VALUE": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "S#Rhw0O0r+G=K@(SCD;7",
+                                            "fields": {
+                                              "NUMBER": 0
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "subtraction",
+                                            "id": "NXP?H#1,pH/umK.S1fay",
+                                            "inputs": {
+                                              "A": {
+                                                "shadow": {
+                                                  "type": "number",
+                                                  "id": "R5|M..ClxU[_QZ-uH!%x",
+                                                  "fields": {
+                                                    "NUMBER": 0
+                                                  }
+                                                },
+                                                "block": {
+                                                  "type": "lexical_variable_get",
+                                                  "id": "`_TqDUtBEyrGOTy[s*?,",
+                                                  "fields": {
+                                                    "VAR": "global energy"
+                                                  }
+                                                }
+                                              },
+                                              "B": {
+                                                "shadow": {
+                                                  "type": "number",
+                                                  "id": "ThpV5t*@4YkA5%Yfhd*?",
+                                                  "fields": {
+                                                    "NUMBER": 1
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "next": {
+                                        "block": {
+                                          "type": "procedures_callnoreturn",
+                                          "id": "Uc#A2%)vx~3S=dhS^{.6",
+                                          "extraState": "<mutation name=\"eatsheep\"></mutation>",
+                                          "fields": {
+                                            "PROCNAME": "eatsheep"
+                                          },
+                                          "next": {
+                                            "block": {
+                                              "type": "procedures_callnoreturn",
+                                              "id": "wNpwz0_O=85@7*u*9kG:",
+                                              "extraState": "<mutation name=\"death\"></mutation>",
+                                              "fields": {
+                                                "PROCNAME": "death"
+                                              },
+                                              "next": {
+                                                "block": {
+                                                  "type": "procedures_callnoreturn",
+                                                  "id": "(aQK5|x3x$+:!m?O9Hri",
+                                                  "extraState": "<mutation name=\"reproducewolves\"></mutation>",
+                                                  "fields": {
+                                                    "PROCNAME": "reproducewolves"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "next": {
+                              "block": {
+                                "type": "if_",
+                                "id": "cbS5z,T?WA3`S7zlvsO@",
+                                "inputs": {
+                                  "CONDITION": {
+                                    "shadow": {
+                                      "type": "boolean",
+                                      "id": "/PsmfmjTe,@`p*6lHUa4",
+                                      "fields": {
+                                        "BOOLEAN": "true"
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "equal",
+                                      "id": "WHI9bH:)1nQbD)9Cj{M3",
+                                      "inputs": {
+                                        "A": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "#N31-W:64z5pQc?p*:~2",
+                                            "fields": {
+                                              "NUMBER": 0
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "lexical_variable_get",
+                                            "id": "^0fZqfhzCb%f6u`yjjD`",
+                                            "fields": {
+                                              "VAR": "global model-version"
+                                            }
+                                          }
+                                        },
+                                        "B": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "T#?}}VYf:}Oe=7X{l.%5",
+                                            "fields": {
+                                              "NUMBER": 0
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "string",
+                                            "id": "Sjd47[$[GX0C6CVwD,}b",
+                                            "fields": {
+                                              "STRING": "sheep-wolves-grass"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "COMMANDS": {
+                                    "block": {
+                                      "type": "ask_agent_set",
+                                      "id": "q[XXD.HokWXo;_$Oa_N(",
+                                      "inputs": {
+                                        "AGENT_SET": {
+                                          "shadow": {
+                                            "type": "agentset",
+                                            "id": "qfok4[_89I5D-/:Q+J9v",
+                                            "fields": {
+                                              "AGENT_SET": "patches"
+                                            }
+                                          }
+                                        },
+                                        "COMMANDS": {
+                                          "block": {
+                                            "type": "procedures_callnoreturn",
+                                            "id": "vR7iH@FWPI.,/S5FI/-H",
+                                            "extraState": "<mutation name=\"growgrass\"></mutation>",
+                                            "fields": {
+                                              "PROCNAME": "growgrass"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "next": {
+                                  "block": {
+                                    "type": "tick",
+                                    "id": "TYilVY6rAY94a]L9wIe:",
+                                    "next": {
+                                      "block": {
+                                        "type": "procedures_callnoreturn",
+                                        "id": "`m//7.xXh3S|Vbp!H6WY",
+                                        "extraState": "<mutation name=\"displaylabels\"></mutation>",
+                                        "fields": {
+                                          "PROCNAME": "displaylabels"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "%L!U;nCa7Sv[UJL-q}uc",
+          "x": 2660,
+          "y": 500,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "displaylabels"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "ask_agent_set",
+                "id": "M`)7Rzg9qo,D6Ny!f[xX",
+                "inputs": {
+                  "AGENT_SET": {
+                    "shadow": {
+                      "type": "agentset",
+                      "id": "83=5Gm8^VHz#Oqm?|gz)",
+                      "fields": {
+                        "AGENT_SET": "turtles"
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "lexical_variable_set",
+                      "id": "HH]s@86iD%]p8IL@b`+Q",
+                      "fields": {
+                        "VAR": "global label"
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "Jsj#o?/#X4A*%0?!x|AW",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "string",
+                            "id": "`!^e^X-j[,{3Hd#rHV?6",
+                            "fields": {
+                              "STRING": ""
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "if_",
+                    "id": "Jf[JoPFSyU~G.o|Z3S=3",
+                    "inputs": {
+                      "CONDITION": {
+                        "shadow": {
+                          "type": "boolean",
+                          "id": "/ODzP`4pVMB,fnMl1F_Z",
+                          "fields": {
+                            "BOOLEAN": "true"
+                          }
+                        },
+                        "block": {
+                          "type": "lexical_variable_get",
+                          "id": "Sat}d1|p]NB]*Q7u6zLG",
+                          "fields": {
+                            "VAR": "global show-energy?"
+                          }
+                        }
+                      },
+                      "COMMANDS": {
+                        "block": {
+                          "type": "ask_agent_set",
+                          "id": "4AS,v/T|,{-eHIZjwK96",
+                          "inputs": {
+                            "AGENT_SET": {
+                              "shadow": {
+                                "type": "agentset",
+                                "id": "do}F`OiWsGu0af{Suy`C",
+                                "fields": {
+                                  "AGENT_SET": "wolves"
+                                }
+                              }
+                            },
+                            "COMMANDS": {
+                              "block": {
+                                "type": "lexical_variable_set",
+                                "id": "J2+M+amI(`p{%J[7z14l",
+                                "fields": {
+                                  "VAR": "global label"
+                                },
+                                "inputs": {
+                                  "VALUE": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "Jsj#o?/#X4A*%0?!x|AW",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "string",
+                                      "id": "|rY6XQp=M|IP{Z,7eqVY",
+                                      "fields": {
+                                        "STRING": ""
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "next": {
+                            "block": {
+                              "type": "if_",
+                              "id": "EtyWDMU_7i/IL5R|AXsD",
+                              "inputs": {
+                                "CONDITION": {
+                                  "shadow": {
+                                    "type": "boolean",
+                                    "id": "pooDIJArGLZ#aLKzH?3y",
+                                    "fields": {
+                                      "BOOLEAN": "true"
+                                    }
+                                  },
+                                  "block": {
+                                    "type": "equal",
+                                    "id": "C%w:1zgQd=S*@:=Kw+l@",
+                                    "inputs": {
+                                      "A": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "#N31-W:64z5pQc?p*:~2",
+                                          "fields": {
+                                            "NUMBER": 0
+                                          }
+                                        },
+                                        "block": {
+                                          "type": "lexical_variable_get",
+                                          "id": "U.[u1^znpCiW-jO1rJSz",
+                                          "fields": {
+                                            "VAR": "global model-version"
+                                          }
+                                        }
+                                      },
+                                      "B": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "T#?}}VYf:}Oe=7X{l.%5",
+                                          "fields": {
+                                            "NUMBER": 0
+                                          }
+                                        },
+                                        "block": {
+                                          "type": "string",
+                                          "id": "x[^7{yZ5Z;8yQI%.X)t?",
+                                          "fields": {
+                                            "STRING": "sheep-wolves-grass"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "COMMANDS": {
+                                  "block": {
+                                    "type": "ask_agent_set",
+                                    "id": "+ySkV%))Fzhf{+U0Z/jP",
+                                    "inputs": {
+                                      "AGENT_SET": {
+                                        "shadow": {
+                                          "type": "agentset",
+                                          "id": "/EyHlToY^D/e*R4s)qJ(",
+                                          "fields": {
+                                            "AGENT_SET": "sheep"
+                                          }
+                                        }
+                                      },
+                                      "COMMANDS": {
+                                        "block": {
+                                          "type": "lexical_variable_set",
+                                          "id": "Tp@P9.Q3$0feDrFfQ6MR",
+                                          "fields": {
+                                            "VAR": "global label"
+                                          },
+                                          "inputs": {
+                                            "VALUE": {
+                                              "shadow": {
+                                                "type": "number",
+                                                "id": "Jsj#o?/#X4A*%0?!x|AW",
+                                                "fields": {
+                                                  "NUMBER": 0
+                                                }
+                                              },
+                                              "block": {
+                                                "type": "round",
+                                                "id": "Fn,(X9I5rHWk{Rokvtgs",
+                                                "inputs": {
+                                                  "N": {
+                                                    "shadow": {
+                                                      "type": "number",
+                                                      "id": "5G}-|H?1EO*s[6~(@5Kk",
+                                                      "fields": {
+                                                        "NUMBER": 0
+                                                      }
+                                                    },
+                                                    "block": {
+                                                      "type": "lexical_variable_get",
+                                                      "id": "c_ptWU(+@[f8Xz~u8(8%",
+                                                      "fields": {
+                                                        "VAR": "global energy"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "*zy6wzB8cH+vI%E_ZUsJ",
+          "x": 500,
+          "y": 1420,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "eatgrass"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "FVdI2_nT_%C!VuBw/hwD",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "h4X)*Wy_|TkS6oe:=7n?",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "equal",
+                      "id": "7yqVr~%XY@/=aSm#Aj~1",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "~[v5^*y8vfl07tRukGxf",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "lexical_variable_get",
+                            "id": "k,ukCjYlO_Et#6-`gHhk",
+                            "fields": {
+                              "VAR": "global pcolor"
+                            }
+                          }
+                        },
+                        "B": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "WXLy$eR0Jt^/;@2M)p`Z",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "color",
+                            "id": "M$C%tab_w|Y%Kj@TC2gY",
+                            "fields": {
+                              "COLOR": "green"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "lexical_variable_set",
+                      "id": "k,GK_[p~^oDATo?rB[n~",
+                      "fields": {
+                        "VAR": "global pcolor"
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "L(^4O_xUcgM(,~uxa/B0",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "color",
+                            "id": "]=Ff^%g/9un@.@{*j36N",
+                            "fields": {
+                              "COLOR": "brown"
+                            }
+                          }
+                        }
+                      },
+                      "next": {
+                        "block": {
+                          "type": "lexical_variable_set",
+                          "id": "QZ~YJKSdF/Z(~Km`e],=",
+                          "fields": {
+                            "VAR": "global energy"
+                          },
+                          "inputs": {
+                            "VALUE": {
+                              "shadow": {
+                                "type": "number",
+                                "id": "L(^4O_xUcgM(,~uxa/B0",
+                                "fields": {
+                                  "NUMBER": 0
+                                }
+                              },
+                              "block": {
+                                "type": "addition",
+                                "id": "_cAf%.]+XMpg9qCD(WBW",
+                                "inputs": {
+                                  "A": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "9P^@LBz8iJr[}5|NvH7l",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "#KoPJ%nO8$[#}.DAwYyc",
+                                      "fields": {
+                                        "VAR": "global energy"
+                                      }
+                                    }
+                                  },
+                                  "B": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "O(%TP@gvTX2}e{V6,jI6",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "S3,SK?t$S7TY[OQgK#c^",
+                                      "fields": {
+                                        "VAR": "global sheep-gain-from-food"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "HI*^*z?z=S%}:j51f6B|",
+          "x": 1740,
+          "y": 460,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "eatsheep"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "simple_local_declaration_statement",
+                "id": "[z~{X*aBwP5Sg[@0@RVm",
+                "fields": {
+                  "VAR": "prey"
+                },
+                "inputs": {
+                  "DECL": {
+                    "shadow": {
+                      "type": "number",
+                      "id": "gX__bA.*VqD;.g`j^I//",
+                      "fields": {
+                        "NUMBER": 0
+                      }
+                    },
+                    "block": {
+                      "type": "one_of",
+                      "id": "$K2x/wc;k$n2ignw/bk:",
+                      "inputs": {
+                        "LIST": {
+                          "block": {
+                            "type": "agentset_here",
+                            "id": "=@US_CNzR3vOf]AT_$N6",
+                            "fields": {
+                              "AGENT_SET": "sheep"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "DO": {
+                    "block": {
+                      "type": "if_",
+                      "id": "PAn|w9+zdmc~jSa=e*3v",
+                      "inputs": {
+                        "CONDITION": {
+                          "shadow": {
+                            "type": "boolean",
+                            "id": "RKz@;7^8qS$Lr+uLCN;:",
+                            "fields": {
+                              "BOOLEAN": "true"
+                            }
+                          },
+                          "block": {
+                            "type": "not_equal",
+                            "id": "Gs-;h,v1Avx23s?1]}wP",
+                            "inputs": {
+                              "A": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": ".|J}^$TJRbrAJ3i!-Fl7",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                },
+                                "block": {
+                                  "type": "lexical_variable_get",
+                                  "id": "r=c:emA5xqk.0=o{lgLG",
+                                  "fields": {
+                                    "VAR": "prey"
+                                  }
+                                }
+                              },
+                              "B": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "NXr?eXM/R6L5M_rzqi_%",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                },
+                                "block": {
+                                  "type": "nobody",
+                                  "id": "]7Mm*YdK/XJ8x{LcPB.s"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "COMMANDS": {
+                          "block": {
+                            "type": "ask_agent_set",
+                            "id": "!,4WQTMG0?6Dl!pH?dZM",
+                            "inputs": {
+                              "AGENT_SET": {
+                                "shadow": {
+                                  "type": "agentset",
+                                  "id": "03/bU%*{AyIodc#SI(R:",
+                                  "fields": {
+                                    "AGENT_SET": "turtles"
+                                  }
+                                },
+                                "block": {
+                                  "type": "lexical_variable_get",
+                                  "id": "2%f!{oy3RU3)kap?;4V.",
+                                  "fields": {
+                                    "VAR": "prey"
+                                  }
+                                }
+                              },
+                              "COMMANDS": {
+                                "block": {
+                                  "type": "die",
+                                  "id": "}ZcYf[gGyH)0LuJ;c@1p"
+                                }
+                              }
+                            },
+                            "next": {
+                              "block": {
+                                "type": "lexical_variable_set",
+                                "id": "^q;VG+mwP]bq(hVX-QXT",
+                                "fields": {
+                                  "VAR": "global energy"
+                                },
+                                "inputs": {
+                                  "VALUE": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "[GfdOwIv0p1h}@~?MY:G",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "addition",
+                                      "id": "ZRZ|Zo{9H8^4=tk-/Q1q",
+                                      "inputs": {
+                                        "A": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "-G$._:81wb4DojYW.CqT",
+                                            "fields": {
+                                              "NUMBER": 0
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "lexical_variable_get",
+                                            "id": "5feg8J.e$M9]7HdawJtH",
+                                            "fields": {
+                                              "VAR": "global energy"
+                                            }
+                                          }
+                                        },
+                                        "B": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "TjFDGX6Ge[pN+x|pPc:{",
+                                            "fields": {
+                                              "NUMBER": 0
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "lexical_variable_get",
+                                            "id": "iLl@#epAFyYC5ZU.#u5#",
+                                            "fields": {
+                                              "VAR": "global wolf-gain-from-food"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "g9%!,7wn0I/m(TRyh$P%",
+          "x": 2260,
+          "y": 780,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "death"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "Z}dFjWp~L~w]FNAIMlUY",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "@X,F_?[OCdABj}HV6|#u",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "less_than",
+                      "id": "u(d7U7ynwFZC^iRqLJpU",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "i[{#?/SU}}_Y%6d$mUaX",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "lexical_variable_get",
+                            "id": "^:?rlnrLQaTZrs6MT4ng",
+                            "fields": {
+                              "VAR": "global energy"
+                            }
+                          }
+                        },
+                        "B": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "{mZZIPjFiXW31u.hl8$:",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "die",
+                      "id": "3.hXoXDnde78C.RK8J4B"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "?gdin@b~(jt]ji5u%6~!",
+          "x": 1260,
+          "y": 1300,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "reproducesheep"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "qAWlyr4HRco-TX8RBy]0",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "?e{VYdVSNI}*|c5@uLmK",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "less_than",
+                      "id": "z0[$u5)`fimIu?+|%#$$",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "number",
+                            "id": ":|[(QB286c{8Zm{Tn;gV",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "random_float",
+                            "id": "lx{|o8j6B$ut;WENNbq$",
+                            "inputs": {
+                              "N": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "Z5_K9^[uNFAwIZ{A]3{#",
+                                  "fields": {
+                                    "NUMBER": 100
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "B": {
+                          "block": {
+                            "type": "lexical_variable_get",
+                            "id": "LR||pTkU8C:+/_Pa_fMf",
+                            "fields": {
+                              "VAR": "global sheep-reproduce"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "lexical_variable_set",
+                      "id": "a6Rm{ZA^^K$1$F?|=?rP",
+                      "fields": {
+                        "VAR": "global energy"
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "shadow": {
+                            "type": "number",
+                            "id": ";(!QfaB$TYkm8Pu6[5Qw",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "division",
+                            "id": "[e:jf9=Y@Ji8@C]dR#1g",
+                            "inputs": {
+                              "A": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "liMDQ!xd?Kl^4)Vt$vE9",
+                                  "fields": {
+                                    "NUMBER": 1
+                                  }
+                                },
+                                "block": {
+                                  "type": "lexical_variable_get",
+                                  "id": "o`/K$7ok{=J[bj,qafg!",
+                                  "fields": {
+                                    "VAR": "global energy"
+                                  }
+                                }
+                              },
+                              "B": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "pg}u6`l59hY[fiQm=c,?",
+                                  "fields": {
+                                    "NUMBER": 2
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "next": {
+                        "block": {
+                          "type": "hatch",
+                          "id": "V)y7gu(]`8txsD(.m?E[",
+                          "inputs": {
+                            "COUNT": {
+                              "shadow": {
+                                "type": "number",
+                                "id": ";,9F^E.sLEnF`tP_Mlgh",
+                                "fields": {
+                                  "NUMBER": 1
+                                }
+                              }
+                            },
+                            "COMMANDS": {
+                              "block": {
+                                "type": "right",
+                                "id": "Ptb=oBrpf)KDjETbX=t!",
+                                "inputs": {
+                                  "DISTANCE": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "IP+v!fUOCEH1!uH7*cx:",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "random_float",
+                                      "id": "S:dwW-3MZ8}|-ZDoaT`@",
+                                      "inputs": {
+                                        "N": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "5[S:p6o^~w:=8[yIlbqz",
+                                            "fields": {
+                                              "NUMBER": 360
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "next": {
+                                  "block": {
+                                    "type": "forward",
+                                    "id": "tVp*GW)/1,_Rq_4kcB[f",
+                                    "inputs": {
+                                      "DISTANCE": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "$D1b_,RG#TYEG#6YG+uD",
+                                          "fields": {
+                                            "NUMBER": 1
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "fWUZ9roOh+ehct,fH0j|",
+          "x": 1700,
+          "y": 820,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "growgrass"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "_5/Dpw+G[OL?A~mG9K{B",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "h4X)*Wy_|TkS6oe:=7n?",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "equal",
+                      "id": "aiY-n0f2$WmH}o|*O.zz",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "~[v5^*y8vfl07tRukGxf",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "lexical_variable_get",
+                            "id": ";]ue1owIS;50OcBr@],?",
+                            "fields": {
+                              "VAR": "global pcolor"
+                            }
+                          }
+                        },
+                        "B": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "WXLy$eR0Jt^/;@2M)p`Z",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "color",
+                            "id": "cXYQumUK1-0kK[Vb=#=%",
+                            "fields": {
+                              "COLOR": "brown"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "ifelse",
+                      "id": "(pcfQeG6u{N,^2}p{Jq6",
+                      "inputs": {
+                        "CONDITION": {
+                          "shadow": {
+                            "type": "boolean",
+                            "id": "Zs(_U^naOhscFE~a_G%9",
+                            "fields": {
+                              "BOOLEAN": "true"
+                            }
+                          },
+                          "block": {
+                            "type": "less_than_or_equal_to",
+                            "id": "Z[4{#{:g|;F148^fLb1x",
+                            "inputs": {
+                              "A": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "Ts*|[G;uPZ[_[RbF7c2[",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                },
+                                "block": {
+                                  "type": "lexical_variable_get",
+                                  "id": "yy(N`P@S#XwK|Gu$Jeu_",
+                                  "fields": {
+                                    "VAR": "global countdown"
+                                  }
+                                }
+                              },
+                              "B": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "ILNdQK,}2SQ=5,h-Xkk`",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "IF_COMMANDS": {
+                          "block": {
+                            "type": "lexical_variable_set",
+                            "id": ",=9qK6CFAc8kk0/*RDfg",
+                            "fields": {
+                              "VAR": "global pcolor"
+                            },
+                            "inputs": {
+                              "VALUE": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "L(^4O_xUcgM(,~uxa/B0",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                },
+                                "block": {
+                                  "type": "color",
+                                  "id": "|Ug7oO/OfI9LT}:({/@^",
+                                  "fields": {
+                                    "COLOR": "green"
+                                  }
+                                }
+                              }
+                            },
+                            "next": {
+                              "block": {
+                                "type": "lexical_variable_set",
+                                "id": "rqf/*-,@YB4/lE/bd,lR",
+                                "fields": {
+                                  "VAR": "global countdown"
+                                },
+                                "inputs": {
+                                  "VALUE": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "L(^4O_xUcgM(,~uxa/B0",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "=CgF,hsV4)lPOF-b4/rN",
+                                      "fields": {
+                                        "VAR": "global grass-regrowth-time"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "ELSE_COMMANDS": {
+                          "block": {
+                            "type": "lexical_variable_set",
+                            "id": "b=EFF`XiWq75Y}MVxv9H",
+                            "fields": {
+                              "VAR": "global countdown"
+                            },
+                            "inputs": {
+                              "VALUE": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "L(^4O_xUcgM(,~uxa/B0",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                },
+                                "block": {
+                                  "type": "subtraction",
+                                  "id": "rDfyH7)nALxnRu~m(uJE",
+                                  "inputs": {
+                                    "A": {
+                                      "shadow": {
+                                        "type": "number",
+                                        "id": "L|vulA|.Z55q/Xif6;3V",
+                                        "fields": {
+                                          "NUMBER": 0
+                                        }
+                                      },
+                                      "block": {
+                                        "type": "lexical_variable_get",
+                                        "id": "^a=mSyCU1,sGKm%`m5IA",
+                                        "fields": {
+                                          "VAR": "global countdown"
+                                        }
+                                      }
+                                    },
+                                    "B": {
+                                      "shadow": {
+                                        "type": "number",
+                                        "id": "Zy^OnVz*p%Wp7w~d%GzI",
+                                        "fields": {
+                                          "NUMBER": 1
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "+4_UZ3QtruQ:-U.?`b)l",
+          "x": 1900,
+          "y": 1220,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "reproducewolves"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "p@wU(k[`WJocX:+Y@g8+",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "?e{VYdVSNI}*|c5@uLmK",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "less_than",
+                      "id": "-bzvNPaC%[-T]hrc4ZKj",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "number",
+                            "id": ":|[(QB286c{8Zm{Tn;gV",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "random_float",
+                            "id": "~g!5=zIurj-q-ZAsfXd}",
+                            "inputs": {
+                              "N": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "=]SFN~N)E1oeF^V;hj-u",
+                                  "fields": {
+                                    "NUMBER": 100
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "B": {
+                          "block": {
+                            "type": "lexical_variable_get",
+                            "id": "rZQEV[!Nyg0Bon=~zR%/",
+                            "fields": {
+                              "VAR": "global wolf-reproduce"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "lexical_variable_set",
+                      "id": "%0cHJiFg/|N0hESawKM|",
+                      "fields": {
+                        "VAR": "global energy"
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "shadow": {
+                            "type": "number",
+                            "id": ";(!QfaB$TYkm8Pu6[5Qw",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "division",
+                            "id": "B!AU/)`^$ttA,+ObGG:T",
+                            "inputs": {
+                              "A": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "liMDQ!xd?Kl^4)Vt$vE9",
+                                  "fields": {
+                                    "NUMBER": 1
+                                  }
+                                },
+                                "block": {
+                                  "type": "lexical_variable_get",
+                                  "id": "/8@rOOz/CSHT+!Fk7rlT",
+                                  "fields": {
+                                    "VAR": "global energy"
+                                  }
+                                }
+                              },
+                              "B": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "5mn6^3$w7=z#Hylyq7Rq",
+                                  "fields": {
+                                    "NUMBER": 2
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "next": {
+                        "block": {
+                          "type": "hatch",
+                          "id": "iW5UQ4hoh[ySkr2hrIOZ",
+                          "inputs": {
+                            "COUNT": {
+                              "shadow": {
+                                "type": "number",
+                                "id": "^s1LnKl2plTTiLj@dZtI",
+                                "fields": {
+                                  "NUMBER": 1
+                                }
+                              }
+                            },
+                            "COMMANDS": {
+                              "block": {
+                                "type": "right",
+                                "id": "N~wFSayW:TlpZr2X@08h",
+                                "inputs": {
+                                  "DISTANCE": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "IP+v!fUOCEH1!uH7*cx:",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "random_float",
+                                      "id": "8rD[u#U5p]f(@9w_}JG|",
+                                      "inputs": {
+                                        "N": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "X5)5ve4UD43!JM!mkx0F",
+                                            "fields": {
+                                              "NUMBER": 360
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "next": {
+                                  "block": {
+                                    "type": "forward",
+                                    "id": "o^[x3p9o;NeRXgD_Pbr+",
+                                    "inputs": {
+                                      "DISTANCE": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "yP]9ka+PU:dBs`*CNj=V",
+                                          "fields": {
+                                            "NUMBER": 1
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "_~0)CD9qU3i=R;}Q7,UE",
+          "x": 2460,
+          "y": 980,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "grass"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "Vh3yUv:T8SxRo=|?lhcx",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "i0^k,do_v!%j_HO~)Tmv",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "equal",
+                      "id": "6LR5W]W9uMC^%b`.5wM/",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "Db/5m$NbpCnr9pc$^E-2",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "lexical_variable_get",
+                            "id": "gJ1Nfe%]je?#(Y=W/fl]",
+                            "fields": {
+                              "VAR": "global model-version"
+                            }
+                          }
+                        },
+                        "B": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "=v]j!lqmB7|IRQ{LseWQ",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "string",
+                            "id": "p|(~TL?1G72bwCRnSEH*",
+                            "fields": {
+                              "STRING": "sheep-wolves-grass"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "report",
+                      "id": "6M?}jF8Hrx~LCl{D-wEK",
+                      "inputs": {
+                        "VALUE": {
+                          "block": {
+                            "type": "with_manual",
+                            "id": "TCQG{Q7Oq5lR1/]lu$Ho",
+                            "inputs": {
+                              "AGENT_SET": {
+                                "shadow": {
+                                  "type": "agentset",
+                                  "id": "kUcN`zJf_)@5KWg$@imf",
+                                  "fields": {
+                                    "AGENT_SET": "patches"
+                                  }
+                                }
+                              },
+                              "CONDITION": {
+                                "shadow": {
+                                  "type": "equal",
+                                  "id": "2{Z8_-~u0j4[(*6;tM0v"
+                                },
+                                "block": {
+                                  "type": "equal",
+                                  "id": "AG)b6,w=OJ%rd,0?!3pi",
+                                  "inputs": {
+                                    "A": {
+                                      "shadow": {
+                                        "type": "number",
+                                        "id": ":qrxjpF|zo@IS.du;78S",
+                                        "fields": {
+                                          "NUMBER": 0
+                                        }
+                                      },
+                                      "block": {
+                                        "type": "lexical_variable_get",
+                                        "id": "*%#[FH]Wuj),jJ@yF8D:",
+                                        "fields": {
+                                          "VAR": "global pcolor"
+                                        }
+                                      }
+                                    },
+                                    "B": {
+                                      "shadow": {
+                                        "type": "number",
+                                        "id": "(*lEn,``0N_y*$R.}$ZI",
+                                        "fields": {
+                                          "NUMBER": 0
+                                        }
+                                      },
+                                      "block": {
+                                        "type": "color",
+                                        "id": "jgy/gds|8Kv8n`iS~ahV",
+                                        "fields": {
+                                          "COLOR": "green"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "report",
+                    "id": "P4sbL7KY]~$*sdXLS/X-",
+                    "inputs": {
+                      "VALUE": {
+                        "block": {
+                          "type": "number",
+                          "id": "=L-24g.)~+N7*R(F0B%b",
+                          "fields": {
+                            "NUMBER": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "max-sheep",
+        "id": "4zOo6jAF@C+#B[S=2~4o"
+      },
+      {
+        "name": "countdown",
+        "id": "%Hhz(-@#7}TRY_,m[(Iy"
+      },
+      {
+        "name": "initial-number-sheep",
+        "id": "tVvhYJwcKok[lwF;U7d:"
+      },
+      {
+        "name": "energy",
+        "id": "p7F[5.S(Un~q}Ql)T(^d"
+      },
+      {
+        "name": "model-version",
+        "id": "gHsILP$X?)Wu_?zP}Iq}"
+      },
+      {
+        "name": "grass-regrowth-time",
+        "id": "qPu)]bs1Xk;N=9!/Ci@d"
+      },
+      {
+        "name": "sheep-gain-from-food",
+        "id": "gm5%r#-x)Q$kEH.D?AIE"
+      },
+      {
+        "name": "initial-number-wolves",
+        "id": "Yk7hLnV1zg6jx96/J4|~"
+      },
+      {
+        "name": "wolf-gain-from-food",
+        "id": "#Z9GF4,GX)Z8]%yf)5O^"
+      },
+      {
+        "name": "wolf-reproduce",
+        "id": "6pyg3KB3(Xcc1V.(DdI:"
+      },
+      {
+        "name": "sheep-reproduce",
+        "id": "QmBZ*9C|9-f`/@m:*W`x"
+      },
+      {
+        "name": "show-energy?",
+        "id": "r(G).JoOC+:Ysvq|Cd2{"
+      }
+    ],
+    "nettango-context": {
+      "ui": [
+        "initial-number-sheep",
+        "model-version",
+        "grass-regrowth-time",
+        "sheep-gain-from-food",
+        "initial-number-wolves",
+        "wolf-gain-from-food",
+        "wolf-reproduce",
+        "sheep-reproduce",
+        "show-energy?"
+      ],
+      "globals": [
+        "max-sheep"
+      ],
+      "turtles": [
+        "energy"
+      ],
+      "patches": [
+        "countdown"
+      ],
+      "links": [],
+      "breeds": [
+        {
+          "type": "turtle",
+          "pluralName": "wolves",
+          "singularName": "wolf"
+        },
+        {
+          "type": "turtle",
+          "pluralName": "sheep",
+          "singularName": "a-sheep"
+        }
+      ]
+    }
+  },
+  "context": {
+    "ui": [
+      "initial-number-sheep",
+      "model-version",
+      "grass-regrowth-time",
+      "sheep-gain-from-food",
+      "initial-number-wolves",
+      "wolf-gain-from-food",
+      "wolf-reproduce",
+      "sheep-reproduce",
+      "show-energy?"
+    ],
+    "globals": [
+      "max-sheep"
+    ],
+    "turtles": [
+      "energy"
+    ],
+    "patches": [
+      "countdown"
+    ],
+    "links": [],
+    "breeds": [
+      {
+        "type": "turtle",
+        "pluralName": "wolves",
+        "singularName": "wolf"
+      },
+      {
+        "type": "turtle",
+        "pluralName": "sheep",
+        "singularName": "a-sheep"
+      }
+    ]
+  }
+}
