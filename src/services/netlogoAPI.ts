@@ -18,6 +18,14 @@ export function sendToNetLogo(type: string, data?: any): void {
         console.error("NetLogo Web iframe not found");
         return;
     }
+
+    frame.postMessage({ type: 'nlw-request-model-state' }, "*");
+    window.addEventListener('message', function handler(event) {
+        console.log("Received model state response:", event.data);
+        // Remove listener after first response
+        window.removeEventListener('message', handler);
+    });
+
     // combine type with any additional data
     // this creates an object like { type: "nlw-command", command: "setup" }
     const message = { type, ...data };

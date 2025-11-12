@@ -3,7 +3,7 @@ import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import {getNetLogoFrame, sendToNetLogo, setModelCode, recompile, recompileProcedures} from "./services/netlogoAPI";  
+import {setModelCode, recompile, recompileProcedures} from "./services/netlogoAPI";  
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
@@ -212,38 +212,31 @@ function showNotification(message: string, type: 'success' | 'error' | 'info' = 
 
 // Netlogo Web integration
 function setupNetLogoIntegration() {
-  // const runBtn = document.getElementById('compile-run-btn');
-  const setupBtn = document.getElementById('setup-btn');
-  const goBtn = document.getElementById('go-btn');
-  const stopBtn = document.getElementById('stop-btn');
+  const compileBtn = document.getElementById('compile-run-btn'); // Run/Compile button
   const status = document.getElementById('netlogo-status');
   const codeElement = document.getElementsByClassName("generated-code");
 
-  const iframe = getNetLogoFrame();
-  
-  // flow: click setup -> send code -> recompile -> click go
-  if (setupBtn) {
-    setupBtn.addEventListener('click', () => {
+  //Compile Button - Compiles the code from blocks and makes it ready
+  if (compileBtn) {
+    compileBtn.addEventListener('click', () => {
       if (codeElement.length > 0) {
         const code = codeElement[0].textContent || "";
+        console.log("Compiling code:", code);
+        
+        // Set the model code in NetLogo Web
         setModelCode(code, false);
-        // recompile();
-        if (status) status.textContent = "Code tab updated.";
+        
+        // Wait the code to be set, then recompile
+        setTimeout(() => {
+          recompile();
+          if (status) status.textContent = "Compiled successfully.";
+          // From here, use Setup/Go buttons in NetLogo view
+        }, 150);
+      } else {
+        if (status) status.textContent = "No code to compile.";
       }
     });
   }
-  if (goBtn) { // recompiles
-    // TODO: change to runBtn - right now it just recompiles
-    goBtn.addEventListener('click', () => {
-      recompile();
-      if (status) status.textContent = "Model recompiled.";
-    });
-  }
-  if (stopBtn) {
-    stopBtn.addEventListener('click', () => {
-      // TODO: send stop command
-      if (status) status.textContent = "Model stopped.";
-    });
-  }
 }
+
 setupNetLogoIntegration();
