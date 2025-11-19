@@ -116,3 +116,18 @@ export function loadModel(nlogoxContent: string, path: string = 'generated-model
     path: path
   });
 }
+
+// run netlogo code
+export function runCode(code: string): void {
+  sendToNetLogo("nlw-run-code", {
+    code: code
+  });
+}
+
+// Common commands
+export function runSetup(): void {
+  runCode("setup");
+}
+export function runGo(): void {
+  runCode("go");
+}

@@ -3,7 +3,7 @@ import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import {setModelCode, recompile, recompileProcedures, generateNLogoFile, loadModel} from "./services/netlogoAPI";
+import {setModelCode, recompile, recompileProcedures, generateNLogoFile, loadModel, runCode, runSetup, runGo} from "./services/netlogoAPI";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
@@ -212,9 +212,14 @@ function showNotification(message: string, type: 'success' | 'error' | 'info' = 
 
 // Netlogo Web integration
 function setupNetLogoIntegration() {
-  const compileBtn = document.getElementById('compile-run-btn'); // Run/Compile button
   const status = document.getElementById('netlogo-status');
   const codeElement = document.getElementsByClassName("generated-code");
+
+  // buttons
+  const compileBtn = document.getElementById('compile-run-btn'); // Run/Compile button
+  const goBtn = document.getElementById('go-btn'); // Go button
+  let goForeverBtn = document.getElementById('go-forever-btn'); // Go Forever button
+  let goInterval: number | null = null;
 
   //Compile Button - Compiles the code and loads it with Setup/Go buttons
   if (compileBtn) {
@@ -231,9 +236,14 @@ function setupNetLogoIntegration() {
           // Load the complete model into NetLogo Web
           loadModel(nlogoxFile, 'block-generated-model.nlogox');
           
-          if (status) {
-            status.textContent = "Model loaded! Use Setup/Go buttons in NetLogo view.";
-          }
+          // Wait for model to load, then run setup
+          setTimeout(() => {
+            runSetup();
+            if (status) {
+              status.textContent = "Model loaded and setup executed! Use Go button to run.";
+            }
+          }, 1000);
+
         } catch (error) {
           console.error("Error generating model:", error);
           if (status) {
@@ -242,6 +252,36 @@ function setupNetLogoIntegration() {
         }
       } else {
         if (status) status.textContent = "No code to compile.";
+      }
+    });
+  }
+
+  // Go Button - Runs the go procedure
+  if (goBtn) {
+    goBtn.addEventListener('click', () => {
+      runGo();
+      if (status) {
+        status.textContent = "Step";
+      }
+    });
+  }
+
+  // Go Forever Button - Runs the go procedure repeatedly
+  if (goForeverBtn) {
+    goForeverBtn.addEventListener('click', () => {
+      if (goInterval) {
+        // stop if already running
+        clearInterval(goInterval);
+        goInterval = null;
+        if (status) status.textContent = "Stopped";
+        goForeverBtn!.textContent = "↻";
+      } else {
+        // start running
+        goInterval = window.setInterval(() => {
+          runGo();
+        }, 100); // adjust interval as needed
+        if (status) status.textContent = "Running...";
+        goForeverBtn!.textContent = "⏸";
       }
     });
   }
