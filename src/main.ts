@@ -3,7 +3,7 @@ import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import {setModelCode, recompile, recompileProcedures} from "./services/netlogoAPI";  
+import {setModelCode, recompile, recompileProcedures, generateNLogoFile, loadModel} from "./services/netlogoAPI";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
@@ -216,22 +216,30 @@ function setupNetLogoIntegration() {
   const status = document.getElementById('netlogo-status');
   const codeElement = document.getElementsByClassName("generated-code");
 
-  //Compile Button - Compiles the code from blocks and makes it ready
+  //Compile Button - Compiles the code and loads it with Setup/Go buttons
   if (compileBtn) {
-    compileBtn.addEventListener('click', () => {
+    compileBtn.addEventListener('click', async () => {
       if (codeElement.length > 0) {
         const code = codeElement[0].textContent || "";
-        console.log("Compiling code:", code);
+        console.log("Loading model with code:", code);
         
-        // Set the model code in NetLogo Web
-        setModelCode(code, false);
-        
-        // Wait the code to be set, then recompile
-        setTimeout(() => {
-          recompile();
-          if (status) status.textContent = "Compiled successfully.";
-          // From here, use Setup/Go buttons in NetLogo view
-        }, 150);
+        try {
+          // Generate complete .nlogox file with buttons
+          const nlogoxFile = await generateNLogoFile(code);
+          console.log("Generated .nlogox file");
+          
+          // Load the complete model into NetLogo Web
+          loadModel(nlogoxFile, 'block-generated-model.nlogox');
+          
+          if (status) {
+            status.textContent = "Model loaded! Use Setup/Go buttons in NetLogo view.";
+          }
+        } catch (error) {
+          console.error("Error generating model:", error);
+          if (status) {
+            status.textContent = "Error loading model. Check console.";
+          }
+        }
       } else {
         if (status) status.textContent = "No code to compile.";
       }
