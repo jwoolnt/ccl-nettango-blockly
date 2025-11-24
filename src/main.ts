@@ -287,4 +287,8 @@ function setupNetLogoIntegration() {
   }
 }
 
+// TODO: view canvas only
+// Hide the iframe completely
+// Request canvas snapshots using nlw-request-view
+// Display the snapshots in your own canvas
 setupNetLogoIntegration();
