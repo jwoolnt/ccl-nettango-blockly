@@ -260,7 +260,29 @@ const user_message: BlockDefinition = createStatementBlock("user_message", {
 	}
 });
 
-
+const set_default_shape: BlockDefinition = createStatementBlock("set_default_shape", {
+	message0: "set-default-shape %1 %2",
+	args0: [{
+		type: "field_dropdown",
+		name: "BREED",
+		options: [
+		["turtles", "turtles"],
+		["patches", "patches"],
+		["links", "links"]
+		// You can make this dynamic based on breeds too
+		]
+	}, {
+		type: "input_value",
+		name: "SHAPE",
+		check: "String"
+	}],
+	inputsInline: true,
+	for: (block, generator) => {
+		const breed = block.getFieldValue("BREED");
+		const shape = generator.valueToCode(block, "SHAPE", Order.NONE) || '"default"';
+		return `set-default-shape ${breed} ${shape}`;
+	}
+});
 
 const netlogo_web: BlockDefinition = createValueBlock("netlogo_web", "Boolean", {
 	message0: "netlogo-web?",
@@ -298,6 +320,7 @@ const logicBlocks: BlockDefinition[] = [
 	ifelse,
 	ask_agent_set,
 	ask_agentset_with,
+	set_default_shape,
 
 	netlogo_web
 ];

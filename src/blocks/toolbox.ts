@@ -722,6 +722,10 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "procedures_callnoreturn"
                 },
+                {
+                    kind: "block",
+                    type: "set_default_shape"
+                },
                 // {
                 //     kind: "block",
                 //     type: "procedures_callreturn"

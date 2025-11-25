@@ -41,7 +41,6 @@ const BUILT_IN_CONTEXT: NetlogoContext = {
 		"pen-mode",
 		"pen-size",
 		"shape",
-		"-default-shape",
 		"size",
 		"who",
 		"xcor",
