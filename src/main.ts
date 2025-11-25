@@ -41,6 +41,23 @@ const customTheme = Blockly.Theme.defineTheme('customTheme', {
   startHats: false
 });
 
+// Create default blocks for new workspace
+export function createDefaultProcedures(workspace: Blockly.WorkspaceSvg) {
+  // Create setup procedure
+  const setupBlock = workspace.newBlock('procedures_defnoreturn');
+  setupBlock.setFieldValue('setup', 'NAME');
+  setupBlock.initSvg();
+  setupBlock.render();
+  setupBlock.moveBy(20, 20); // position it
+  
+  // Create go procedure
+  const goBlock = workspace.newBlock('procedures_defnoreturn');
+  goBlock.setFieldValue('go', 'NAME');
+  goBlock.initSvg();
+  goBlock.render();
+  goBlock.moveBy(20, 150); // position below setup
+}
+
 if (blockEditor && codeOutput) {
   const ws = Blockly.inject(blockEditor, {
     renderer: 'thrasos',
@@ -87,6 +104,12 @@ if (blockEditor && codeOutput) {
   };
 
   load(ws);
+
+  // Add default procedures for new/empty workspaces
+  if (ws.getAllBlocks().length === 0) {
+    createDefaultProcedures(ws);
+  }
+
   displayCode();
 
   // Initialize the sidebar with workspace and display callback
