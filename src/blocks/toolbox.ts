@@ -92,6 +92,10 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "sprout_breed"
+                },
+                {
+                    kind: "block",
                     type: "hatch",
                     inputs: {
                         "COUNT": {
@@ -742,6 +746,20 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "ask_agentset_with",
+                    inputs: {
+                        "AGENT_SET": {
+                            "shadow": {
+                                type: "agentset",
+                                fields: {
+                                    "AGENT_SET": "turtles"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
                     type: "if_",
                     inputs: {
                         "CONDITION": {
@@ -829,6 +847,10 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "agentset_here"
+                },
+                {
+                    kind: "block",
+                    type: "agent_plus_string",
                 },
                 {
                     kind: "block",

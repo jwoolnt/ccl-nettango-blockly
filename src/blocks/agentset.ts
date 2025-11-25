@@ -1,6 +1,6 @@
-import { getAllAgentSets, getTurtleBreeds } from "../data/context";
+import { getAllAgentSets, getTurtleBreeds, getTurtleAgentSets } from "../data/context";
 import { BlockDefinition } from "./types";
-import { createValueBlock, dynamicOptions, Order } from "./utilities";
+import { createValueBlock, createStatementBlock, dynamicOptions, Order } from "./utilities";
 
 
 const nobody: BlockDefinition = createValueBlock("nobody", ["Agent", "Boolean"]);
@@ -65,12 +65,66 @@ const any: BlockDefinition = createValueBlock("any", "Boolean", {
 	}
 });
 
+// agent + _ (string)
+const agent_plus_string: BlockDefinition = createValueBlock("agent_plus_string", "String", {
+	message0: "%1 + \"%2\"",
+	args0: [{
+		type: "input_value",
+		name: "AGENT",
+		check: "Agentset",
+	}, {
+		type: "field_input",
+		name: "STRING",
+	}],
+	inputsInline: true,
+	colour: "#795548",
+	for: (block, generator) => {
+		const agent = generator.valueToCode(block, "AGENT", Order.FUNCTION_CALL);
+		const string = block.getFieldValue("STRING");
+		return [`${agent} "${string}"`, Order.ATOMIC];
+	}
+});
+
+// sprout-<breed>
+const sprout_breed: BlockDefinition = createStatementBlock("sprout_breed", {
+	message0: "sprout-%1 %2\n %3",
+	args0: [{
+		type: "field_dropdown",
+		name: "BREED",
+		options: dynamicOptions(getTurtleAgentSets)
+	}, {
+		type: "input_value",
+		name: "COUNT",
+		check: "Number"
+	}, {
+		type: "input_statement",
+		name: "COMMANDS"
+	}],
+	colour: "#2E7D32", // Green (same as create_breeds)
+	for: (block, generator) => {
+		const breed = block.getFieldValue("BREED");
+		const count = generator.valueToCode(block, "COUNT", Order.NONE);
+		const setup = generator.statementToCode(block, "COMMANDS");
+
+		// If breed is "turtles", use "sprout" instead of "sprout-turtles"
+		const command = breed === "turtles" ? "sprout" : `sprout-${breed}`;
+		let code = `${command} ${count}`;
+		if (setup) {
+			code += ` [\n${setup}\n]`;
+		}
+
+		return code;
+	}
+});
+
 const agentsetBlocks: BlockDefinition[] = [
 	nobody,
 	agentset,
 	with_manual,
 	agentset_here,
-	any
+	any,
+	agent_plus_string,
+	sprout_breed
 ];
 
 

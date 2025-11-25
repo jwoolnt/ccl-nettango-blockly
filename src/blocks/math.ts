@@ -1,5 +1,5 @@
 import { BlockDefinition } from "./types";
-import { createMathOperatorBlock, createValueBlock, netlogoCommand, Order } from "./utilities";
+import { createMathOperatorBlock, createOperatorBlock, createValueBlock, netlogoCommand, Order } from "./utilities";
 
 
 const number: BlockDefinition = createValueBlock("number", "Number", {
@@ -25,7 +25,8 @@ const division: BlockDefinition = createMathOperatorBlock("division", "/");
 
 const addition: BlockDefinition = createMathOperatorBlock("addition", "+");
 
-const subtraction: BlockDefinition = createMathOperatorBlock("subtraction", "-");
+// subtraction accepts both Number and Color types (allows: red - 3.5, color - number, etc.)
+const subtraction: BlockDefinition = createOperatorBlock("subtraction", "-", ["Number", "Color"], "Number");
 
 // helper function for random, round blocks
 function mathFunctionBlock(name: string, color: string = "#c72216"): BlockDefinition {

@@ -221,6 +221,30 @@ const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
 	}
 });
 
+// ask _ (agentset) with [condition]
+const ask_agentset_with: BlockDefinition = createStatementBlock("ask_agentset_with", {
+	message0: "ask %1 with [%2]\n %3",
+	args0: [{
+		type: "input_value",
+		name: "AGENT_SET",
+		check: "Agentset"
+	}, {
+		type: "input_value",
+		name: "CONDITION",
+		check: "Boolean"
+	}, {
+		type: "input_statement",
+		name: "COMMANDS"
+	}],
+	colour: "#0794a6",
+	for: (block, generator) => {
+		const agentSet = generator.valueToCode(block, "AGENT_SET", Order.NONE);
+		const condition = generator.valueToCode(block, "CONDITION", Order.NONE);
+		const commands = generator.statementToCode(block, "COMMANDS");
+		return `ask ${agentSet} with [${condition}] [\n${commands}\n]`;
+	}
+});
+
 const stop: BlockDefinition = createStatementBlock("stop");
 const user_message: BlockDefinition = createStatementBlock("user_message", {
 	message0: "user message %1",
@@ -273,6 +297,7 @@ const logicBlocks: BlockDefinition[] = [
 	if_,
 	ifelse,
 	ask_agent_set,
+	ask_agentset_with,
 
 	netlogo_web
 ];

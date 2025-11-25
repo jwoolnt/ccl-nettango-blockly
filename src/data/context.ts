@@ -53,6 +53,7 @@ const BUILT_IN_CONTEXT: NetlogoContext = {
 		"plabel",
 		"color",
 		"pxcor",
+		"min-pxcor",
 		"pycor"
 	],
 	links: [
@@ -245,6 +246,13 @@ export function addBreed(newBreed: Breed): void {
 			context.breeds = [];
 		}
 		context.breeds.push(newBreed);
+
+		// Add breed variables to the variable map
+		if (variables) {
+			variables.forEach(variableName => {
+				variableMap[variableName] = pluralName;
+			});
+		}
 	} else {
 		console.error(`Invalid Breed: cannot reuse names ["${usedVariables.join(",\" \"")}"]`);
 	}
@@ -283,7 +291,23 @@ export function updateBreed(currentName: string, breedUpdates: Partial<Breed>): 
 }
 
 export function removeBreed(breedName: string): void {
-	if (context.breeds && findBreed(breedName)) {
+	let breed = findBreed(breedName);
+	
+	if (context.breeds && breed) {
+		// Remove breed names and variables from variableMap before removing the breed
+		// This allows the same names to be reused when recreating the breed
+		if (breed.pluralName) {
+			delete variableMap[breed.pluralName];
+		}
+		if (breed.singularName) {
+			delete variableMap[breed.singularName];
+		}
+		if (breed.variables) {
+			breed.variables.forEach(variableName => {
+				delete variableMap[variableName];
+			});
+		}
+		
 		context.breeds = context.breeds.filter(({ pluralName }) => pluralName !== breedName);
 	} else {
 		console.error(`Invalid Breed: breed "${breedName}}" could not be found`);
@@ -305,7 +329,7 @@ function getAgentSets(defaultAgentSets: string[], breedFunction: () => Breed[]) 
 	}
 }
 
-export const getTurteAgentSets = getAgentSets(["turtles"], getTurtleBreeds);
+export const getTurtleAgentSets = getAgentSets(["turtles"], getTurtleBreeds);
 
 export const getLinkAgentSets = getAgentSets(["links"], getLinkBreeds);
 
