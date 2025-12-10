@@ -3,7 +3,7 @@ import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import {setModelCode, recompile, recompileProcedures, generateNLogoFile, loadModel, runCode, runSetup, runGo} from "./services/netlogoAPI";
+import { setModelCode, recompile, recompileProcedures, generateNLogoFile, loadModel, runCode, runSetup, runGo } from "./services/netlogoAPI";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
@@ -41,7 +41,9 @@ const customTheme = Blockly.Theme.defineTheme('customTheme', {
   startHats: false
 });
 
+// 
 // Create default blocks for new workspace
+// 
 export function createDefaultProcedures(workspace: Blockly.WorkspaceSvg) {
   // Create setup procedure
   const setupBlock = workspace.newBlock('procedures_defnoreturn');
@@ -49,7 +51,7 @@ export function createDefaultProcedures(workspace: Blockly.WorkspaceSvg) {
   setupBlock.initSvg();
   setupBlock.render();
   setupBlock.moveBy(20, 20); // position it
-  
+
   // Create go procedure
   const goBlock = workspace.newBlock('procedures_defnoreturn');
   goBlock.setFieldValue('go', 'NAME');
@@ -57,7 +59,80 @@ export function createDefaultProcedures(workspace: Blockly.WorkspaceSvg) {
   goBlock.render();
   goBlock.moveBy(20, 150); // position below setup
 }
+//
+// Auto-compile 
+//
+let autoCompileTimeout: number | null = null;
+let isAutoCompiling = false;
 
+async function autoCompileAndSetup() {
+  if (!isAutoCompiling) return; 
+
+  const codeElement = document.getElementsByClassName("generated-code"); // get generated netlogo code
+  if (codeElement.length === 0) return;
+
+  const code = codeElement[0].textContent || "";
+  const status = document.getElementById('netlogo-status');
+  // generate and load the model
+  try {
+    const nlogoxFile = await generateNLogoFile(code); // convert to .nlogox format
+    loadModel(nlogoxFile, 'auto-compiled-model.nlogox');
+    // wait model to load then run setup
+    setTimeout(() => {
+      runSetup();
+      if (status) {
+        status.textContent = "Model auto-updated!";
+      }
+    }, 1000);
+  } catch (error) {
+    console.error("Auto-compile error:", error);
+    if (status) {
+      status.textContent = "Auto-compile error.";
+    }
+  }
+}
+
+function scheduleAutoCompile() {
+  // clear existing timeout
+  if (autoCompileTimeout) {
+    clearTimeout(autoCompileTimeout);
+  }
+  // schedule compile after delay
+  autoCompileTimeout = window.setTimeout(() => {
+    autoCompileAndSetup();
+  }, 2000); // 2 seconds delay
+}
+
+function initAutoCompile() {
+  const toggleCheckbox = document.getElementById('auto-compile-toggle') as HTMLInputElement;
+
+  if (!toggleCheckbox) {
+    console.error("Auto-compile toggle button not found");
+    return;
+  }
+
+  // Set initial state
+  toggleCheckbox.checked = isAutoCompiling;
+
+  toggleCheckbox.addEventListener('change', () => {
+    isAutoCompiling = toggleCheckbox.checked;
+
+    if (isAutoCompiling) {
+      // Compile
+      scheduleAutoCompile();
+    } else {
+      // Clear any pending compilation
+      if (autoCompileTimeout) {
+        clearTimeout(autoCompileTimeout);
+        autoCompileTimeout = null;
+      }
+    }
+  });
+}
+
+// 
+// Custom Blockly workspace
+// 
 if (blockEditor && codeOutput) {
   const ws = Blockly.inject(blockEditor, {
     renderer: 'thrasos',
@@ -81,7 +156,7 @@ if (blockEditor && codeOutput) {
     },
     grid: {
       spacing: 40,
-      length: 40,
+      length: 10,
       colour: '#ccc',
       snap: true
     }
@@ -94,12 +169,12 @@ if (blockEditor && codeOutput) {
     refreshMITPlugin();
     const generatedCode = generateCodePrefix() + netlogoGenerator.workspaceToCode(ws);
     codeOutput.textContent = generatedCode;
-    
+
     // Update the clipboard manager with the new code
     if ((window as any).updateGeneratedCode) {
       (window as any).updateGeneratedCode(generatedCode);
     }
-    
+
     save(ws);
   };
 
@@ -121,11 +196,19 @@ if (blockEditor && codeOutput) {
   // Initialize file operations
   initFileOperations(ws, displayCode);
 
+  // Initialize auto-compile toggle
+  initAutoCompile();
+
   ws.addChangeListener((e) => {
     if (e.isUiEvent || e.type == Blockly.Events.FINISHED_LOADING || ws.isDragging()) {
       return;
     }
     displayCode();
+
+    // schedule auto-compile if enabled
+    if (isAutoCompiling) {
+      scheduleAutoCompile();
+    }
   });
 
   ws.addChangeListener((e) => {
@@ -219,13 +302,13 @@ function showNotification(message: string, type: 'success' | 'error' | 'info' = 
   const notification = document.createElement('div');
   notification.className = `notification notification-${type}`;
   notification.textContent = message;
-  
+
   // Add to body
   document.body.appendChild(notification);
-  
+
   // Trigger animation
   setTimeout(() => notification.classList.add('show'), 10);
-  
+
   // Remove after 3 seconds
   setTimeout(() => {
     notification.classList.remove('show');
@@ -250,15 +333,15 @@ function setupNetLogoIntegration() {
       if (codeElement.length > 0) {
         const code = codeElement[0].textContent || "";
         console.log("Loading model with code:", code);
-        
+
         try {
           // Generate complete .nlogox file with buttons
           const nlogoxFile = await generateNLogoFile(code);
           console.log("Generated .nlogox file");
-          
+
           // Load the complete model into NetLogo Web
           loadModel(nlogoxFile, 'block-generated-model.nlogox');
-          
+
           // Wait for model to load, then run setup
           setTimeout(() => {
             runSetup();
@@ -310,8 +393,5 @@ function setupNetLogoIntegration() {
   }
 }
 
-// TODO: view canvas only
-// Hide the iframe completely
-// Request canvas snapshots using nlw-request-view
-// Display the snapshots in your own canvas
 setupNetLogoIntegration();
+

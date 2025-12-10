@@ -48,7 +48,7 @@ export function saveToFile(workspace: Workspace): string {
     version: "1.0.0",
     timestamp: Date.now(),
     workspace: workspaceData,
-    context: CONTEXT_SERIALIZER.save(workspace) // Save your custom context too
+    context: CONTEXT_SERIALIZER.save(workspace) // save custom context too
   };
   
   return JSON.stringify(fileData, null, 2);
@@ -87,14 +87,14 @@ export function loadFromFile(workspace: Workspace, jsonString: string): void {
   }
 }
 
-export function downloadWorkspace(workspace: Workspace, filename: string = 'workspace.nettango'): void {
+export function downloadWorkspace(workspace: Workspace, filename: string = 'workspace.ntango'): void {
   const json = saveToFile(workspace);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename.endsWith('.nettango') ? filename : `${filename}.nettango`;
+  a.download = filename.endsWith('.ntango') ? filename : `${filename}.ntango`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -126,28 +126,4 @@ export function uploadWorkspace(workspace: Workspace): Promise<string> {
     
     input.click();
   });
-}
-
-// Optional: Export workspace with generated code
-export function exportWithCode(workspace: Workspace, generatedCode: string, filename: string = 'project'): void {
-  const workspaceJson = saveToFile(workspace);
-  
-  // Create a combined export
-  const combined = {
-    workspace: JSON.parse(workspaceJson),
-    generatedCode: generatedCode,
-    exportDate: new Date().toISOString()
-  };
-  
-  const blob = new Blob([JSON.stringify(combined, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${filename}-complete.nettango`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  
-  URL.revokeObjectURL(url);
 }
