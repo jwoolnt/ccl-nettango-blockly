@@ -100,8 +100,16 @@ export const CONTEXT_SERIALIZER: serialization.ISerializer = {
 
 		//@ts-expect-error
 		workspace.getWarningHandler().cacheGlobalNames = true;
-		//@ts-expect-error
-		refreshMITPlugin = () => workspace.getWarningHandler().cachedGlobalNames = getAllVariables();
+		refreshMITPlugin = () => {
+			const allVars = getAllVariables();
+			// Add the special "create new" option at the start
+			(workspace as any).getWarningHandler().cachedGlobalNames = [
+				'+ create new variable',
+				...allVars
+			];
+		};
+		////@ts-expect-error
+		// refreshMITPlugin = () => workspace.getWarningHandler().cachedGlobalNames = getAllVariables();
 
 		refreshMITPlugin();
 	},
@@ -252,7 +260,7 @@ export function addBreed(newBreed: Breed): void {
 				variableMap[variableName] = pluralName;
 			});
 		}
-		refreshMITPlugin(); 
+		refreshMITPlugin();
 	} else {
 		console.error(`Invalid Breed: cannot reuse names ["${usedVariables.join(",\" \"")}"]`);
 	}
@@ -292,7 +300,7 @@ export function updateBreed(currentName: string, breedUpdates: Partial<Breed>): 
 
 export function removeBreed(breedName: string): void {
 	let breed = findBreed(breedName);
-	
+
 	if (context.breeds && breed) {
 		// Remove breed names and variables from variableMap before removing the breed
 		// This allows the same names to be reused when recreating the breed
@@ -307,7 +315,7 @@ export function removeBreed(breedName: string): void {
 				delete variableMap[variableName];
 			});
 		}
-		
+
 		context.breeds = context.breeds.filter(({ pluralName }) => pluralName !== breedName);
 	} else {
 		console.error(`Invalid Breed: breed "${breedName}}" could not be found`);
@@ -329,8 +337,41 @@ function getAgentSets(defaultAgentSets: string[], breedFunction: () => Breed[]) 
 	}
 }
 
-export const getTurtleAgentSets = getAgentSets(["turtles"], getTurtleBreeds);
+export const getTurtleAgentSets = () => {
+  const agentSets = [
+    '',
+    '+ create new breed',
+    "turtles"
+  ];
+  agentSets.push(
+    ...getTurtleBreeds().map(({ pluralName }) => pluralName)
+  );
+  return agentSets;
+};
 
-export const getLinkAgentSets = getAgentSets(["links"], getLinkBreeds);
+export const getLinkAgentSets = () => {
+  const agentSets = [
+    '',
+    '+ create new breed',
+    "links"
+  ];
+  agentSets.push(
+    ...getLinkBreeds().map(({ pluralName }) => pluralName)
+  );
+  return agentSets;
+};
 
-export const getAllAgentSets = getAgentSets(["turtles", "patches", "links", "neighbors4"], getAllBreeds);
+export const getAllAgentSets = () => {
+  const agentSets = [
+    '',
+    '+ create new breed',
+    "turtles", 
+    "patches", 
+    "links", 
+    "neighbors4"
+  ];
+  agentSets.push(
+    ...getAllBreeds().map(({ pluralName }) => pluralName)
+  );
+  return agentSets;
+};

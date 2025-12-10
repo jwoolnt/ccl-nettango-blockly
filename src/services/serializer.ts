@@ -1,3 +1,4 @@
+// services/serializer.ts
 import { Workspace, serialization, Events } from "blockly";
 import { CONTEXT_SERIALIZER } from "../data/context";
 

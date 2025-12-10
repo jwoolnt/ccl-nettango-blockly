@@ -6,10 +6,11 @@ import netlogoGenerator, { generateCodePrefix } from "./services/generator";
 import { setModelCode, recompile, recompileProcedures, generateNLogoFile, loadModel, runCode, runSetup, runGo } from "./services/netlogoAPI";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
-import { refreshMITPlugin } from "./data/context";
+import { addVariable, findVariable, refreshMITPlugin } from "./data/context";
 import { initSidebar } from "./sidebar";
 import { updateWorkspaceForDomain } from "./blocks/domain";
 import { get } from "blockly/core/events/utils";
+import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./modules";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -66,7 +67,7 @@ let autoCompileTimeout: number | null = null;
 let isAutoCompiling = false;
 
 async function autoCompileAndSetup() {
-  if (!isAutoCompiling) return; 
+  if (!isAutoCompiling) return;
 
   const codeElement = document.getElementsByClassName("generated-code"); // get generated netlogo code
   if (codeElement.length === 0) return;
@@ -164,6 +165,59 @@ if (blockEditor && codeOutput) {
 
   LexicalVariablesPlugin.init(ws);
   Blockly.Msg.LANG_VARIABLES_GLOBAL_PREFIX = "";
+
+  // Intercept variable dropdown changes to handle "create new variable"
+  // Store the last valid variable value for each block
+  const blockVariableValues = new Map<string, string>();
+  const blockBreedValues = new Map<string, string>();
+  // Intercept variable selection to detect "create new"
+  ws.addChangeListener((e) => {
+    if (e.type === Blockly.Events.BLOCK_CHANGE) {
+      const changeEvent = e as Blockly.Events.BlockChange;
+
+      const blockId = changeEvent.blockId;
+      const fieldName = changeEvent.name;
+      const newValue = changeEvent.newValue;
+      const oldValue = changeEvent.oldValue;
+
+      // Check for variable creation trigger
+      if (newValue && typeof newValue === 'string' && newValue.includes('+ create new variable')) {
+        // Prevent this from being the actual value
+        if (blockId) {
+          const block = ws.getBlockById(blockId);
+          if (block && fieldName) {
+            // Revert to old value or empty
+            const revertValue = oldValue || (blockVariableValues.get(blockId) || '');
+            block.setFieldValue(revertValue, fieldName);
+
+            // Open your variable creation dialog
+            showAddVariableDialogFromBlock(ws, displayCode, blockId, fieldName);
+          }
+        }
+      }
+      else if (newValue && typeof newValue === 'string' && newValue.includes('+ create new breed')) {
+          console.log('DETECTED: Create new breed trigger!'); // ADD THIS
+          if (blockId) {
+            const block = ws.getBlockById(blockId);
+            if (block && fieldName) {
+              console.log('Opening breed dialog...'); // ADD THIS
+              const revertValue = oldValue || (blockBreedValues.get(blockId) || '');
+              block.setFieldValue(revertValue, fieldName);
+              showAddBreedDialogFromBlock(ws, displayCode, blockId, fieldName);
+            }
+          }
+        }
+      else if (newValue && typeof newValue === 'string') {
+        if (blockId) {
+          if (newValue.includes('breed') || fieldName === 'BREED_SELECT') {
+            blockBreedValues.set(blockId, newValue);
+          } else {
+            blockVariableValues.set(blockId, newValue);
+          }
+        }
+      }
+    }
+  });
 
   const displayCode = () => {
     refreshMITPlugin();
@@ -394,4 +448,3 @@ function setupNetLogoIntegration() {
 }
 
 setupNetLogoIntegration();
-

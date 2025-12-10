@@ -173,7 +173,7 @@ export function showVariableActionDialog(workspace: any, displayCodeCallback: ()
 //
 // Show the add variable dialog
 //
-function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) {
+function showAddVariableDialog(workspace: any, displayCodeCallback: () => void, pendingBlock?: { blockId: string, fieldName: string }) {
     const dialog = createDialogElement('Add Variable');
     const content = dialog.querySelector('.dialog-content') as HTMLDivElement;
 
@@ -222,6 +222,14 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) 
             if (selectedItem) {
                 toolbox.refreshSelection();
             }
+            // If triggered from a block, assign the new variable to it
+            if (pendingBlock) {
+                const { blockId, fieldName } = pendingBlock;
+                const block = workspace.getBlockById(blockId);
+                if (block) {
+                    block.setFieldValue(name, fieldName);
+                }
+            }
 
             closeDialog();
         } else {
@@ -242,6 +250,15 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void) 
         const nameInput = document.getElementById('variable-name') as HTMLInputElement;
         if (nameInput) nameInput.focus();
     }, 100);
+}
+// Export the add variable dialog function for use from block dropdowns
+export function showAddVariableDialogFromBlock(
+    workspace: any, 
+    displayCodeCallback: () => void,
+    blockId: string,
+    fieldName: string
+) {
+    showAddVariableDialog(workspace, displayCodeCallback, { blockId, fieldName });
 }
 
 //
@@ -374,7 +391,8 @@ export function showBreedActionDialog(workspace: any, displayCodeCallback: () =>
     openDialog(dialog);
 }
 
-function showAddBreedDialog(workspace: any, displayCodeCallback: () => void) {
+function showAddBreedDialog(workspace: any, displayCodeCallback: () => void,     pendingBlock?: { blockId: string, fieldName: string }
+) {
     const dialog = createDialogElement('Add Breed');
     const content = dialog.querySelector('.dialog-content') as HTMLDivElement;
 
@@ -422,6 +440,15 @@ function showAddBreedDialog(workspace: any, displayCodeCallback: () => void) {
             refreshMITPlugin();
             displayCodeCallback();
             save(workspace);
+
+            // If triggered from a block, assign the new breed to it
+            if (pendingBlock) {
+                const { blockId, fieldName } = pendingBlock;
+                const block = workspace.getBlockById(blockId);
+                if (block) {
+                    block.setFieldValue(pluralName, fieldName);
+                }
+            }
             closeDialog();
         } else {
             alert('Please fill in all fields');
@@ -441,6 +468,14 @@ function showAddBreedDialog(workspace: any, displayCodeCallback: () => void) {
         const nameInput = document.getElementById('breed-plural-name') as HTMLInputElement;
         if (nameInput) nameInput.focus();
     }, 100);
+}
+export function showAddBreedDialogFromBlock(
+    workspace: any, 
+    displayCodeCallback: () => void,
+    blockId: string,
+    fieldName: string
+) {
+    showAddBreedDialog(workspace, displayCodeCallback, { blockId, fieldName });
 }
 
 function showRemoveBreedDialog(workspace: any, displayCodeCallback: () => void) {

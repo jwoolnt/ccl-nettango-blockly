@@ -2,7 +2,6 @@ import { getAllAgentSets, getTurtleBreeds, getTurtleAgentSets } from "../data/co
 import { BlockDefinition } from "./types";
 import { createValueBlock, createStatementBlock, dynamicOptions, Order } from "./utilities";
 
-
 const nobody: BlockDefinition = createValueBlock("nobody", ["Agent", "Boolean"]);
 
 const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {
@@ -38,17 +37,23 @@ const with_manual: BlockDefinition = createValueBlock("with_manual", null, {
 		];
 	}
 });
-
 const agentset_here: BlockDefinition = createValueBlock("agentset_here", "Agentset", {
 	message0: "%1-here",
 	args0: [{
 		type: "field_dropdown",
 		name: "AGENT_SET",
-		options: dynamicOptions(() => ["turtles", ...getTurtleBreeds().map(({ pluralName }) => pluralName)])
+		options: dynamicOptions(getTurtleAgentSets)  // Changed this line
 	}],
-	colour: "#4C97FF", // Blue
+	colour: "#4C97FF",
 	tooltip: 'Choose an agentset.',
-	for: block => [`${block.getFieldValue("AGENT_SET")}-here`, Order.ATOMIC]
+	for: block => {
+		const agentSet = block.getFieldValue("AGENT_SET");
+		// Filter out the create option if it somehow gets selected
+		if (agentSet === '+ create new breed') {
+			return ['turtles-here', Order.ATOMIC];
+		}
+		return [`${agentSet}-here`, Order.ATOMIC];
+	}
 });
 
 const any: BlockDefinition = createValueBlock("any", "Boolean", {

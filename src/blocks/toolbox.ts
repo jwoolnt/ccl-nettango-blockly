@@ -79,20 +79,20 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "create_breeds",
+                },
+                {
+                    kind: "block",
+                    type: "sprout_breed",
                     inputs: {
                         "COUNT": {
                             "shadow": {
                                 type: "number",
                                 fields: {
-                                    "NUMBER": 0
+                                    "NUMBER": 1
                                 }
                             }
                         }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "sprout_breed"
+                    }   
                 },
                 {
                     kind: "block",

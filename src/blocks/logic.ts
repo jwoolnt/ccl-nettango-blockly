@@ -1,42 +1,6 @@
+// src/blocks/logic.ts
 import { BlockDefinition } from "./types";
 import { createStatementBlock, createComparisonOperatorBlock, createLogicalOperatorBlock, createValueBlock, Order, staticOptions, dynamicOptions } from "./utilities";
-
-
-const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
-	message0: "%1",
-	args0: [{
-		type: "field_dropdown",
-		name: "BOOLEAN",
-		options: staticOptions(["true", "false"])
-	}],
-	colour: "#d6850d",
-	for: (block) => {
-		const boolean = block.getFieldValue("BOOLEAN");
-		return [`${boolean}`, Order.ATOMIC];
-	}
-});
-
-
-const and: BlockDefinition = createLogicalOperatorBlock("and");
-
-const or: BlockDefinition = createLogicalOperatorBlock("or");
-
-const not: BlockDefinition = createLogicalOperatorBlock("not", false);
-
-const xor: BlockDefinition = createLogicalOperatorBlock("xor");
-
-const equal: BlockDefinition = createComparisonOperatorBlock("equal", "=");
-
-const not_equal: BlockDefinition = createComparisonOperatorBlock("not_equal", "!=");
-
-const less_than: BlockDefinition = createComparisonOperatorBlock("less_than", "<");
-
-const less_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock("less_than_or_equal_to", "<=");
-
-const greater_than: BlockDefinition = createComparisonOperatorBlock("greater_than", ">");
-
-const greater_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock("greater_than_or_equal_to", ">=");
-
 
 const let_: BlockDefinition = function simple_local_declaration_statement(block, generator) {
 	// TODO: change to local_declaration_statement
@@ -60,6 +24,40 @@ const set: BlockDefinition = function lexical_variable_set(block, generator) {
 const get: BlockDefinition = function lexical_variable_get(block) {
 	return [block.getFieldValue("VAR").split(" ").pop(), Order.ATOMIC];
 }
+
+const boolean: BlockDefinition = createValueBlock("boolean", "Boolean", {
+	message0: "%1",
+	args0: [{
+		type: "field_dropdown",
+		name: "BOOLEAN",
+		options: staticOptions(["true", "false"])
+	}],
+	colour: "#d6850d",
+	for: (block) => {
+		const boolean = block.getFieldValue("BOOLEAN");
+		return [`${boolean}`, Order.ATOMIC];
+	}
+});
+
+const and: BlockDefinition = createLogicalOperatorBlock("and");
+
+const or: BlockDefinition = createLogicalOperatorBlock("or");
+
+const not: BlockDefinition = createLogicalOperatorBlock("not", false);
+
+const xor: BlockDefinition = createLogicalOperatorBlock("xor");
+
+const equal: BlockDefinition = createComparisonOperatorBlock("equal", "=");
+
+const not_equal: BlockDefinition = createComparisonOperatorBlock("not_equal", "!=");
+
+const less_than: BlockDefinition = createComparisonOperatorBlock("less_than", "<");
+
+const less_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock("less_than_or_equal_to", "<=");
+
+const greater_than: BlockDefinition = createComparisonOperatorBlock("greater_than", ">");
+
+const greater_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock("greater_than_or_equal_to", ">=");
 
 // TODO: Add Breed
 
@@ -114,39 +112,7 @@ const call_command: BlockDefinition = function procedures_callnoreturn(block: an
 	}
 
 	return procedure + args;
-}
-
-// const to_report: BlockDefinition = function procedures_defreturn(block: any, generator) { // TODO: remove any
-// 	const prefix = `to ${block.getFieldValue("NAME")}`;
-
-// 	let parameters = "";
-// 	if (block.arguments_.length) {
-// 		parameters += " [ "
-
-// 		for (const parameter of block.arguments_) {
-// 			parameters += `${parameter} `
-// 		}
-
-// 		parameters += "]"
-// 	}
-
-// 	const body = generator.statementToCode(block, "RETURN");
-
-// 	const suffix = "end";
-
-// 	return `\n${prefix}${parameters}\n${body}\n${suffix}\n`;
-// }
-
-// const call_report: BlockDefinition = function procedures_callreturn(block: any, generator) { // TODO: remove any
-// 	const procedure = block.getFieldValue("PROCNAME");
-
-// 	let args = "";
-// 	for (let i = 0; i < block.arguments_.length; i++) {
-// 		args += ` ${generator.valueToCode(block, "ARG" + i, Order.FUNCTION_CALL) || "0"}`; // TODO: add zero shadow block
-// 	}
-
-// 	return [procedure + args, Order.FUNCTION_CALL];
-// }
+};
 
 const call_manual: BlockDefinition = createValueBlock("call_manual", null, {
 	message0: "call %1 %2",

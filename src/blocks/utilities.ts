@@ -1,3 +1,4 @@
+// src/blocks/utilities.ts
 import { Argument, BlockDefinition, CheckValue, DynamicDropdownFieldOptions, StaticDropdownFieldOptions, ValueType } from "./types";
 
 
@@ -175,9 +176,28 @@ export function createComparisonOperatorBlock(
 declare const Blockly: any;
 
 export function registerBlock(type: string, definition: BlockDefinition) {
-	Blockly.Blocks[type] = {
-		init: function () {
-			this.jsonInit(definition);
-		}
-	};
+  Blockly.Blocks[type] = {
+	init: function () {
+	  this.jsonInit(definition);
+	  
+	  // Set default values for breed/agentset dropdowns
+	  if ((definition as any).args0) {
+		(definition as any).args0.forEach((arg: any) => {
+          if (arg.type === 'field_dropdown') {
+            // Check if this is a breed/agentset dropdown
+            if (arg.name === 'AGENT_SET' || arg.name === 'BREED') {
+              // Set default to 'turtles' after a short delay to ensure options are loaded
+              setTimeout(() => {
+                try {
+                  this.setFieldValue('turtles', arg.name);
+                } catch (e) {
+                  // Ignore if field doesn't exist yet
+                }
+              }, 0);
+            }
+          }
+        });
+      }
+    }
+  };
 }
