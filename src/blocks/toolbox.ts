@@ -998,11 +998,11 @@ const toolbox: Toolbox = {
         },
 
         // ============================================
-        // ADVANCED/SPECIAL
+        // ADVANCED
         // ============================================
         {
             kind: "category",
-            name: "Advanced",
+            name: "Other",
             colour: "#607D8B", // Blue Grey
             contents: [
                 {

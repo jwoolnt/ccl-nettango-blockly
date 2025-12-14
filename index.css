@@ -238,10 +238,97 @@ body {
   height: 100%;
 }
 
+/* blocks bar */
 .block-editor {
   flex: 1;
   height: 100%;
   background: #ffffff;
+  padding-left: 16px;
+}
+/* Blockly Toolbox Styling */
+.blocklyToolboxDiv {
+  background: #fafafa !important;
+  border-right: 1px solid #e5e7eb !important;
+  padding: 0 !important;
+}
+
+.blocklyTreeRow {
+  padding: 8px 12px !important;
+  margin: 4px 4px !important;
+  border-radius: 6px !important;
+  transition: all 0.15s ease !important;
+  min-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.blocklyTreeRow:hover {
+  background: #f3f4f6 !important;
+}
+
+.blocklyTreeRowContentContainer {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.blocklyTreeIcon {
+  margin-right: 8px !important;
+}
+
+.blocklyTreeSelected {
+  background: #e5e7eb !important;
+}
+
+.blocklyTreeSelected:hover {
+  background: #d1d5db !important;
+}
+
+/* Flyout Styling (where blocks appear when you select a category) */
+.blocklyFlyout {
+  border: none !important;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.blocklyFlyoutBackground {
+  fill: #ffffff !important;
+  fill-opacity: 0.98 !important;
+}
+
+/* Block styling in workspace */
+/* .blocklyDraggable {
+  transition: transform 0.1s ease !important;
+}
+
+.blocklyDraggable:hover {
+  filter: brightness(1.05) !important;
+} */
+
+/* Scrollbar styling for toolbox */
+.blocklyToolboxDiv::-webkit-scrollbar {
+  width: 8px;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Workspace background */
+.blocklyMainBackground {
+  stroke: none !important;
+}
+
+/* Grid dots styling */
+.blocklyGridPattern {
+  fill: #e5e7eb !important;
 }
 
 .output {
@@ -250,6 +337,7 @@ body {
   color: #e5e7eb;
   overflow: auto;
   padding: 16px;
+  padding-left: 40px;
   font-family: 'Fira Code', 'Courier New', monospace;
   font-size: 13px;
   border-top: 1px solid #e5e7eb;

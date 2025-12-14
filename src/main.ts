@@ -19,6 +19,7 @@ const codeOutput = document.getElementsByClassName("generated-code")[0];
 
 const customTheme = Blockly.Theme.defineTheme('customTheme', {
   name: 'customTheme',
+  // theme colors for blocks from the MIT Plug-in/Blockly
   blockStyles: {
     number_blocks: {
       colourPrimary: '#c72216',
