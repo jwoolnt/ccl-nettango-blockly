@@ -1,0 +1,904 @@
+{
+  "version": "1.0.0",
+  "timestamp": 1764048443512,
+  "workspace": {
+    "blocks": {
+      "languageVersion": 0,
+      "blocks": [
+        {
+          "type": "procedures_defnoreturn",
+          "id": "~j[AGi=O.{=}N|rf5H?I",
+          "x": 20,
+          "y": -20,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "setup"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "clear_all",
+                "id": "50Da}=ZvTh]3`bI;R/i(",
+                "next": {
+                  "block": {
+                    "type": "set_default_shape",
+                    "id": "uLOT;Vn+k`Lz^Y8UH!I`",
+                    "fields": {
+                      "BREED": "turtles"
+                    },
+                    "inputs": {
+                      "SHAPE": {
+                        "block": {
+                          "type": "string",
+                          "id": "5KdB7po6zOm^V_K?UbY?",
+                          "fields": {
+                            "STRING": "square"
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "ask_agentset_with",
+                        "id": "#uKP3E5=sRZFT|4AsriH",
+                        "inputs": {
+                          "AGENT_SET": {
+                            "shadow": {
+                              "type": "agentset",
+                              "id": "9--37c=iR5R;|z}~vsLd",
+                              "fields": {
+                                "AGENT_SET": "patches"
+                              }
+                            }
+                          },
+                          "CONDITION": {
+                            "block": {
+                              "type": "less_than",
+                              "id": "g2aaCw/((#q#R,Eho$8A",
+                              "inputs": {
+                                "A": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "nr3S_zrP$PN5}?XMoT4]",
+                                    "fields": {
+                                      "NUMBER": 0
+                                    }
+                                  },
+                                  "block": {
+                                    "type": "random_float",
+                                    "id": "k[r]|?AqZ%q.cd,j5A=t",
+                                    "inputs": {
+                                      "N": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "J[~OV0K*y}q@w{kc??z?",
+                                          "fields": {
+                                            "NUMBER": 100
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "B": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "Xp~I1o@-A0/jW{uFbvf6",
+                                    "fields": {
+                                      "NUMBER": 57
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "COMMANDS": {
+                            "block": {
+                              "type": "lexical_variable_set",
+                              "id": "G*yP#NTu,?CP~v$`SKFR",
+                              "fields": {
+                                "VAR": "global pcolor"
+                              },
+                              "inputs": {
+                                "VALUE": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "7}vHYeZMnMJw2+gMB.Qx",
+                                    "fields": {
+                                      "NUMBER": 0
+                                    }
+                                  },
+                                  "block": {
+                                    "type": "color",
+                                    "id": ",SD+o#EXJ?2XY!8L;)Hf",
+                                    "fields": {
+                                      "COLOR": "green"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "next": {
+                          "block": {
+                            "type": "ask_agentset_with",
+                            "id": "FH_(L5Or+dUi0Bn0)AEX",
+                            "inputs": {
+                              "AGENT_SET": {
+                                "shadow": {
+                                  "type": "agentset",
+                                  "id": "a%v;6?g!|V#T(~+]AW{b",
+                                  "fields": {
+                                    "AGENT_SET": "patches"
+                                  }
+                                }
+                              },
+                              "CONDITION": {
+                                "block": {
+                                  "type": "equal",
+                                  "id": "Ho}L_+u.9:lI}LHW{g],",
+                                  "inputs": {
+                                    "A": {
+                                      "shadow": {
+                                        "type": "number",
+                                        "id": "irbLD$]l@.F0T7[01m?y",
+                                        "fields": {
+                                          "NUMBER": 0
+                                        }
+                                      },
+                                      "block": {
+                                        "type": "lexical_variable_get",
+                                        "id": "PN)McPkP6:p,IjP+F8]R",
+                                        "fields": {
+                                          "VAR": "global pxcor"
+                                        }
+                                      }
+                                    },
+                                    "B": {
+                                      "shadow": {
+                                        "type": "number",
+                                        "id": "TPFP8b-nc3QN^+N+k8_O",
+                                        "fields": {
+                                          "NUMBER": 0
+                                        }
+                                      },
+                                      "block": {
+                                        "type": "lexical_variable_get",
+                                        "id": "`k?xrt0JXyh5;*U[j;39",
+                                        "fields": {
+                                          "VAR": "global min-pxcor"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "COMMANDS": {
+                                "block": {
+                                  "type": "procedures_callnoreturn",
+                                  "id": "aj$A)cg/Jw7{+?Nc@p,J",
+                                  "extraState": "<mutation name=\"ignite\"></mutation>",
+                                  "fields": {
+                                    "PROCNAME": "ignite"
+                                  }
+                                }
+                              }
+                            },
+                            "next": {
+                              "block": {
+                                "type": "lexical_variable_set",
+                                "id": "GdJ43)t3gDfGY?%tf-aI",
+                                "fields": {
+                                  "VAR": "global initial-trees"
+                                },
+                                "inputs": {
+                                  "VALUE": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "(rY2pDzD9,uX7bTMT?1V",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "count",
+                                      "id": "K!%zWcZij9XqV4$yZl=J",
+                                      "inputs": {
+                                        "AGENT_SET": {
+                                          "shadow": {
+                                            "type": "agentset",
+                                            "id": "TdIQ%veTy)sDZGmWjUU1",
+                                            "fields": {
+                                              "AGENT_SET": "turtles"
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "with_manual",
+                                            "id": "bnUr))dsF-d5vdrZxS3`",
+                                            "inputs": {
+                                              "AGENT_SET": {
+                                                "shadow": {
+                                                  "type": "agentset",
+                                                  "id": ":k(rQXiQqIoJoGecmLcK",
+                                                  "fields": {
+                                                    "AGENT_SET": "patches"
+                                                  }
+                                                }
+                                              },
+                                              "CONDITION": {
+                                                "shadow": {
+                                                  "type": "equal",
+                                                  "id": "5tYnYACGh4*?)4/.L7|w"
+                                                },
+                                                "block": {
+                                                  "type": "equal",
+                                                  "id": "z_eGsB~pl#`K/,,{ZzAq",
+                                                  "inputs": {
+                                                    "A": {
+                                                      "shadow": {
+                                                        "type": "number",
+                                                        "id": "Gv0+tnW-RFYB;}Fhr7}5",
+                                                        "fields": {
+                                                          "NUMBER": 0
+                                                        }
+                                                      },
+                                                      "block": {
+                                                        "type": "lexical_variable_get",
+                                                        "id": "yAcgx`_0bDu=R8NYk,Sk",
+                                                        "fields": {
+                                                          "VAR": "global pcolor"
+                                                        }
+                                                      }
+                                                    },
+                                                    "B": {
+                                                      "shadow": {
+                                                        "type": "number",
+                                                        "id": "A0B+KN8*$6C+PI)*A|]O",
+                                                        "fields": {
+                                                          "NUMBER": 0
+                                                        }
+                                                      },
+                                                      "block": {
+                                                        "type": "color",
+                                                        "id": "kiswd%zS}8LM%C:S}a0d",
+                                                        "fields": {
+                                                          "COLOR": "green"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "next": {
+                                  "block": {
+                                    "type": "lexical_variable_set",
+                                    "id": ";CQeB8ORf~j/%Bj7oz0d",
+                                    "fields": {
+                                      "VAR": "global burned-trees"
+                                    },
+                                    "inputs": {
+                                      "VALUE": {
+                                        "shadow": {
+                                          "type": "number",
+                                          "id": "eZGafYn@v$owDP5PDr|b",
+                                          "fields": {
+                                            "NUMBER": 0
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "next": {
+                                      "block": {
+                                        "type": "reset_ticks",
+                                        "id": "6!r99dWkf/^E1n{IApFT"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "@ud9DrqX2eO{ljd?oT;o",
+          "x": 20,
+          "y": 420,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "go"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "if_",
+                "id": "k7L`YTLjRXqF!gSc).q/",
+                "inputs": {
+                  "CONDITION": {
+                    "shadow": {
+                      "type": "boolean",
+                      "id": "`pa|6yhQG%mV*Nv~;]4G",
+                      "fields": {
+                        "BOOLEAN": "true"
+                      }
+                    },
+                    "block": {
+                      "type": "not",
+                      "id": "pN2bt_3Ta`Fwz5[mDXc{",
+                      "inputs": {
+                        "A": {
+                          "shadow": {
+                            "type": "boolean",
+                            "id": "oSD![XjJ,xe(M=3+%)Fr",
+                            "fields": {
+                              "BOOLEAN": "true"
+                            }
+                          },
+                          "block": {
+                            "type": "any",
+                            "id": "9{PdxR=IoDEt3xjK,z/2",
+                            "inputs": {
+                              "AGENT_SET": {
+                                "block": {
+                                  "type": "agentset",
+                                  "id": "Dm[:Y@E`spPnaR/j|6mr",
+                                  "fields": {
+                                    "AGENT_SET": "turtles"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "stop",
+                      "id": "AU=h%+U+@S3nC]ZRe=G%"
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "ask_agent_set",
+                    "id": "HrZ-.cy/V)bvlx2?hV;_",
+                    "inputs": {
+                      "AGENT_SET": {
+                        "shadow": {
+                          "type": "agentset",
+                          "id": ".KB|r4FPt{+.0J1j]MJ}",
+                          "fields": {
+                            "AGENT_SET": "fires"
+                          }
+                        }
+                      },
+                      "COMMANDS": {
+                        "block": {
+                          "type": "ask_agentset_with",
+                          "id": "EL,B9SGoy:d@JsNQ-6fX",
+                          "inputs": {
+                            "AGENT_SET": {
+                              "shadow": {
+                                "type": "agentset",
+                                "id": "}TLx[?EW+tvAANIk^B[r",
+                                "fields": {
+                                  "AGENT_SET": "neighbors4"
+                                }
+                              }
+                            },
+                            "CONDITION": {
+                              "block": {
+                                "type": "equal",
+                                "id": "ratGSH|-.@83IvuH-Zly",
+                                "inputs": {
+                                  "A": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "Gv0+tnW-RFYB;}Fhr7}5",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "244P]jNP1E?D#/XT~b,]",
+                                      "fields": {
+                                        "VAR": "global pcolor"
+                                      }
+                                    }
+                                  },
+                                  "B": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "A0B+KN8*$6C+PI)*A|]O",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "color",
+                                      "id": "sni0e|0/LQZ?mC+hNf9r",
+                                      "fields": {
+                                        "COLOR": "green"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "COMMANDS": {
+                              "block": {
+                                "type": "procedures_callnoreturn",
+                                "id": "f]nL)H1~jnr)=+NHA*Y,",
+                                "extraState": "<mutation name=\"ignite\"></mutation>",
+                                "fields": {
+                                  "PROCNAME": "ignite"
+                                }
+                              }
+                            }
+                          },
+                          "next": {
+                            "block": {
+                              "type": "lexical_variable_set",
+                              "id": "[sz46hz~d}?cjQ9Cb/XA",
+                              "fields": {
+                                "VAR": "global breed"
+                              },
+                              "inputs": {
+                                "VALUE": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "vcooB|0st8c$ol/FON}v",
+                                    "fields": {
+                                      "NUMBER": 0
+                                    }
+                                  },
+                                  "block": {
+                                    "type": "lexical_variable_get",
+                                    "id": "[3a}|TnWe1V.2b6L1cgu",
+                                    "fields": {
+                                      "VAR": "global embers"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "procedures_callnoreturn",
+                        "id": "[#e/@Cg]++]R|`,k3p8=",
+                        "extraState": "<mutation name=\"fadeembers\"></mutation>",
+                        "fields": {
+                          "PROCNAME": "fadeembers"
+                        },
+                        "next": {
+                          "block": {
+                            "type": "tick",
+                            "id": "E/*YUjM(x[dD2p)]h?.a"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "sK-Q3!oB]JbO`B=~P#e?",
+          "x": -20,
+          "y": 900,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "ignite"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "sprout_breed",
+                "id": "*EGIbN/r#]CI8Ne-zf6K",
+                "fields": {
+                  "BREED": "fires"
+                },
+                "inputs": {
+                  "COUNT": {
+                    "block": {
+                      "type": "number",
+                      "id": "L!SaccwL:^y?b)/l?q:f",
+                      "fields": {
+                        "NUMBER": 1
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "lexical_variable_set",
+                      "id": "$kh]-0TzdcDE(y(SIc4x",
+                      "fields": {
+                        "VAR": "global color"
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "+t|c4jS@Q/Rv*]g+8p[s",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "color",
+                            "id": "CWffH([Tg8r~s_m`Vu*4",
+                            "fields": {
+                              "COLOR": "red"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "next": {
+                  "block": {
+                    "type": "lexical_variable_set",
+                    "id": "2vY,;@wdR7*HoaEAck.w",
+                    "fields": {
+                      "VAR": "global pcolor"
+                    },
+                    "inputs": {
+                      "VALUE": {
+                        "shadow": {
+                          "type": "number",
+                          "id": "+t|c4jS@Q/Rv*]g+8p[s",
+                          "fields": {
+                            "NUMBER": 0
+                          }
+                        },
+                        "block": {
+                          "type": "color",
+                          "id": "]UMs5:rFJnYtOw^Z:0Tf",
+                          "fields": {
+                            "COLOR": "black"
+                          }
+                        }
+                      }
+                    },
+                    "next": {
+                      "block": {
+                        "type": "lexical_variable_set",
+                        "id": "@%QhlQM+hOVk8h!9(,dl",
+                        "fields": {
+                          "VAR": "global burned-trees"
+                        },
+                        "inputs": {
+                          "VALUE": {
+                            "shadow": {
+                              "type": "number",
+                              "id": "+t|c4jS@Q/Rv*]g+8p[s",
+                              "fields": {
+                                "NUMBER": 0
+                              }
+                            },
+                            "block": {
+                              "type": "addition",
+                              "id": "|We#*U[mS;7N}X8N(hx1",
+                              "inputs": {
+                                "A": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "?j[u2EnfVKl38QQKvb}u",
+                                    "fields": {
+                                      "NUMBER": 0
+                                    }
+                                  },
+                                  "block": {
+                                    "type": "lexical_variable_get",
+                                    "id": "hEm@=am!J04-L#UPB])^",
+                                    "fields": {
+                                      "VAR": "global burned-trees"
+                                    }
+                                  }
+                                },
+                                "B": {
+                                  "shadow": {
+                                    "type": "number",
+                                    "id": "sBovo.|rX{e[pV0[B9DR",
+                                    "fields": {
+                                      "NUMBER": 1
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "procedures_defnoreturn",
+          "id": "c=E)gf)#3dbpI4]kFR-O",
+          "x": 300,
+          "y": 780,
+          "extraState": "<mutation></mutation>",
+          "fields": {
+            "NAME": "fadeembers"
+          },
+          "inputs": {
+            "STACK": {
+              "block": {
+                "type": "ask_agent_set",
+                "id": "J_eU+Q!l4l71=y]g1liM",
+                "inputs": {
+                  "AGENT_SET": {
+                    "shadow": {
+                      "type": "agentset",
+                      "id": "!w^{Tpb[r@}gyuGjdV|Z",
+                      "fields": {
+                        "AGENT_SET": "turtles"
+                      }
+                    }
+                  },
+                  "COMMANDS": {
+                    "block": {
+                      "type": "lexical_variable_set",
+                      "id": "#WbrU/rO6:|sDV;#2vAP",
+                      "fields": {
+                        "VAR": "global color"
+                      },
+                      "inputs": {
+                        "VALUE": {
+                          "shadow": {
+                            "type": "number",
+                            "id": "MvH3lDfTLi|9D^Yh3%@I",
+                            "fields": {
+                              "NUMBER": 0
+                            }
+                          },
+                          "block": {
+                            "type": "subtraction",
+                            "id": "tYz7xFX/qf$}b/28eDn:",
+                            "inputs": {
+                              "A": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "1;d_.z01CLKr6`tgJZ`X",
+                                  "fields": {
+                                    "NUMBER": 0
+                                  }
+                                },
+                                "block": {
+                                  "type": "lexical_variable_get",
+                                  "id": ",xj46HYcX}C6{77vM+3^",
+                                  "fields": {
+                                    "VAR": "global color"
+                                  }
+                                }
+                              },
+                              "B": {
+                                "shadow": {
+                                  "type": "number",
+                                  "id": "A5UxRV=FG3b$uy#4HIul",
+                                  "fields": {
+                                    "NUMBER": 0.3
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "next": {
+                        "block": {
+                          "type": "if_",
+                          "id": "bbF$]y:[D/E5{_E/vswx",
+                          "inputs": {
+                            "CONDITION": {
+                              "shadow": {
+                                "type": "boolean",
+                                "id": "^[`*mja;!XyFL)$Z8GC-",
+                                "fields": {
+                                  "BOOLEAN": "true"
+                                }
+                              },
+                              "block": {
+                                "type": "less_than",
+                                "id": "#5]*SyAqgK|t/VB;DG41",
+                                "inputs": {
+                                  "A": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "43CD7p2`ZyR70|B:PKb8",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "AtHpk]U-:3@sNR6o$@0S",
+                                      "fields": {
+                                        "VAR": "global color"
+                                      }
+                                    }
+                                  },
+                                  "B": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "D^_N+VA*_^4[=/Oq_fZY",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "subtraction",
+                                      "id": "rUvVI!pn?v,z]3TosE(R",
+                                      "inputs": {
+                                        "A": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "jN0a_ST0Px:-VXIi$7:1",
+                                            "fields": {
+                                              "NUMBER": 0
+                                            }
+                                          },
+                                          "block": {
+                                            "type": "color",
+                                            "id": "#IT5$X-EF9Hh`ajYZI`u",
+                                            "fields": {
+                                              "COLOR": "red"
+                                            }
+                                          }
+                                        },
+                                        "B": {
+                                          "shadow": {
+                                            "type": "number",
+                                            "id": "AU(1y0JXA(LJrP#1}Ulg",
+                                            "fields": {
+                                              "NUMBER": 3.5
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "COMMANDS": {
+                              "block": {
+                                "type": "lexical_variable_set",
+                                "id": "h+qdA0:8hH.a0[{h|1$n",
+                                "fields": {
+                                  "VAR": "global pcolor"
+                                },
+                                "inputs": {
+                                  "VALUE": {
+                                    "shadow": {
+                                      "type": "number",
+                                      "id": "+l$o}w7F0OdvmXrkZ[`d",
+                                      "fields": {
+                                        "NUMBER": 0
+                                      }
+                                    },
+                                    "block": {
+                                      "type": "lexical_variable_get",
+                                      "id": "f.Ji;g4FUu`]k_i1f)p5",
+                                      "fields": {
+                                        "VAR": "global color"
+                                      }
+                                    }
+                                  }
+                                },
+                                "next": {
+                                  "block": {
+                                    "type": "die",
+                                    "id": "$NF4md^j)za@9Mz{Qc{V"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "initial-trees",
+        "id": "CKoM4%^Cr8/p^h?@aQ|#"
+      },
+      {
+        "name": "burned-trees",
+        "id": "AD:BoPiqe}Biu/b.wTtb"
+      },
+      {
+        "name": "embers",
+        "id": "T$dsEisL6Veurdj~`ZVN"
+      }
+    ],
+    "nettango-context": {
+      "ui": [
+        "embers"
+      ],
+      "globals": [
+        "initial-trees",
+        "burned-trees"
+      ],
+      "turtles": [],
+      "patches": [],
+      "links": [],
+      "breeds": [
+        {
+          "type": "turtle",
+          "pluralName": "fires",
+          "singularName": "fire"
+        },
+        {
+          "type": "turtle",
+          "pluralName": "embers",
+          "singularName": "ember"
+        }
+      ]
+    }
+  },
+  "context": {
+    "ui": [
+      "embers"
+    ],
+    "globals": [
+      "initial-trees",
+      "burned-trees"
+    ],
+    "turtles": [],
+    "patches": [],
+    "links": [],
+    "breeds": [
+      {
+        "type": "turtle",
+        "pluralName": "fires",
+        "singularName": "fire"
+      },
+      {
+        "type": "turtle",
+        "pluralName": "embers",
+        "singularName": "ember"
+      }
+    ]
+  }
+}
