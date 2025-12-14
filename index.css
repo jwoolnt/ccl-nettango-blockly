@@ -829,7 +829,9 @@ body {
 
 /* Variables Tracker */
 .variables-tracker {
-  height: 200px;
+  /* Smaller default footprint; grows only as needed */
+  min-height: 80px;
+  max-height: 140px;
   background: #ffffff;
   border-top: 1px solid #e5e7eb;
   display: flex;

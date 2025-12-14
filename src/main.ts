@@ -10,6 +10,7 @@ import { refreshMITPlugin } from "./data/context";
 import { updateWorkspaceForDomain } from "./blocks/domain";
 import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./moduleElements";
 import { initVariablesTracker } from "./variablesTracker";
+import { initBreedTracker } from "./breedTracker";
 import { initUIModules } from "./moduleSetup";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
@@ -257,6 +258,9 @@ if (blockEditor && codeOutput) {
 
   // Initialize variables tracker
   initVariablesTracker(ws, displayCode);
+
+  // Initialize breeds tracker
+  initBreedTracker(ws, displayCode);
 
   // Initialize workspace selector
   initWorkspaceSelector(ws, displayCode);
