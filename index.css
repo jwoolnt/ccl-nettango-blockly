@@ -316,6 +316,7 @@ body {
 
 #netlogo-iframe {
   flex: 1;
+  min-height: 0; /* Allow iframe to shrink */
   border: none;
   background: white;
 }
@@ -616,4 +617,220 @@ body {
 
 .dialog-button.primary:hover {
   transform: translateY(-1px);
+}
+
+/* New Project Modal */
+.new-project-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.new-project-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  min-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.new-project-modal-title {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.new-project-field {
+  margin-bottom: 16px;
+}
+
+.new-project-field:last-of-type {
+  margin-bottom: 24px;
+}
+
+.new-project-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.new-project-input,
+.new-project-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.new-project-input:focus,
+.new-project-select:focus {
+  outline: none;
+  border-color: #1E88E5;
+  box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+}
+
+.new-project-input-error {
+  border-color: #E53935;
+}
+
+.new-project-select {
+  background: white;
+  cursor: pointer;
+}
+
+.new-project-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.new-project-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.new-project-btn-cancel {
+  border: 1px solid #ddd;
+  background: white;
+  color: #666;
+}
+
+.new-project-btn-cancel:hover {
+  background: #f5f5f5;
+}
+
+.new-project-btn-primary {
+  border: none;
+  background: #1E88E5;
+  color: white;
+}
+
+.new-project-btn-primary:hover {
+  background: #1976D2;
+}
+
+/* Variables Tracker */
+.variables-tracker {
+  height: 200px;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.variables-tracker-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+.variables-tracker-header h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.variables-tracker-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+
+.variable-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.variable-item:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.variable-item.selected {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+/* Context Menu */
+.context-menu {
+  position: fixed;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 4px;
+  z-index: 10000;
+  display: none;
+  min-width: 120px;
+}
+
+.context-menu.show {
+  display: block;
+}
+
+.context-menu-item {
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.context-menu-item:hover {
+  background: #f3f4f6;
+}
+
+.context-menu-item:active {
+  background: #e5e7eb;
+}
+
+/* Adjust NetLogo Panel to accommodate variables tracker */
+.netlogo-panel {
+  width: 480px;
+  display: flex;
+  flex-direction: column;
+  background: #fafafa;
+  border-left: 1px solid #e5e7eb;
+}
+
+#netlogo-iframe {
+  flex: 1;
+  min-height: 0; /* Allow iframe to shrink */
+  border: none;
+  background: white;
 }

@@ -2,11 +2,15 @@
 import * as Blockly from "blockly";
 import { reset } from "./services/serializer";
 import { initDialogs, showVariableActionDialog, showBreedActionDialog } from "./modules";
+import { updateWorkspaceForDomain } from "./blocks/domain";
 
 // Sidebar state management
 export type SidebarCategory = 'variables';
 
 let activeCategory: SidebarCategory = 'variables';
+
+// Store the current workspace domain
+let currentDomain: string = 'default';
 
 // Initialize sidebar functionality
 export function initSidebar(workspace: any, displayCodeCallback: () => void) {
@@ -44,7 +48,7 @@ export function initSidebar(workspace: any, displayCodeCallback: () => void) {
     });
   }
   // Set up the file menu dropdown
-  setupFileMenu(workspace);
+  setupFileMenu(workspace, displayCodeCallback);
 }
 
 // Filter blocks based on selected category (for future implementation)
@@ -72,8 +76,118 @@ function setupBreedActions(workspace: any, displayCodeCallback: () => void) {
   }
 }
 
+// Generate HTML template for the new project modal
+function createNewProjectModalHTML(): string {
+  return `
+    <h2 class="new-project-modal-title">New Project</h2>
+    
+    <div class="new-project-field">
+      <label class="new-project-label">Project Name</label>
+      <input 
+        type="text" 
+        id="project-name-input" 
+        class="new-project-input"
+        placeholder="Enter project name..."
+      />
+    </div>
+
+    <div class="new-project-field">
+      <label class="new-project-label">Domain</label>
+      <select id="domain-select" class="new-project-select">
+        <option value="default">Default</option>
+        <option value="Ants">Ants</option>
+        <option value="Wolf-Sheep">Wolf-Sheep</option>
+        <option value="Frog Pond">Frog Pond</option>
+      </select>
+    </div>
+
+    <div class="new-project-buttons">
+      <button id="cancel-btn" class="new-project-btn new-project-btn-cancel">
+        Cancel
+      </button>
+      <button id="create-btn" class="new-project-btn new-project-btn-primary">
+        Create Project
+      </button>
+    </div>
+  `;
+}
+
+// Show the New Project modal
+function showNewProjectModal(workspace: any): Promise<{projectName: string, domain: string} | null> {
+  return new Promise((resolve) => {
+    // Create modal overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'new-project-overlay';
+
+    // Create modal content
+    const modal = document.createElement('div');
+    modal.className = 'new-project-modal';
+    modal.innerHTML = createNewProjectModalHTML();
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // Get elements
+    const projectNameInput = modal.querySelector('#project-name-input') as HTMLInputElement;
+    const domainSelect = modal.querySelector('#domain-select') as HTMLSelectElement;
+    const cancelBtn = modal.querySelector('#cancel-btn') as HTMLButtonElement;
+    const createBtn = modal.querySelector('#create-btn') as HTMLButtonElement;
+
+    // Set default domain to current
+    domainSelect.value = currentDomain;
+
+    // Focus on input
+    setTimeout(() => projectNameInput.focus(), 100);
+
+    // Handle cancel
+    const handleCancel = () => {
+      document.body.removeChild(overlay);
+      resolve(null);
+    };
+
+    // Handle create
+    const handleCreate = () => {
+      const projectName = projectNameInput.value.trim();
+      const domain = domainSelect.value;
+
+      if (!projectName) {
+        projectNameInput.classList.add('new-project-input-error');
+        projectNameInput.focus();
+        return;
+      }
+
+      currentDomain = domain;
+      document.body.removeChild(overlay);
+      resolve({ projectName, domain });
+    };
+
+    // Event listeners
+    cancelBtn.addEventListener('click', handleCancel);
+    createBtn.addEventListener('click', handleCreate);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) handleCancel();
+    });
+
+    // Handle Enter key
+    projectNameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleCreate();
+      else if (e.key === 'Escape') handleCancel();
+    });
+
+    // Remove error class on input
+    projectNameInput.addEventListener('input', () => {
+      projectNameInput.classList.remove('new-project-input-error');
+    });
+  });
+}
+
+// Get the current domain
+export function getCurrentDomain(): string {
+  return currentDomain;
+}
+
 // Set up file menu functionality
-function setupFileMenu(workspace: any) {
+function setupFileMenu(workspace: any, displayCodeCallback: () => void) {
   const fileMenuLink = document.querySelector('.nav-item:first-child .nav-link');
   const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -87,14 +201,32 @@ function setupFileMenu(workspace: any) {
     // Set up file menu item actions
     const menuItems = dropdownMenu.querySelectorAll('.dropdown-item');
     menuItems.forEach(item => {
-      item.addEventListener('click', (e) => {
+      item.addEventListener('click', async (e) => {
         e.preventDefault();
         const action = item.textContent;
 
         switch (action) {
           case 'New':
+            // Show confirmation first
             if (confirm('Start a new project? Any unsaved changes will be lost.')) {
-              location.reload(); // Simple reset for now
+              // Show the new project modal
+              const result = await showNewProjectModal(workspace);
+              
+              if (result) {
+                console.log('Creating new project:', result);
+                
+                // 1. Reset the workspace
+                reset(workspace);
+                
+                // 2. Update workspace with domain-specific blocks (updates toolbox)
+                updateWorkspaceForDomain(workspace, result.domain, displayCodeCallback);
+                
+                // 3. Set the project name in your app state
+                // setProjectName(result.projectName);
+                
+                // 4. Update any UI elements showing the project name
+                console.log(`Project "${result.projectName}" created with domain "${result.domain}"`);
+              }
             }
             break;
           case 'Upload local':

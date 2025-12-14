@@ -1,4 +1,6 @@
-// Type definitions (unchanged)
+// 
+// Type definitions for Toolbox structure
+// 
 type PresetBlockData = {
     type: string;
     fields?: Record<string, any>;
@@ -52,10 +54,13 @@ type Toolbox = FlyoutToolbox | CategoryToolbox;
 const toolbox: Toolbox = {
     kind: 'categoryToolbox',
     contents: [
+        // ============================================
+        // SIMULATION CONTROL
+        // ============================================
         {
             kind: "category",
             name: "Observer",
-            colour: "#4527A0", // Deep Purple
+            colour: "#5E35B1", // Deep Purple
             contents: [
                 {
                     kind: "block",
@@ -71,11 +76,16 @@ const toolbox: Toolbox = {
                 },
             ]
         },
+
+        // ============================================
+        // AGENTS
+        // ============================================
         {
             kind: "category",
             name: "Turtles",
-            colour: "#178f49", // Dark Green
+            colour: "#43A047", // Dark Green
             contents: [
+                // Lifecycle
                 {
                     kind: "block",
                     type: "create_breeds",
@@ -110,13 +120,19 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "die"
+                },
+                
+                // Movement
+                {
+                    kind: "block",
                     type: "forward",
                     inputs: {
                         "DISTANCE": {
                             "shadow": {
                                 type: "number",
                                 fields: {
-                                    "NUMBER": 0
+                                    "NUMBER": 1
                                 }
                             }
                         }
@@ -130,7 +146,7 @@ const toolbox: Toolbox = {
                             "shadow": {
                                 type: "number",
                                 fields: {
-                                    "NUMBER": 0
+                                    "NUMBER": 1
                                 }
                             }
                         }
@@ -144,7 +160,7 @@ const toolbox: Toolbox = {
                             "shadow": {
                                 type: "number",
                                 fields: {
-                                    "NUMBER": 0
+                                    "NUMBER": 90
                                 }
                             }
                         }
@@ -158,12 +174,14 @@ const toolbox: Toolbox = {
                             "shadow": {
                                 type: "number",
                                 fields: {
-                                    "NUMBER": 0
+                                    "NUMBER": 90
                                 }
                             }
                         }
                     }
                 },
+                
+                // Position
                 {
                     kind: "block",
                     type: "setxy",
@@ -188,43 +206,30 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "random_ycor"
                 },
-                {
-                    kind: "block",
-                    type: "die"
-                },
             ]
         },
         {
             kind: "category",
             name: "Patches",
-            colour: "#795548", // Brown
+            colour: "#6D4C41", // Brown
             contents: [
-                {
-                    kind: "block",
-                    type: "lexical_variable_set",
-                    inputs: {
-                        "VALUE": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        }
-                    }
-                },
             ]
         },
         {
             kind: "category",
             name: "Links",
-            colour: "#1565C0", // Blue
-            contents: []
+            colour: "#E64A19",
+            contents: [
+            ]
         },
+
+        // ============================================
+        // VISUAL PROPERTIES
+        // ============================================
         {
             kind: "category",
             name: "Colors",
-            colour: "#dba70b", // Yellow
+            colour: "#F9A825", // Yellow
             contents: [
                 {
                     kind: "block",
@@ -232,184 +237,47 @@ const toolbox: Toolbox = {
                 },
             ]
         },
+
+        // ============================================
+        // PROGRAMMING CONSTRUCTS
+        // ============================================
         {
             kind: "category",
-            name: "Math",
-            colour: "#c72216", // Red
+            name: "Control",
+            colour: "#00ACC1", // Cyan
             contents: [
+                // Flow Control
                 {
                     kind: "block",
-                    type: "number"
-                },
-                {
-                    kind: "block",
-                    type: "negation",
+                    type: "if_",
                     inputs: {
-                        "A": {
+                        "CONDITION": {
                             "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
+                                type: "boolean"
                             }
                         }
                     }
                 },
                 {
                     kind: "block",
-                    type: "exponentiation",
+                    type: "ifelse",
                     inputs: {
-                        "A": {
+                        "CONDITION": {
                             "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 1
-                                }
-                            }
-                        },
-                        "B": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 1
-                                }
+                                type: "boolean"
                             }
                         }
                     }
                 },
                 {
                     kind: "block",
-                    type: "multiplication",
-                    inputs: {
-                        "A": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 1
-                                }
-                            }
-                        },
-                        "B": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 1
-                                }
-                            }
-                        }
-                    }
+                    type: "stop",
                 },
+                
+                // Agent Commands
                 {
                     kind: "block",
-                    type: "division",
-                    inputs: {
-                        "A": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 1
-                                }
-                            }
-                        },
-                        "B": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 1
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "addition",
-                    inputs: {
-                        "A": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        },
-                        "B": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "subtraction",
-                    inputs: {
-                        "A": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        },
-                        "B": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "random",
-                    inputs: {
-                        "N": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "random_float",
-                    inputs: {
-                        "N": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "round",
-                    inputs: {
-                        "N": {
-                            "shadow": {
-                                type: "number",
-                                fields: {
-                                    "NUMBER": 0
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "count",
+                    type: "ask_agent_set",
                     inputs: {
                         "AGENT_SET": {
                             "shadow": {
@@ -420,17 +288,82 @@ const toolbox: Toolbox = {
                             }
                         }
                     }
-                }
+                },
+                {
+                    kind: "block",
+                    type: "ask_agentset_with",
+                    inputs: {
+                        "AGENT_SET": {
+                            "shadow": {
+                                type: "agentset",
+                                fields: {
+                                    "AGENT_SET": "turtles"
+                                }
+                            }
+                        }
+                    }
+                },
+                
+                // Procedures
+                {
+                    kind: "block",
+                    type: "procedures_defnoreturn"
+                },
+                {
+                    kind: "block",
+                    type: "procedures_callnoreturn"
+                },
+                {
+                    kind: "block",
+                    type: "call_manual"
+                },
+                {
+                    kind: "block",
+                    type: "report"
+                },
+                
+                // Output
+                {
+                    kind: "block",
+                    type: "show"
+                },
+                {
+                    kind: "block",
+                    type: "user_message",
+                },
+                
+                // Settings
+                {
+                    kind: "block",
+                    type: "set_default_shape"
+                },
             ]
         },
         {
             kind: "category",
             name: "Logic",
-            colour: "#d6850d", // Orange
+            colour: "#FB8C00", // Orange
             contents: [
+                // Boolean Values
                 {
                     kind: "block",
                     type: "boolean"
+                },
+                
+                // Logical Operators
+                {
+                    kind: "block",
+                    type: "not",
+                    inputs: {
+                        "A": {
+                            "shadow": {
+                                type: "boolean",
+                                fields: {
+                                    "BOOLEAN": "true"
+                                }
+                            }
+                        }
+                    }
                 },
                 {
                     kind: "block",
@@ -478,20 +411,6 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
-                    type: "not",
-                    inputs: {
-                        "A": {
-                            "shadow": {
-                                type: "boolean",
-                                fields: {
-                                    "BOOLEAN": "true"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
                     type: "xor",
                     inputs: {
                         "A": {
@@ -512,6 +431,8 @@ const toolbox: Toolbox = {
                         }
                     }
                 },
+                
+                // Comparison Operators
                 {
                     kind: "block",
                     type: "equal",
@@ -644,16 +565,212 @@ const toolbox: Toolbox = {
                         }
                     }
                 },
+            ]
+        },
+        {
+            kind: "category",
+            name: "Math",
+            colour: "#E53935", // Red
+            contents: [
+                // Numbers
                 {
-                    "kind": "block",
-                    "type": "netlogo_web"
+                    kind: "block",
+                    type: "number"
+                },
+                
+                // Arithmetic Operators
+                {
+                    kind: "block",
+                    type: "negation",
+                    inputs: {
+                        "A": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "addition",
+                    inputs: {
+                        "A": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        },
+                        "B": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "subtraction",
+                    inputs: {
+                        "A": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        },
+                        "B": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "multiplication",
+                    inputs: {
+                        "A": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 1
+                                }
+                            }
+                        },
+                        "B": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "division",
+                    inputs: {
+                        "A": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 1
+                                }
+                            }
+                        },
+                        "B": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "exponentiation",
+                    inputs: {
+                        "A": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 2
+                                }
+                            }
+                        },
+                        "B": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 2
+                                }
+                            }
+                        }
+                    }
+                },
+                
+                // Math Functions
+                {
+                    kind: "block",
+                    type: "round",
+                    inputs: {
+                        "N": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 3.14
+                                }
+                            }
+                        }
+                    }
+                },
+                
+                // Random Numbers
+                {
+                    kind: "block",
+                    type: "random",
+                    inputs: {
+                        "N": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 10
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    kind: "block",
+                    type: "random_float",
+                    inputs: {
+                        "N": {
+                            "shadow": {
+                                type: "number",
+                                fields: {
+                                    "NUMBER": 1.0
+                                }
+                            }
+                        }
+                    }
+                },
+                
+                // Counting
+                {
+                    kind: "block",
+                    type: "count",
+                    inputs: {
+                        "AGENT_SET": {
+                            "shadow": {
+                                type: "agentset",
+                                fields: {
+                                    "AGENT_SET": "turtles"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },
         {
             kind: "category",
             name: "Variables",
-            colour: "#9C27B0", // Purple
+            colour: "#8E24AA", // Purple
             contents: [
                 {
                     kind: "block",
@@ -671,6 +788,10 @@ const toolbox: Toolbox = {
                 },
                 {
                     kind: "block",
+                    type: "lexical_variable_get"
+                },
+                {
+                    kind: "block",
                     type: "lexical_variable_set",
                     inputs: {
                         "VALUE": {
@@ -683,114 +804,16 @@ const toolbox: Toolbox = {
                         }
                     }
                 },
-                {
-                    kind: "block",
-                    type: "lexical_variable_get"
-                }
             ]
         },
-        {
-            kind: "category",
-            name: "Control",
-            colour: "#00BCD4", // Cyan
-            contents: [
-                {
-                    kind: "block",
-                    type: "stop",
-                },
-                {
-                    kind: "block",
-                    type: "user_message",
-                },
-                {
-                    kind: "block",
-                    type: "procedures_defnoreturn"
-                },
-                {
-                    kind: "block",
-                    type: "report"
-                },
-                {
-                    kind: "block",
-                    type: "show"
-                },
-                // {
-                //     kind: "block",
-                //     type: "procedures_defreturn"
-                // },
-                {
-                    kind: "block",
-                    type: "procedures_callnoreturn"
-                },
-                {
-                    kind: "block",
-                    type: "set_default_shape"
-                },
-                // {
-                //     kind: "block",
-                //     type: "procedures_callreturn"
-                // },
-                {
-                    kind: "block",
-                    type: "call_manual"
-                },
-                {
-                    kind: "block",
-                    type: "ask_agent_set",
-                    inputs: {
-                        "AGENT_SET": {
-                            "shadow": {
-                                type: "agentset",
-                                fields: {
-                                    "AGENT_SET": "turtles"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "ask_agentset_with",
-                    inputs: {
-                        "AGENT_SET": {
-                            "shadow": {
-                                type: "agentset",
-                                fields: {
-                                    "AGENT_SET": "turtles"
-                                }
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "if_",
-                    inputs: {
-                        "CONDITION": {
-                            "shadow": {
-                                type: "boolean"
-                            }
-                        }
-                    }
-                },
-                {
-                    kind: "block",
-                    type: "ifelse",
-                    inputs: {
-                        "CONDITION": {
-                            "shadow": {
-                                type: "boolean"
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        // DATA STRUCTURE CATEGORIES
+
+        // ============================================
+        // DATA STRUCTURES
+        // ============================================
         {
             kind: "category",
             name: "Strings",
-            colour: "#673AB7", // Deep Purple
+            colour: "#5E35B1", // Deep Purple
             contents: [
                 {
                     kind: "block",
@@ -801,16 +824,19 @@ const toolbox: Toolbox = {
         {
             kind: "category",
             name: "Agentsets",
-            colour: "#2196F3", // Blue
+            colour: "#1E88E5", // Blue
             contents: [
-                {
-                    kind: "block",
-                    type: "nobody"
-                },
+                // Basic Agentsets
                 {
                     kind: "block",
                     type: "agentset"
                 },
+                {
+                    kind: "block",
+                    type: "nobody"
+                },
+                
+                // Filtering
                 {
                     kind: "block",
                     type: "with_manual",
@@ -852,10 +878,8 @@ const toolbox: Toolbox = {
                     kind: "block",
                     type: "agentset_here"
                 },
-                {
-                    kind: "block",
-                    type: "agent_plus_string",
-                },
+                
+                // Selection
                 {
                     kind: "block",
                     type: "one_of",
@@ -863,18 +887,15 @@ const toolbox: Toolbox = {
                 {
                     kind: "block",
                     type: "any",
-                }
+                },
             ]
         },
         {
             kind: 'category',
             name: 'Lists',
-            colour: "#009688", // Teal
+            colour: "#00897B", // Teal
             contents: [
-                {
-                    kind: "block",
-                    type: "one_of",
-                },
+                // Creation
                 {
                     kind: 'block',
                     type: 'lists_create_with',
@@ -893,6 +914,8 @@ const toolbox: Toolbox = {
                         },
                     },
                 },
+                
+                // Information
                 {
                     kind: 'block',
                     type: 'lists_length',
@@ -901,6 +924,8 @@ const toolbox: Toolbox = {
                     kind: 'block',
                     type: 'lists_isEmpty',
                 },
+                
+                // Access
                 {
                     kind: 'block',
                     type: 'lists_indexOf',
@@ -945,6 +970,8 @@ const toolbox: Toolbox = {
                         },
                     },
                 },
+                
+                // Manipulation
                 {
                     kind: 'block',
                     type: 'lists_split',
@@ -966,6 +993,21 @@ const toolbox: Toolbox = {
                 {
                     kind: 'block',
                     type: 'lists_reverse',
+                }
+            ]
+        },
+
+        // ============================================
+        // ADVANCED/SPECIAL
+        // ============================================
+        {
+            kind: "category",
+            name: "Advanced",
+            colour: "#607D8B", // Blue Grey
+            contents: [
+                {
+                    "kind": "block",
+                    "type": "netlogo_web"
                 }
             ]
         }

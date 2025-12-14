@@ -3,14 +3,14 @@ import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import { setModelCode, recompile, recompileProcedures, generateNLogoFile, loadModel, runCode, runSetup, runGo } from "./services/netlogoAPI";
+import {generateNLogoFile, loadModel, runSetup, runGo } from "./services/netlogoAPI";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
-import { addVariable, findVariable, refreshMITPlugin } from "./data/context";
+import { refreshMITPlugin } from "./data/context";
 import { initSidebar } from "./sidebar";
 import { updateWorkspaceForDomain } from "./blocks/domain";
-import { get } from "blockly/core/events/utils";
 import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./modules";
+import { initVariablesTracker } from "./variablesTracker";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -243,6 +243,9 @@ if (blockEditor && codeOutput) {
 
   // Initialize the sidebar with workspace and display callback
   initSidebar(ws, displayCode);
+
+  // Initialize variables tracker
+  initVariablesTracker(ws, displayCode);
 
   // Initialize workspace selector
   initWorkspaceSelector(ws, displayCode);

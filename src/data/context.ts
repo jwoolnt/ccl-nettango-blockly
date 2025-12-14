@@ -155,6 +155,13 @@ export function getAllVariables(): string[] {
 	return Object.keys(variableMap);
 }
 
+// Returns only user-created variables, excluding any built-ins
+export function getUserVariables(): string[] {
+	return Object.entries(variableMap)
+		.filter(([, type]) => type !== "built-in")
+		.map(([name]) => name);
+}
+
 
 export function findVariable(...names: (undefined | string | string[])[]): string[] {
 	let namesFlat = names.flat();

@@ -25,7 +25,7 @@ export function initDialogs() {
 }
 
 // Open a dialog
-function openDialog(dialogContent: HTMLDivElement) {
+export function openDialog(dialogContent: HTMLDivElement) {
     if (!dialogOverlay) initDialogs();
 
     // Remove any existing dialog
@@ -53,7 +53,7 @@ export function closeDialog() {
 }
 
 // Create a dialog element with title and content
-function createDialogElement(title: string): HTMLDivElement {
+export function createDialogElement(title: string): HTMLDivElement {
     const dialog = document.createElement('div');
     dialog.className = 'dialog';
 
@@ -80,7 +80,7 @@ function createDialogElement(title: string): HTMLDivElement {
 }
 
 // Create a button element
-function createButton(text: string, onClick: () => void, className: string = ''): HTMLButtonElement {
+export function createButton(text: string, onClick: () => void, className: string = ''): HTMLButtonElement {
     const button = document.createElement('button');
     button.textContent = text;
     button.className = `dialog-button ${className}`;
@@ -89,7 +89,7 @@ function createButton(text: string, onClick: () => void, className: string = '')
 }
 
 // Create a form input with label
-function createFormField(label: string, id: string, type: string = 'text'): HTMLDivElement {
+export function createFormField(label: string, id: string, type: string = 'text'): HTMLDivElement {
     const field = document.createElement('div');
     field.className = 'form-field';
 
@@ -108,7 +108,7 @@ function createFormField(label: string, id: string, type: string = 'text'): HTML
 }
 
 // Create a select dropdown with options
-function createSelectField(label: string, id: string, options: { value: string, text: string }[]): HTMLDivElement {
+export function createSelectField(label: string, id: string, options: { value: string, text: string }[]): HTMLDivElement {
     const field = document.createElement('div');
     field.className = 'form-field';
 

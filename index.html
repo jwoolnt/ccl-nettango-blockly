@@ -5,10 +5,6 @@
     <title>NetTango Editor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="index.css" />
-    <!-- <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap"
-      rel="stylesheet"
-    /> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,20 +39,6 @@
     <div class="main-container">
       <!-- Sidebar -->
       <aside class="sidebar">
-        <div class="sidebar-category">
-          <!-- a drop down to select for different domain workspace -->
-          <!-- <div style="display: flex; align-items: center">
-            <div class="color-indicator color-variables"></div>
-            <span>Domain</span>
-          </div> -->
-          <select id="workspace-selector" class="workspace-selector">
-            <option value="default">Default</option>
-            <option value="Ants">Ants</option>
-            <option value="Wolf-Sheep">Wolf-Sheep</option>
-            <option value="Frog Pond">Frog Pond</option>
-          </select>
-        </div>
-        
         <div class="sidebar-category">
           <div style="display: flex; align-items: center">
             <div class="color-indicator color-variables"></div>
@@ -95,23 +77,39 @@
 
         <!-- Right side: NetLogo Web -->
         <div class="netlogo-panel">
-          <iframe 
-            id="netlogo-iframe" 
-            src="model.html"
-            title="NetLogo Web">
-          </iframe>
           
           <div class="netlogo-controls">
             <button id="compile-run-btn" class="primary-btn">Setup</button>
             <button id="go-forever-btn">▶</button>
             <button id="go-btn">⏭</button>
-            <!-- <span id="netlogo-status" class="status">Ready</span> -->
 
             <label class="toggle-switch">
               <input type="checkbox" id="auto-compile-toggle">
               <span class="toggle-slider"></span>
               <span class="toggle-label">Auto-compile</span>
             </label>
+          </div>
+          
+          <iframe 
+            id="netlogo-iframe" 
+            src="model.html"
+            title="NetLogo Web">
+          </iframe>
+          
+          <!-- Variables Tracker Display -->
+          <div class="variables-tracker">
+            <div class="variables-tracker-header">
+              <h3>Variables</h3>
+            </div>
+            <div class="variables-tracker-list" id="variables-tracker-list">
+              <!-- Variables will be dynamically added here -->
+            </div>
+          </div>
+          
+          <!-- Context Menu -->
+          <div class="context-menu" id="variables-context-menu">
+            <div class="context-menu-item" id="context-menu-rename">Rename</div>
+            <div class="context-menu-item" id="context-menu-remove">Remove</div>
           </div>
           
         </div>

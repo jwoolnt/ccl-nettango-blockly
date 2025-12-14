@@ -17,7 +17,7 @@ const agentset: BlockDefinition = createValueBlock("agentset", "Agentset", {
 });
 
 const with_manual: BlockDefinition = createValueBlock("with_manual", null, {
-	message0: "%1 with [%2]",
+	message0: "%1 with %2",
 	args0: [{
 		type: "input_value",
 		name: "AGENT_SET",
@@ -70,26 +70,67 @@ const any: BlockDefinition = createValueBlock("any", "Boolean", {
 	}
 });
 
-// agent + _ (string)
-const agent_plus_string: BlockDefinition = createValueBlock("agent_plus_string", "String", {
-	message0: "%1 + \"%2\"",
+// // agent + _ (string)
+// const agent_plus_string: BlockDefinition = createValueBlock("agent_plus_string", "String", {
+// 	message0: "%1 + \"%2\"",
+// 	args0: [{
+// 		type: "input_value",
+// 		name: "AGENT",
+// 		check: "Agentset",
+// 	}, {
+// 		type: "field_input",
+// 		name: "STRING",
+// 	}],
+// 	inputsInline: true,
+// 	colour: "#795548",
+// 	for: (block, generator) => {
+// 		const agent = generator.valueToCode(block, "AGENT", Order.FUNCTION_CALL);
+// 		const string = block.getFieldValue("STRING");
+// 		return [`${agent} "${string}"`, Order.ATOMIC];
+// 	}
+// });
+
+const ask_agent_set: BlockDefinition = createStatementBlock("ask_agent_set", {
+	message0: "ask %1\n %2",
 	args0: [{
 		type: "input_value",
-		name: "AGENT",
-		check: "Agentset",
+		name: "AGENT_SET",
+		check: "Agentset"
 	}, {
-		type: "field_input",
-		name: "STRING",
+		type: "input_statement",
+		name: "COMMANDS"
 	}],
-	inputsInline: true,
-	colour: "#795548",
+	colour: "#0794a6",
 	for: (block, generator) => {
-		const agent = generator.valueToCode(block, "AGENT", Order.FUNCTION_CALL);
-		const string = block.getFieldValue("STRING");
-		return [`${agent} "${string}"`, Order.ATOMIC];
+		const agentSet = generator.valueToCode(block, "AGENT_SET", Order.NONE);
+		const commands = generator.statementToCode(block, "COMMANDS");
+		return `ask ${agentSet} [\n${commands}\n]`
 	}
 });
 
+// ask _ (agentset) with [condition]
+const ask_agentset_with: BlockDefinition = createStatementBlock("ask_agentset_with", {
+	message0: "ask %1 with %2\n %3",
+	args0: [{
+		type: "input_value",
+		name: "AGENT_SET",
+		check: "Agentset"
+	}, {
+		type: "input_value",
+		name: "CONDITION",
+		check: "Boolean"
+	}, {
+		type: "input_statement",
+		name: "COMMANDS"
+	}],
+	colour: "#0794a6",
+	for: (block, generator) => {
+		const agentSet = generator.valueToCode(block, "AGENT_SET", Order.NONE);
+		const condition = generator.valueToCode(block, "CONDITION", Order.NONE);
+		const commands = generator.statementToCode(block, "COMMANDS");
+		return `ask ${agentSet} with [${condition}] [\n${commands}\n]`;
+	}
+});
 // sprout-<breed>
 const sprout_breed: BlockDefinition = createStatementBlock("sprout_breed", {
 	message0: "sprout-%1 %2\n %3",
@@ -128,8 +169,9 @@ const agentsetBlocks: BlockDefinition[] = [
 	with_manual,
 	agentset_here,
 	any,
-	agent_plus_string,
-	sprout_breed
+	sprout_breed,
+	ask_agent_set,
+	ask_agentset_with
 ];
 
 
