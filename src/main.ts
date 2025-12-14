@@ -66,6 +66,12 @@ export function createDefaultProcedures(workspace: Blockly.WorkspaceSvg) {
 //
 let autoCompileTimeout: number | null = null;
 let isAutoCompiling = false;
+function setUnsavedChangesFlag(value: boolean) {
+  const banner = document.getElementById('unsaved-banner');
+  if (banner) {
+    banner.style.display = value ? 'block' : 'none';
+  }
+}
 
 async function autoCompileAndSetup() {
   if (!isAutoCompiling) return;
@@ -82,6 +88,8 @@ async function autoCompileAndSetup() {
     // wait model to load then run setup
     setTimeout(() => {
       runSetup();
+      // Auto-compile resolves unsaved changes
+      setUnsavedChangesFlag(false);
       if (status) {
         status.textContent = "Model auto-updated!";
       }
@@ -173,6 +181,8 @@ if (blockEditor && codeOutput) {
   const blockBreedValues = new Map<string, string>();
   // Intercept variable selection to detect "create new"
   ws.addChangeListener((e) => {
+      // Mark as having uncompiled changes on any block edit
+      setUnsavedChangesFlag(true);
     if (e.type === Blockly.Events.BLOCK_CHANGE) {
       const changeEvent = e as Blockly.Events.BlockChange;
 
@@ -262,7 +272,8 @@ if (blockEditor && codeOutput) {
       return;
     }
     displayCode();
-
+    // Mark workspace as having unsaved changes until setup is run
+    setUnsavedChangesFlag(true);
     // schedule auto-compile if enabled
     if (isAutoCompiling) {
       scheduleAutoCompile();
@@ -403,6 +414,8 @@ function setupNetLogoIntegration() {
           // Wait for model to load, then run setup
           setTimeout(() => {
             runSetup();
+            // Clear unsaved banner on successful setup
+            setUnsavedChangesFlag(false);
             if (status) {
               status.textContent = "Model loaded and setup executed! Use Go button to run.";
             }

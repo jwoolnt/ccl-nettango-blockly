@@ -201,8 +201,7 @@ function setupFileMenu(workspace: any, displayCodeCallback: () => void) {
             });
             break;
           case 'Save':
-            // Let the main.ts file operations handle this to avoid duplicate prompts
-            document.getElementById('saveBtn')?.click();
+            // No-op here; dropdown will be closed below.
             break;
         }
 
