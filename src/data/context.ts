@@ -162,6 +162,11 @@ export function getUserVariables(): string[] {
 		.map(([name]) => name);
 }
 
+// Get the owning scope/type for a variable name (e.g., "globals", "turtles", a breed pluralName)
+export function getVariableOwner(name: string): string | undefined {
+	return variableMap[name];
+}
+
 
 export function findVariable(...names: (undefined | string | string[])[]): string[] {
 	let namesFlat = names.flat();

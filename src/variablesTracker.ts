@@ -1,4 +1,4 @@
-import {refreshMITPlugin, getUserVariables, removeVariable, updateVariable} from "./data/context";
+import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable} from "./data/context";
 import {save} from "./services/serializer";
 
 import { openDialog, closeDialog, createDialogElement, createButton, createFormField } from "./moduleElements";
@@ -87,12 +87,23 @@ function updateVariablesDisplay() {
     return;
   }
 
-  // Create variable items
+  // Create variable items with scope/owner badge
   allVars.forEach(variableName => {
     const item = document.createElement('div');
     item.className = 'variable-item';
     item.setAttribute('data-variable', variableName);
-    item.textContent = variableName;
+
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = variableName;
+
+    const owner = getVariableOwner(variableName);
+    const badge = document.createElement('span');
+    badge.className = 'variable-scope-badge';
+    badge.textContent = owner ? owner : 'unknown';
+    badge.style.cssText = 'margin-left: 8px; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
+
+    item.appendChild(nameSpan);
+    item.appendChild(badge);
     trackerList.appendChild(item);
   });
 }
