@@ -1,79 +1,18 @@
-// sidebar.ts - Handles sidebar interactions and state
-import * as Blockly from "blockly";
+// moduleSetup.ts - Handles UI module initialization
 import { reset } from "./services/serializer";
-import { initDialogs, showVariableActionDialog, showBreedActionDialog } from "./modules";
+import { initDialogs } from "./moduleElements";
 import { updateWorkspaceForDomain } from "./blocks/domain";
-
-// Sidebar state management
-export type SidebarCategory = 'variables';
-
-let activeCategory: SidebarCategory = 'variables';
 
 // Store the current workspace domain
 let currentDomain: string = 'default';
 
-// Initialize sidebar functionality
-export function initSidebar(workspace: any, displayCodeCallback: () => void) {
+// Initialize UI modules and event handlers
+export function initUIModules(workspace: any, displayCodeCallback: () => void) {
   // Initialize custom dialogs
   initDialogs();
 
-  // Set up category click handlers
-  const categories = document.querySelectorAll('.sidebar-category');
-  categories.forEach(category => {
-    category.addEventListener('click', () => {
-      // Remove active class from all categories
-      categories.forEach(c => c.classList.remove('active'));
-      // Add active class to clicked category
-      category.classList.add('active');
-
-      // Get category name from the span text
-      const categoryName = category.querySelector('span')?.textContent?.toLowerCase() as SidebarCategory;
-      if (categoryName) {
-        activeCategory = categoryName;
-        filterBlocksByCategory(categoryName);
-      }
-    });
-  });
-
-  // Set up actions for sidebar items
-  setupVariableActions(workspace, displayCodeCallback);
-  setupBreedActions(workspace, displayCodeCallback);
-
-  const resetButton = document.getElementById('reset');
-  if (resetButton) {
-    resetButton.addEventListener('click', () => {
-      if (confirm("Are you sure you want to reset the workspace?")) {
-        reset(workspace);
-      }
-    });
-  }
   // Set up the file menu dropdown
   setupFileMenu(workspace, displayCodeCallback);
-}
-
-// Filter blocks based on selected category (for future implementation)
-function filterBlocksByCategory(category: SidebarCategory) {
-  console.log(`Filtering blocks by category: ${category}`);
-}
-
-// Set up variable-related actions using custom dialogs
-function setupVariableActions(workspace: any, displayCodeCallback: () => void) {
-  const editVariablesButton = document.getElementById('edit-variables');
-  if (editVariablesButton) {
-    editVariablesButton.addEventListener('click', () => {
-      showVariableActionDialog(workspace, displayCodeCallback);
-    });
-  }
-}
-
-// Set up breed-related actions using custom dialogs
-function setupBreedActions(workspace: any, displayCodeCallback: () => void) {
-  const editBreedsButton = document.getElementById('edit-breeds');
-  if (editBreedsButton) {
-    editBreedsButton.addEventListener('click', () => {
-      showBreedActionDialog(workspace, displayCodeCallback);
-    });
-  }
 }
 
 // Generate HTML template for the new project modal
@@ -113,7 +52,7 @@ function createNewProjectModalHTML(): string {
 }
 
 // Show the New Project modal
-function showNewProjectModal(workspace: any): Promise<{projectName: string, domain: string} | null> {
+function showNewProjectModal(_workspace: any): Promise<{projectName: string, domain: string} | null> {
   return new Promise((resolve) => {
     // Create modal overlay
     const overlay = document.createElement('div');
@@ -245,7 +184,7 @@ function setupFileMenu(workspace: any, displayCodeCallback: () => void) {
                 const file = target.files[0];
                 const reader = new FileReader();
 
-                reader.onload = (e) => {
+                reader.onload = (_e) => {
                   try {
                     // Handle the file content
                     console.log('File loaded, implementation needed');

@@ -1,7 +1,7 @@
 import {refreshMITPlugin, getUserVariables, removeVariable, updateVariable} from "./data/context";
 import {save} from "./services/serializer";
 
-import { openDialog, closeDialog, createDialogElement, createButton, createFormField } from "./modules";
+import { openDialog, closeDialog, createDialogElement, createButton, createFormField } from "./moduleElements";
 
 let workspace: any = null;
 let displayCodeCallback: (() => void) | null = null;

@@ -7,10 +7,10 @@ import {generateNLogoFile, loadModel, runSetup, runGo } from "./services/netlogo
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
-import { initSidebar } from "./sidebar";
 import { updateWorkspaceForDomain } from "./blocks/domain";
-import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./modules";
+import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./moduleElements";
 import { initVariablesTracker } from "./variablesTracker";
+import { initUIModules } from "./moduleSetup";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 
@@ -241,8 +241,8 @@ if (blockEditor && codeOutput) {
 
   displayCode();
 
-  // Initialize the sidebar with workspace and display callback
-  initSidebar(ws, displayCode);
+  // Initialize UI modules (dialogs, file menu)
+  initUIModules(ws, displayCode);
 
   // Initialize variables tracker
   initVariablesTracker(ws, displayCode);
