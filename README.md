@@ -1,11 +1,6 @@
 # NetTango (Blockly)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![Blockly](https://img.shields.io/badge/Blockly-11.2-green.svg)](https://developers.google.com/blockly)
-[![Vite](https://img.shields.io/badge/Vite-6.2-purple.svg)](https://vitejs.dev/)
-
-A modern, web-based visual programming environment for NetLogo, built with Blockly and TypeScript. This project is a complete re-write of [NetTango](https://github.com/NetLogo/NetTango) using Google's [Blockly](https://developers.google.com/blockly) framework.
+A block-based programming environment for NetLogo Web, built with Google [Blockly](https://developers.google.com/blockly) framework.
 
 ## 🌟 Features
 
@@ -31,15 +26,11 @@ A modern, web-based visual programming environment for NetLogo, built with Block
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- Node.js 16+ and npm
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/ccl-nettango.git
+   git clone
    cd ccl-nettango
    ```
 
@@ -55,23 +46,6 @@ A modern, web-based visual programming environment for NetLogo, built with Block
 
 4. **Open in browser**
    Navigate to `http://localhost:5173` to start programming!
-
-### Building for Production
-
-```bash
-npm run build
-npm run preview
-```
-
-## 📚 Usage Guide
-
-### Creating Your First Program
-
-1. **Start with the Observer**: Use observer blocks like `clear-all` and `reset-ticks`
-2. **Create Agents**: Use turtle blocks like `create-breed` to spawn agents
-3. **Add Movement**: Use movement blocks like `forward`, `left`, `right`
-4. **Define Procedures**: Create custom procedures using the Control blocks
-5. **Add Logic**: Use conditional blocks like `if` and `ifelse`
 
 ### Block Categories
 
@@ -168,90 +142,13 @@ ccl-nettango/
 - **File Operations**: Import/export project files
 - **State Management**: Maintain workspace state across sessions
 
-## 🛠️ Development
-
-### Adding New Blocks
-
-1. **Define the Block** in the appropriate category file (e.g., `turtles.ts`)
-2. **Add to Toolbox** in `toolbox.ts`
-3. **Implement Code Generation** with a `for` function
-4. **Export** from the blocks index
-
-Example:
-```typescript
-const newBlock: BlockDefinition = createStatementBlock("new_block", {
-    message0: "new command %1",
-    args0: [{
-        type: "input_value",
-        name: "PARAM",
-        check: "Number"
-    }],
-    colour: "#FF6B6B",
-    for: (block, generator) => {
-        const param = generator.valueToCode(block, "PARAM", Order.NONE);
-        return `new-command ${param}`;
-    }
-});
-```
-
-### Custom Themes
-
-The application supports custom Blockly themes defined in `main.ts`:
-
-```typescript
-const customTheme = Blockly.Theme.defineTheme('customTheme', {
-    name: 'customTheme',
-    blockStyles: {
-        procedure_blocks: {
-            colourPrimary: '#673AB7' // Purple for procedures
-        },
-        // ... other block styles
-    }
-});
-```
-
-### Domain-Specific Blocks
-
-The system supports loading domain-specific block sets:
-
-```typescript
-// In blocks/domain.ts
-export function updateWorkspaceForDomain(workspace, domain, callback) {
-    // Load domain-specific blocks
-}
-```
-
-```bash
-# Run development server
-npm run dev
-
-# Build and preview
-npm run build
-npm run preview
-```
-
 ## 📋 Roadmap
 
 ### Planned Features
-- [ ] **Enhanced Procedure Support**: Return value procedures (`to-report`)
-- [ ] **Advanced Loops**: `repeat`, `while`, `foreach` blocks
-- [ ] **File I/O**: Import/export data files
-- [ ] **Custom Block Creation**: User-defined block creation interface
-- [ ] **Collaboration**: Real-time collaborative editing
-- [ ] **Mobile Support**: Touch-optimized interface
-- [ ] **Accessibility**: Screen reader and keyboard navigation support
-
-### Known Issues
-- Return value procedures are currently commented out
-- Some advanced NetLogo primitives need implementation
-- Mobile responsiveness could be improved
+- [ ]
 
 ## 📖 Documentation
 
 ### API Reference
 - [Blockly Documentation](https://developers.google.com/blockly)
 - [NetLogo Programming Guide](https://ccl.northwestern.edu/netlogo/docs/programming.html)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
----
-
-**Happy Programming with NetTango! 🎉**
