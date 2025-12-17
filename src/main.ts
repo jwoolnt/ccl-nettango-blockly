@@ -2,12 +2,14 @@ import * as Blockly from "blockly";
 import toolbox from "./blocks/toolbox";
 import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
+import { createDefaultProcedures } from "./services/defaultProcedures";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import {generateNLogoFile, loadModel, runSetup, runGo } from "./services/netlogoAPI";
+import {runGo, compileAndSetupModel } from "./services/netlogoAPI";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
 import { updateWorkspaceForDomain } from "./blocks/domain";
+
 import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./components/dialog";
 import { initVariablesTracker } from "./components/variablesTracker";
 import { initBreedTracker } from "./components/breedTracker";
@@ -44,24 +46,6 @@ const customTheme = Blockly.Theme.defineTheme('customTheme', {
   startHats: false
 });
 
-// 
-// Create default blocks for new workspace
-// 
-export function createDefaultProcedures(workspace: Blockly.WorkspaceSvg) {
-  // Create setup procedure
-  const setupBlock = workspace.newBlock('procedures_defnoreturn');
-  setupBlock.setFieldValue('setup', 'NAME');
-  setupBlock.initSvg();
-  setupBlock.render();
-  setupBlock.moveBy(20, 20); // position it
-
-  // Create go procedure
-  const goBlock = workspace.newBlock('procedures_defnoreturn');
-  goBlock.setFieldValue('go', 'NAME');
-  goBlock.initSvg();
-  goBlock.render();
-  goBlock.moveBy(20, 150); // position below setup
-}
 //
 // Auto-compile 
 //
@@ -77,24 +61,20 @@ function setUnsavedChangesFlag(value: boolean) {
 async function autoCompileAndSetup() {
   if (!isAutoCompiling) return;
 
-  const codeElement = document.getElementsByClassName("generated-code"); // get generated netlogo code
+  const codeElement = document.getElementsByClassName("generated-code");
   if (codeElement.length === 0) return;
 
   const code = codeElement[0].textContent || "";
   const status = document.getElementById('netlogo-status');
-  // generate and load the model
+  
   try {
-    const nlogoxFile = await generateNLogoFile(code); // convert to .nlogox format
-    loadModel(nlogoxFile, 'auto-compiled-model.nlogox');
-    // wait model to load then run setup
-    setTimeout(() => {
-      runSetup();
-      // Auto-compile resolves unsaved changes
-      setUnsavedChangesFlag(false);
-      if (status) {
-        status.textContent = "Model auto-updated!";
-      }
-    }, 1000);
+    // Use simplified approach
+    await compileAndSetupModel(code);
+    
+    setUnsavedChangesFlag(false);
+    if (status) {
+      status.textContent = "Model auto-updated!";
+    }
   } catch (error) {
     console.error("Auto-compile error:", error);
     if (status) {
@@ -207,18 +187,20 @@ if (blockEditor && codeOutput) {
           }
         }
       }
+      // Check for breed creation trigger
       else if (newValue && typeof newValue === 'string' && newValue.includes('+ create new breed')) {
-          console.log('DETECTED: Create new breed trigger!'); // ADD THIS
           if (blockId) {
             const block = ws.getBlockById(blockId);
+            // prevent '+ create new breed' to be the actual value, just a trigger to open a dialog
+            // So we immediately reset it to empty ('')
             if (block && fieldName) {
-              console.log('Opening breed dialog...'); // ADD THIS
               const revertValue = oldValue || (blockBreedValues.get(blockId) || '');
               block.setFieldValue(revertValue, fieldName);
               showAddBreedDialogFromBlock(ws, displayCode, blockId, fieldName);
             }
           }
         }
+      // 
       else if (newValue && typeof newValue === 'string') {
         if (blockId) {
           if (newValue.includes('breed') || fieldName === 'BREED_SELECT') {
@@ -400,35 +382,25 @@ function setupNetLogoIntegration() {
   let goForeverBtn = document.getElementById('go-forever-btn'); // Go Forever button
   let goInterval: number | null = null;
 
-  //Compile Button - Compiles the code and loads it with Setup/Go buttons
+  //Compile Button - compiles the code and loads it with Setup/Go buttons
   if (compileBtn) {
     compileBtn.addEventListener('click', async () => {
       if (codeElement.length > 0) {
         const code = codeElement[0].textContent || "";
-        console.log("Loading model with code:", code);
+        console.log("Compiling code:", code);
 
         try {
-          // Generate complete .nlogox file with buttons
-          const nlogoxFile = await generateNLogoFile(code);
-          console.log("Generated .nlogox file");
-
-          // Load the complete model into NetLogo Web
-          loadModel(nlogoxFile, 'block-generated-model.nlogox');
-
-          // Wait for model to load, then run setup
-          setTimeout(() => {
-            runSetup();
-            // Clear unsaved banner on successful setup
-            setUnsavedChangesFlag(false);
-            if (status) {
-              status.textContent = "Model loaded and setup executed! Use Go button to run.";
-            }
-          }, 1000);
-
-        } catch (error) {
-          console.error("Error generating model:", error);
+          await compileAndSetupModel(code);
+          
+          // Clear unsaved banner on successful setup
+          setUnsavedChangesFlag(false);
           if (status) {
-            status.textContent = "Error loading model. Check console.";
+            status.textContent = "Model compiled and setup executed!";
+          }
+        } catch (error) {
+          console.error("Error compiling model:", error);
+          if (status) {
+            status.textContent = "Error compiling model. Check console.";
           }
         }
       } else {

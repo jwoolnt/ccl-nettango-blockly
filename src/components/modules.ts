@@ -1,5 +1,6 @@
 // modules.ts - Handles UI module initialization
 import { reset } from "../services/serializer";
+import { createDefaultProcedures } from "../services/defaultProcedures";
 import { initDialogs } from "./dialog";
 import { updateWorkspaceForDomain } from "../blocks/domain";
 
@@ -159,11 +160,17 @@ function setupFileMenu(workspace: any, displayCodeCallback: () => void) {
                 
                 // 2. Update workspace with domain-specific blocks (updates toolbox)
                 updateWorkspaceForDomain(workspace, result.domain, displayCodeCallback);
+
+                // 3. Insert default setup/go procedures into a fresh workspace
+                createDefaultProcedures(workspace);
+
+                // 4. Refresh generated code to reflect new defaults
+                displayCodeCallback();
                 
-                // 3. Set the project name in your app state
+                // 5. Set the project name in your app state
                 // setProjectName(result.projectName);
                 
-                // 4. Update any UI elements showing the project name
+                // 6. Update any UI elements showing the project name
                 console.log(`Project "${result.projectName}" created with domain "${result.domain}"`);
               }
             }

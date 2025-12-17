@@ -77,38 +77,6 @@ export function recompileProcedures(proceduresCode: string, procedureNames: stri
     });
 }
 
-// ** Model template file generation and loading (with setup and go buttons) **
-// Load template and inject code
-export async function generateNLogoFile(code: string): Promise<string> {
-  try {
-    // Fetch the template file as text
-    const response = await fetch('../testing/New_Model_Template.nlogox');
-    const template = await response.text();
-    
-    // Find the <code></code> tags and replace the content between them
-    // Important: NetLogo Web expects the code with actual newlines, NOT escaped XML
-    const codeStart = template.indexOf('<code>');
-    const codeEnd = template.indexOf('</code>');
-    
-    if (codeStart === -1 || codeEnd === -1) {
-      throw new Error('Could not find <code> tags in template');
-    }
-    
-    // Build the new XML with the code injected
-    // Note: We keep the code as-is (with newlines), NetLogo Web will handle it
-    const modifiedTemplate = 
-      template.substring(0, codeStart + 6) +  // +6 for '<code>'
-      code + 
-      template.substring(codeEnd);
-    
-    console.log("Template modified successfully");
-    return modifiedTemplate;
-  } catch (error) {
-    console.error('Error loading template:', error);
-    throw error;
-  }
-}
-
 // Load a complete .nlogox model into NetLogo Web
 export function loadModel(nlogoxContent: string, path: string = 'generated-model.nlogox'): void {
   sendToNetLogo("nlw-load-model", {
@@ -130,4 +98,29 @@ export function runSetup(): void {
 }
 export function runGo(): void {
   runCode("go");
+}
+
+export async function compileAndSetupModel(code: string): Promise<void> {
+  const frame = getNetLogoFrame();
+  if (!frame) {
+    console.error("NetLogo Web iframe not found");
+    return;
+  }
+
+  // set the model code
+  setModelCode(code, false); // don't auto-recompile yet
+  
+  // wait a bit
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  // recompile the model
+  recompile();
+  
+  // wait for compilation to finish
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  // run setup
+  runSetup();
+  
+  console.log("Model compiled and setup complete!");
 }

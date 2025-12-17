@@ -315,7 +315,7 @@ export function removeBreed(breedName: string): void {
 
 	if (context.breeds && breed) {
 		// Remove breed names and variables from variableMap before removing the breed
-		// This allows the same names to be reused when recreating the breed
+		// so the same names to be reused when recreating the breed
 		if (breed.pluralName) {
 			delete variableMap[breed.pluralName];
 		}
