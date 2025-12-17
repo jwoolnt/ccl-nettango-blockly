@@ -102,7 +102,7 @@ export const CONTEXT_SERIALIZER: serialization.ISerializer = {
 		workspace.getWarningHandler().cacheGlobalNames = true;
 		refreshMITPlugin = () => {
 			const allVars = getAllVariables();
-			// Add the special "create new" option at the start
+			// Add "create new" option at the start
 			(workspace as any).getWarningHandler().cachedGlobalNames = [
 				'+ create new variable',
 				...allVars

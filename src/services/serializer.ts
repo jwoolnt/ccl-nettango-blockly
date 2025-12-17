@@ -41,7 +41,26 @@ export function reset(workspace: Workspace) {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-// New file-based save/load functions
+/**
+ * Converts a Blockly workspace to a JSON string for file export.
+ * 
+ * WRITES AS: WorkspaceFileData JSON object containing:
+ *   - version: semantic version string ("1.0.0")
+ *   - timestamp: Unix timestamp of when the file was created
+ *   - workspace: Blockly serialized workspace data (blocks, variables, connections)
+ *   - context: Custom NetTango context data (additional metadata)
+ * 
+ * PROCESS:
+ * 1. Serializes the current workspace using Blockly's serialization API
+ * 2. Wraps it in WorkspaceFileData object with metadata (version, timestamp)
+ * 3. Saves custom context data alongside workspace data
+ * 4. Returns formatted JSON string (2-space indentation for readability)
+ * 
+ * RETURNS: JSON string representation of the entire workspace that can be:
+ *   - Downloaded to a file
+ *   - Sent over network
+ *   - Stored in database
+ */
 export function saveToFile(workspace: Workspace): string {
   const workspaceData = serialization.workspaces.save(workspace);
   
@@ -55,6 +74,32 @@ export function saveToFile(workspace: Workspace): string {
   return JSON.stringify(fileData, null, 2);
 }
 
+/**
+ * Loads a workspace from a JSON file string and reconstructs the workspace.
+ * 
+ * READS: JSON string containing WorkspaceFileData with structure:
+ *   - workspace: Blockly serialized data (blocks, connections, variables)
+ *   - context: Optional custom NetTango context data
+ *   - version: File format version
+ *   - timestamp: When file was created
+ * 
+ * PROCESS:
+ * 1. Disables Blockly events to prevent listener callbacks during loading
+ * 2. Parses JSON string to validate it's a proper WorkspaceFileData object
+ * 3. Validates that workspace data exists (throws if missing)
+ * 4. Clears the current workspace completely
+ * 5. Reconstructs blocks and structure from deserialized data
+ * 6. Loads custom context if present in file
+ * 7. Auto-saves to localStorage for recovery
+ * 8. Re-enables events and handles errors
+ * 
+ * SIDE EFFECTS:
+ *   - Clears current workspace
+ *   - Updates localStorage for auto-recovery
+ *   - Disables/enables Blockly events
+ * 
+ * THROWS: Error if JSON is invalid or workspace data is missing
+ */
 export function loadFromFile(workspace: Workspace, jsonString: string): void {
   Events.disable();
   
@@ -88,6 +133,27 @@ export function loadFromFile(workspace: Workspace, jsonString: string): void {
   }
 }
 
+/**
+ * Downloads the workspace as a .ntango file to the user's device.
+ * 
+ * WRITES AS: .ntango file (JSON format) with content from saveToFile():
+ *   - Filename: User-specified or defaults to 'workspace.ntango'
+ *   - Content-Type: application/json
+ *   - Format: Pretty-printed JSON with workspace and context data
+ * 
+ * PROCESS:
+ * 1. Converts workspace to JSON using saveToFile()
+ * 2. Creates a Blob object from the JSON string
+ * 3. Generates a download URL using createObjectURL
+ * 4. Creates temporary <a> element to trigger browser download
+ * 5. Appends .ntango extension if not already present
+ * 6. Cleans up resources (removes element, revokes URL)
+ * 
+ * BROWSER BEHAVIOR:
+ *   - Opens native 'Save File' dialog
+ *   - Saves to Downloads folder (user can change location)
+ *   - Non-blocking operation
+ */
 export function downloadWorkspace(workspace: Workspace, filename: string = 'workspace.ntango'): void {
   const json = saveToFile(workspace);
   const blob = new Blob([json], { type: 'application/json' });
@@ -103,6 +169,31 @@ export function downloadWorkspace(workspace: Workspace, filename: string = 'work
   URL.revokeObjectURL(url);
 }
 
+/**
+ * Opens file picker dialog and loads a .ntango or .json file into the workspace.
+ * 
+ * READS: File selected from file picker dialog:
+ *   - Accepted formats: .nettango or .json files
+ *   - Content: JSON string containing WorkspaceFileData
+ *   - Reads file as text using File.text() API
+ * 
+ * PROCESS:
+ * 1. Creates hidden <input type="file"> element
+ * 2. Sets accept filter to .nettango and .json files only
+ * 3. Programmatically clicks input to show file picker dialog
+ * 4. Waits for user to select a file
+ * 5. Reads file content as text asynchronously
+ * 6. Passes text to loadFromFile() to reconstruct workspace
+ * 7. Returns the selected filename via Promise
+ * 8. Rejects Promise if user cancels or file reading fails
+ * 
+ * RETURNS: Promise<string> - resolves with filename of loaded workspace
+ * 
+ * ERRORS: 
+ *   - Rejects if user cancels file selection
+ *   - Rejects if file format is invalid (delegated to loadFromFile)
+ *   - Rejects if file reading fails
+ */
 export function uploadWorkspace(workspace: Workspace): Promise<string> {
   return new Promise((resolve, reject) => {
     const input = document.createElement('input');

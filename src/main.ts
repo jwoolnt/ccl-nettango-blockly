@@ -8,10 +8,10 @@ import {generateNLogoFile, loadModel, runSetup, runGo } from "./services/netlogo
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
 import { updateWorkspaceForDomain } from "./blocks/domain";
-import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./moduleElements";
-import { initVariablesTracker } from "./variablesTracker";
-import { initBreedTracker } from "./breedTracker";
-import { initUIModules } from "./moduleSetup";
+import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./components/dialog";
+import { initVariablesTracker } from "./components/variablesTracker";
+import { initBreedTracker } from "./components/breedTracker";
+import { initUIModules } from "./components/modules";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
 

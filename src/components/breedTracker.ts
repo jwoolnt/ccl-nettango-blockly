@@ -1,6 +1,6 @@
-import { refreshMITPlugin, getAllBreeds, updateBreed, removeBreed } from "./data/context";
-import { save } from "./services/serializer";
-import { openDialog, closeDialog, createDialogElement, createButton, createFormField } from "./moduleElements";
+import { refreshMITPlugin, getAllBreeds, updateBreed, removeBreed } from "../data/context";
+import { save } from "../services/serializer";
+import { openDialog, closeDialog, createDialogElement, createButton, createFormField } from "./dialog";
 
 let workspace: any = null;
 let displayCodeCallback: (() => void) | null = null;

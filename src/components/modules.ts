@@ -1,7 +1,7 @@
-// moduleSetup.ts - Handles UI module initialization
-import { reset } from "./services/serializer";
-import { initDialogs } from "./moduleElements";
-import { updateWorkspaceForDomain } from "./blocks/domain";
+// modules.ts - Handles UI module initialization
+import { reset } from "../services/serializer";
+import { initDialogs } from "./dialog";
+import { updateWorkspaceForDomain } from "../blocks/domain";
 
 // Store the current workspace domain
 let currentDomain: string = 'default';
@@ -173,7 +173,7 @@ function setupFileMenu(workspace: any, displayCodeCallback: () => void) {
             // Create a file input element
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
-            fileInput.accept = '.xml, .json';
+            fileInput.accept = '.json';
             fileInput.style.display = 'none';
             document.body.appendChild(fileInput);
 

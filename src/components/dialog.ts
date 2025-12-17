@@ -1,6 +1,6 @@
 // dialog.ts - Custom modal dialog components
-import { addBreed, addVariable, BreedType, getAllBreeds, refreshMITPlugin, removeBreed, removeVariable, updateVariable} from "./data/context";
-import { reset, save } from "./services/serializer";
+import { addBreed, addVariable, BreedType, getAllBreeds, refreshMITPlugin, removeBreed, removeVariable, updateVariable} from "../data/context";
+import { reset, save } from "../services/serializer";
 
 // Dialog DOM elements
 let dialogOverlay: HTMLDivElement | null = null;
