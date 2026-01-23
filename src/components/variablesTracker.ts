@@ -1,7 +1,7 @@
 import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable} from "../data/context";
 import {save} from "../services/serializer";
 
-import { openDialog, closeDialog, createDialogElement, createButton, createFormField } from "./dialog";
+import { openDialog, closeDialog, createDialogElement, createButton, createFormField, showAddVariableDialogFromBlock } from "./dialog";
 
 let workspace: any = null;
 let displayCodeCallback: (() => void) | null = null;
@@ -84,29 +84,45 @@ function updateVariablesDisplay() {
     emptyMsg.textContent = 'No variables defined';
     emptyMsg.style.cssText = 'padding: 16px; color: #9ca3af; font-size: 13px; text-align: center; width: 100%;';
     trackerList.appendChild(emptyMsg);
-    return;
+  } else {
+    // Create variable items with scope/owner badge
+    allVars.forEach(variableName => {
+      const item = document.createElement('div');
+      item.className = 'variable-item';
+      item.setAttribute('data-variable', variableName);
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = variableName;
+
+      const owner = getVariableOwner(variableName);
+      const badge = document.createElement('span');
+      badge.className = 'variable-scope-badge';
+      badge.textContent = owner ? owner : 'unknown';
+      badge.style.cssText = 'margin-left: 8px; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
+
+      item.appendChild(nameSpan);
+      item.appendChild(badge);
+      trackerList.appendChild(item);
+    });
   }
 
-  // Create variable items with scope/owner badge
-  allVars.forEach(variableName => {
-    const item = document.createElement('div');
-    item.className = 'variable-item';
-    item.setAttribute('data-variable', variableName);
-
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = variableName;
-
-    const owner = getVariableOwner(variableName);
-    const badge = document.createElement('span');
-    badge.className = 'variable-scope-badge';
-    badge.textContent = owner ? owner : 'unknown';
-    badge.style.cssText = 'margin-left: 8px; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
-
-    item.appendChild(nameSpan);
-    item.appendChild(badge);
-    trackerList.appendChild(item);
+  const addButton = document.createElement('button');
+  addButton.className = 'add-item-btn';
+  addButton.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    Add Variable
+  `;
+  addButton.addEventListener('click', () => {
+    if (workspace && displayCodeCallback) {
+      showAddVariableDialogFromBlock(workspace, displayCodeCallback);
+    }
   });
+  trackerList.appendChild(addButton);
 }
+
 
 function showContextMenu(x: number, y: number) {
   const contextMenu = document.getElementById('variables-context-menu');

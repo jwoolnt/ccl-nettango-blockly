@@ -255,10 +255,12 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void, 
 export function showAddVariableDialogFromBlock(
     workspace: any, 
     displayCodeCallback: () => void,
-    blockId: string,
-    fieldName: string
+    blockId?: string, 
+    fieldName?: string
 ) {
-    showAddVariableDialog(workspace, displayCodeCallback, { blockId, fieldName });
+    showAddVariableDialog(workspace, displayCodeCallback, 
+        blockId && fieldName ? { blockId, fieldName } : undefined
+    );
 }
 
 //
@@ -472,10 +474,12 @@ function showAddBreedDialog(workspace: any, displayCodeCallback: () => void,    
 export function showAddBreedDialogFromBlock(
     workspace: any, 
     displayCodeCallback: () => void,
-    blockId: string,
-    fieldName: string
+    blockId?: string, 
+    fieldName?: string
 ) {
-    showAddBreedDialog(workspace, displayCodeCallback, { blockId, fieldName });
+    showAddVariableDialog(workspace, displayCodeCallback, 
+        blockId && fieldName ? { blockId, fieldName } : undefined
+    );
 }
 
 function showRemoveBreedDialog(workspace: any, displayCodeCallback: () => void) {

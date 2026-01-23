@@ -1,6 +1,6 @@
 import { refreshMITPlugin, getAllBreeds, updateBreed, removeBreed } from "../data/context";
 import { save } from "../services/serializer";
-import { openDialog, closeDialog, createDialogElement, createButton, createFormField } from "./dialog";
+import { openDialog, closeDialog, createDialogElement, createButton, createFormField, showAddVariableDialogFromBlock, showAddBreedDialogFromBlock } from "./dialog";
 
 let workspace: any = null;
 let displayCodeCallback: (() => void) | null = null;
@@ -75,18 +75,34 @@ function updateBreedsDisplay() {
     emptyMsg.textContent = 'No breeds defined';
     emptyMsg.style.cssText = 'padding: 16px; color: #9ca3af; font-size: 13px; text-align: center; width: 100%;';
     trackerList.appendChild(emptyMsg);
-    return;
+  } else {
+    breeds.forEach(({ pluralName }) => {
+      const item = document.createElement('div');
+      item.className = 'variable-item';
+      item.setAttribute('data-breed', pluralName);
+      item.textContent = pluralName;
+      trackerList.appendChild(item);
+    });
   }
 
-  breeds.forEach(({ pluralName }) => {
-    const item = document.createElement('div');
-    item.className = 'variable-item';
-    item.setAttribute('data-breed', pluralName);
-    item.textContent = pluralName;
-    trackerList.appendChild(item);
+  // ADD THIS: Always add the "Add Breed" button at the end
+  const addButton = document.createElement('button');
+  addButton.className = 'add-item-btn';
+  addButton.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+    Add Breed
+  `;
+  addButton.addEventListener('click', () => {
+    if (workspace && displayCodeCallback) {
+      showAddBreedDialogFromBlock(workspace, displayCodeCallback);
+    }
   });
+  trackerList.appendChild(addButton);
 }
-
+    
 function showContextMenu(x: number, y: number) {
   const contextMenu = document.getElementById('breeds-context-menu');
   if (!contextMenu) return;

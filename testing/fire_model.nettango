@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "timestamp": 1764048443512,
+  "timestamp": 1766000558407,
   "workspace": {
     "blocks": {
       "languageVersion": 0,
@@ -472,10 +472,10 @@
                                     }
                                   },
                                   "block": {
-                                    "type": "lexical_variable_get",
-                                    "id": "[3a}|TnWe1V.2b6L1cgu",
+                                    "type": "agentset",
+                                    "id": "ZLIbs*DtNE2sRDiWG-8u",
                                     "fields": {
-                                      "VAR": "global embers"
+                                      "AGENT_SET": "embers"
                                     }
                                   }
                                 }
@@ -853,9 +853,7 @@
       }
     ],
     "nettango-context": {
-      "ui": [
-        "embers"
-      ],
+      "ui": [],
       "globals": [
         "initial-trees",
         "burned-trees"
@@ -878,9 +876,7 @@
     }
   },
   "context": {
-    "ui": [
-      "embers"
-    ],
+    "ui": [],
     "globals": [
       "initial-trees",
       "burned-trees"
