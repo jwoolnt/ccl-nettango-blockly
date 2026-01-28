@@ -1,6 +1,7 @@
 import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable} from "../data/context";
 import {save} from "../services/serializer";
 import { runCode } from "../services/netlogoAPI"; // NEW: Import runCode
+import { scheduleAutoCompile, isAutoCompiling, setUnsavedChangesFlag } from "../services/autoCompile";
 
 import { openDialog, closeDialog, createDialogElement, createButton, createFormField, showAddVariableDialogFromBlock } from "./dialog";
 
@@ -130,7 +131,6 @@ function inferVariableType(variableName: string): number | boolean {
   return 0;
 }
 
-// In variablesTracker.ts - modify updateVariableValue
 function updateVariableValue(variableName: string, newValue: any) {
   variableValues.set(variableName, newValue);
   
@@ -139,9 +139,13 @@ function updateVariableValue(variableName: string, newValue: any) {
     displayCodeCallback();
   }
   
-  // Also update runtime (if model is already running)
-  const codeValue = typeof newValue === 'boolean' ? (newValue ? 'true' : 'false') : newValue;
-  runCode(`set ${variableName} ${codeValue}`);
+  // Mark as having unsaved changes
+  setUnsavedChangesFlag(true);
+  
+  // Schedule auto-compile if enabled
+  if (isAutoCompiling) {
+    scheduleAutoCompile();
+  }
 }
 
 function updateVariablesDisplay() {
@@ -156,7 +160,6 @@ function updateVariablesDisplay() {
     const emptyMsg = document.createElement('div');
     emptyMsg.className = 'variable-empty';
     emptyMsg.textContent = 'No variables defined';
-    emptyMsg.style.cssText = 'padding: 16px; color: #9ca3af; font-size: 13px; text-align: center; width: 100%;';
     trackerList.appendChild(emptyMsg);
   } else {
     allVars.forEach(variableName => {
@@ -171,30 +174,29 @@ function updateVariablesDisplay() {
         item.classList.add('has-control');
         
         const header = document.createElement('div');
-        header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;';
+        header.className = 'control-header';
         
         const nameSpan = document.createElement('span');
         nameSpan.textContent = variableName;
-        nameSpan.style.fontWeight = '500';
         
         header.appendChild(nameSpan);
         item.appendChild(header);
         
         if (control.type === 'slider') {
           const sliderContainer = document.createElement('div');
-          sliderContainer.style.cssText = 'display: flex; flex-direction: column; gap: 4px;';
+          sliderContainer.className = 'control-slider-container';
           
           const valueDisplay = document.createElement('div');
-          valueDisplay.style.cssText = 'font-size: 12px; color: #6b7280; text-align: right;';
+          valueDisplay.className = 'control-value-display';
           valueDisplay.textContent = String(value);
           
           const slider = document.createElement('input');
           slider.type = 'range';
+          slider.className = 'control-slider';
           slider.min = String(control.min);
           slider.max = String(control.max);
           slider.step = String(control.step);
           slider.value = String(value);
-          slider.style.cssText = 'width: 100%; cursor: pointer;';
           
           slider.addEventListener('input', (e) => {
             const newValue = Number((e.target as HTMLInputElement).value);
@@ -207,16 +209,16 @@ function updateVariablesDisplay() {
           item.appendChild(sliderContainer);
         } else if (control.type === 'switch') {
           const switchContainer = document.createElement('div');
-          switchContainer.style.cssText = 'display: flex; align-items: center; gap: 8px;';
+          switchContainer.className = 'control-switch-container';
           
           const switchInput = document.createElement('input');
           switchInput.type = 'checkbox';
+          switchInput.className = 'control-switch-input';
           switchInput.checked = Boolean(value);
-          switchInput.style.cssText = 'width: 16px; height: 16px; cursor: pointer;';
           
           const label = document.createElement('span');
+          label.className = 'control-switch-label';
           label.textContent = value ? 'true' : 'false';
-          label.style.cssText = 'font-size: 12px; color: #6b7280;';
           
           switchInput.addEventListener('change', (e) => {
             const newValue = (e.target as HTMLInputElement).checked;
@@ -231,13 +233,10 @@ function updateVariablesDisplay() {
         
         const owner = getVariableOwner(variableName);
         const badge = document.createElement('span');
-        badge.className = 'variable-scope-badge';
+        badge.className = 'control-scope-badge';
         badge.textContent = owner ? owner : 'unknown';
-        badge.style.cssText = 'margin-top: 8px; display: inline-block; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
         item.appendChild(badge);
       } else {
-        item.style.cursor = 'pointer';
-        
         const nameSpan = document.createElement('span');
         nameSpan.textContent = variableName;
 
@@ -245,7 +244,6 @@ function updateVariablesDisplay() {
         const badge = document.createElement('span');
         badge.className = 'variable-scope-badge';
         badge.textContent = owner ? owner : 'unknown';
-        badge.style.cssText = 'margin-left: 8px; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
 
         item.appendChild(nameSpan);
         item.appendChild(badge);

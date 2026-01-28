@@ -4,7 +4,8 @@ import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import { createDefaultProcedures } from "./services/defaultProcedures";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import {runGo, compileAndSetupModel } from "./services/netlogoAPI";
+import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener } from "./services/netlogoAPI";
+import { scheduleAutoCompile, setIsAutoCompiling, isAutoCompiling, setUnsavedChangesFlag } from "./services/autoCompile";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
 import { refreshMITPlugin } from "./data/context";
@@ -16,6 +17,9 @@ import { initBreedTracker } from "./components/breedTracker";
 import { initUIModules } from "./components/modules";
 
 Blockly.common.defineBlocks({ ...activeBlocks });
+
+// Setup error listener for NetLogo Web compilation errors
+setupErrorListener();
 
 const blockEditor = document.getElementsByClassName("block-editor")[0];
 const codeOutput = document.getElementsByClassName("generated-code")[0];
@@ -45,81 +49,6 @@ const customTheme = Blockly.Theme.defineTheme('customTheme', {
   },
   startHats: false
 });
-
-//
-// Auto-compile 
-//
-let autoCompileTimeout: number | null = null;
-let isAutoCompiling = false;
-function setUnsavedChangesFlag(value: boolean) {
-  const banner = document.getElementById('unsaved-banner');
-  if (banner) {
-    banner.style.display = value ? 'block' : 'none';
-  }
-}
-
-async function autoCompileAndSetup() {
-  if (!isAutoCompiling) return;
-
-  const codeElement = document.getElementsByClassName("generated-code");
-  if (codeElement.length === 0) return;
-
-  const code = codeElement[0].textContent || "";
-  const status = document.getElementById('netlogo-status');
-  
-  try {
-    // Use simplified approach
-    await compileAndSetupModel(code);
-    
-    setUnsavedChangesFlag(false);
-    if (status) {
-      status.textContent = "Model auto-updated!";
-    }
-  } catch (error) {
-    console.error("Auto-compile error:", error);
-    if (status) {
-      status.textContent = "Auto-compile error.";
-    }
-  }
-}
-
-function scheduleAutoCompile() {
-  // clear existing timeout
-  if (autoCompileTimeout) {
-    clearTimeout(autoCompileTimeout);
-  }
-  // schedule compile after delay
-  autoCompileTimeout = window.setTimeout(() => {
-    autoCompileAndSetup();
-  }, 2000); // 2 seconds delay
-}
-
-function initAutoCompile() {
-  const toggleCheckbox = document.getElementById('auto-compile-toggle') as HTMLInputElement;
-
-  if (!toggleCheckbox) {
-    console.error("Auto-compile toggle button not found");
-    return;
-  }
-
-  // Set initial state
-  toggleCheckbox.checked = isAutoCompiling;
-
-  toggleCheckbox.addEventListener('change', () => {
-    isAutoCompiling = toggleCheckbox.checked;
-
-    if (isAutoCompiling) {
-      // Compile
-      scheduleAutoCompile();
-    } else {
-      // Clear any pending compilation
-      if (autoCompileTimeout) {
-        clearTimeout(autoCompileTimeout);
-        autoCompileTimeout = null;
-      }
-    }
-  });
-}
 
 // 
 // Custom Blockly workspace
@@ -251,6 +180,28 @@ if (blockEditor && codeOutput) {
   initFileOperations(ws, displayCode);
 
   // Initialize auto-compile toggle
+  function initAutoCompile() {
+    const toggleCheckbox = document.getElementById('auto-compile-toggle') as HTMLInputElement;
+
+    if (!toggleCheckbox) {
+      console.error("Auto-compile toggle button not found");
+      return;
+    }
+
+    // Set initial state
+    toggleCheckbox.checked = isAutoCompiling;
+
+    toggleCheckbox.addEventListener('change', () => {
+      setIsAutoCompiling(toggleCheckbox.checked);
+
+      if (isAutoCompiling) {
+        // Compile
+        scheduleAutoCompile();
+      }
+    });
+  }
+
+  // Initialize auto-compile toggle
   initAutoCompile();
 
   ws.addChangeListener((e) => {
@@ -378,16 +329,18 @@ function setupNetLogoIntegration() {
 
   // buttons
   const compileBtn = document.getElementById('compile-run-btn'); // Run/Compile button
+  const compileOnlyBtn = document.getElementById('compile-btn'); // Compile only button
+  const setupOnlyBtn = document.getElementById('setup-btn'); // Setup only button
   const goBtn = document.getElementById('go-btn'); // Go button
   let goForeverBtn = document.getElementById('go-forever-btn'); // Go Forever button
   let goInterval: number | null = null;
 
-  //Compile Button - compiles the code and loads it with Setup/Go buttons
+  //Compile+Setup Button - compiles the code and runs setup
   if (compileBtn) {
     compileBtn.addEventListener('click', async () => {
       if (codeElement.length > 0) {
         const code = codeElement[0].textContent || "";
-        console.log("Compiling code:", code);
+        console.log("Compiling and setting up model...");
 
         try {
           await compileAndSetupModel(code);
@@ -405,6 +358,50 @@ function setupNetLogoIntegration() {
         }
       } else {
         if (status) status.textContent = "No code to compile.";
+      }
+    });
+  }
+
+  // Compile Only Button - compiles the code without running setup
+  if (compileOnlyBtn) {
+    compileOnlyBtn.addEventListener('click', async () => {
+      if (codeElement.length > 0) {
+        const code = codeElement[0].textContent || "";
+        console.log("Compiling model only...");
+
+        try {
+          await compileModel(code);
+          
+          // Clear unsaved banner on successful compile
+          setUnsavedChangesFlag(false);
+          if (status) {
+            status.textContent = "Model compiled successfully! Click Setup to initialize.";
+          }
+        } catch (error) {
+          console.error("Error compiling model:", error);
+          if (status) {
+            status.textContent = "Compilation error. Check console.";
+          }
+        }
+      } else {
+        if (status) status.textContent = "No code to compile.";
+      }
+    });
+  }
+
+  // Setup Only Button - runs the setup procedure
+  if (setupOnlyBtn) {
+    setupOnlyBtn.addEventListener('click', () => {
+      try {
+        runSetup();
+        if (status) {
+          status.textContent = "Setup executed successfully!";
+        }
+      } catch (error) {
+        console.error("Error running setup:", error);
+        if (status) {
+          status.textContent = "Setup error. Check console.";
+        }
       }
     });
   }
@@ -427,7 +424,7 @@ function setupNetLogoIntegration() {
         clearInterval(goInterval);
         goInterval = null;
         if (status) status.textContent = "Stopped";
-        goForeverBtn!.textContent = "↻";
+        goForeverBtn!.textContent = "▶";
       } else {
         // start running
         goInterval = window.setInterval(() => {

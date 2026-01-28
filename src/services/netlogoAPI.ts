@@ -9,6 +9,31 @@ export function getNetLogoFrame(): Window | null {
     return iframe ? iframe.contentWindow : null;
 }
 
+// Listen for compilation errors from NetLogo Web
+let errorListener: ((event: MessageEvent) => void) | null = null;
+
+export function setupErrorListener(): void {
+    if (errorListener) {
+        window.removeEventListener('message', errorListener);
+    }
+    
+    errorListener = (event: MessageEvent) => {
+        // Listen for error messages from NetLogo Web iframe
+        if (event.data && event.data.type === 'compiler-error') {
+            console.error('NetLogo compilation error:', event.data);
+            
+            // Display error to user
+            const status = document.getElementById('netlogo-status');
+            if (status) {
+                status.textContent = "Compilation error - check NetLogo Web panel";
+                status.style.color = "red";
+            }
+        }
+    };
+    
+    window.addEventListener('message', errorListener);
+}
+
 // send a message
 // type: message type string
 // data: additional data object
@@ -100,6 +125,61 @@ export function runGo(): void {
   runCode("go");
 }
 
+export async function compileModel(code: string): Promise<void> {
+  const frame = getNetLogoFrame();
+  if (!frame) {
+    console.error("NetLogo Web iframe not found");
+    throw new Error("NetLogo Web iframe not found");
+  }
+
+  const status = document.getElementById('netlogo-status');
+  if (status) {
+    status.textContent = "Compiling...";
+    status.style.color = "";
+  }
+
+  try {
+    // Set the model code
+    setModelCode(code, false);
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // Recompile
+    recompile();
+    
+    // Wait for compilation (longer for errors)
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    if (status) status.textContent = "Compiled (click Setup to initialize)";
+    
+    console.log("Model compiled! Use Setup button to initialize.");
+  } catch (error) {
+    console.error("Compilation error:", error);
+    if (status) {
+      status.textContent = "Compilation failed";
+      status.style.color = "red";
+    }
+    throw error;
+  }
+}
+
+// updateGlobalVariable: update a global variable in the NetLogo runtime
+// For dynamic variable updates without recompiling
+export function updateGlobalVariable(variableName: string, value: any): void {
+  const frame = getNetLogoFrame();
+  if (!frame) {
+    console.error("NetLogo Web iframe not found");
+    return;
+  }
+  
+  sendToNetLogo("nlw-update-model-state", {
+    globalUpdate: {
+      [variableName]: value
+    }
+  });
+  console.log(`Updated ${variableName} = ${value} in NetLogo`);
+}
+
+// compileAndSetupModel: set code, compile it, and run setup (combined operation)
 export async function compileAndSetupModel(code: string): Promise<void> {
   const frame = getNetLogoFrame();
   if (!frame) {
@@ -107,20 +187,25 @@ export async function compileAndSetupModel(code: string): Promise<void> {
     return;
   }
 
-  // set the model code
-  setModelCode(code, false); // don't auto-recompile yet
-  
-  // wait a bit
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  // recompile the model
-  recompile();
-  
-  // wait for compilation to finish
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  // run setup
-  runSetup();
-  
-  console.log("Model compiled and setup complete!");
+  try {
+    // set the model code
+    setModelCode(code, false); 
+    
+    // wait a bit
+    // await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // recompile the model
+    recompile();
+    
+    // wait for compilation to finish
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // run setup
+    runSetup();
+    
+    console.log("Model compiled and setup complete!");
+  } catch (error) {
+    console.error("Compile and setup error:", error);
+    throw error;
+  }
 }

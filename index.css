@@ -955,7 +955,11 @@ body {
 
 /* Empty state message - centered when no items */
 .variable-empty {
-  display: none;
+  padding: 16px;
+  color: #9ca3af;
+  font-size: 13px;
+  text-align: center;
+  width: 100%;
 }
 
 .variable-item.has-control {
@@ -963,6 +967,62 @@ body {
   background: #f9fafb;
   border-radius: 6px;
   cursor: default;
+}
+
+.variable-item.has-control .control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.variable-item.has-control .control-header span {
+  font-weight: 500;
+}
+
+.control-slider-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-value-display {
+  font-size: 12px;
+  color: #6b7280;
+  text-align: right;
+}
+
+.control-slider {
+  width: 100%;
+  cursor: pointer;
+}
+
+.control-switch-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-switch-input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.control-switch-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.control-scope-badge {
+  margin-top: 8px;
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 11px;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  color: #374151;
+  background: #f9fafb;
 }
 
 .variable-item:not(.has-control):hover {

@@ -4,6 +4,7 @@ import { forBlocks } from "../blocks";
 import { getAllAgentSets, getVariables, getGlobalVariables } from "../data/context";
 import { getTurtleBreeds } from "../data/context";
 import { DOMAIN_BLOCKS } from "../blocks/domain";
+import { getVariableInitialValues } from "../components/variablesTracker";
 
 
 const netlogoGenerator = new Generator('NetLogo');
@@ -33,13 +34,59 @@ netlogoGenerator.forBlock = new Proxy(forBlocks, {
     }
 });
 
+// netlogoGenerator.workspaceToCode = (workspace) => {
+//     let code = "";
+
+//     if (workspace) {
+//         workspace.getTopBlocks(true).forEach(block => {
+//             if (block.type === "procedures_defnoreturn") {
+//                 code += netlogoGenerator.blockToCode(block);
+//             }
+//         });
+//     }
+
+//     return code;
+// }
+
+// Function to generate variable initialization code
+export function generateVariableInitialization(): string {
+  const variableValues = getVariableInitialValues();
+  
+  if (variableValues.size === 0) return '';
+  
+  let code = '  ; Variables initialized from UI controls\n';
+  for (const [name, value] of variableValues.entries()) {
+    if (typeof value === 'number') {
+      code += `  set ${name} ${value}\n`;
+    } else if (typeof value === 'boolean') {
+      code += `  set ${name} ${value ? 'true' : 'false'}\n`;
+    }
+  }
+  
+  return code;
+}
+
 netlogoGenerator.workspaceToCode = (workspace) => {
     let code = "";
 
     if (workspace) {
         workspace.getTopBlocks(true).forEach(block => {
             if (block.type === "procedures_defnoreturn") {
-                code += netlogoGenerator.blockToCode(block);
+                let procedureCode = netlogoGenerator.blockToCode(block);
+                
+                // If this is the setup procedure, inject variable initialization
+                if (block.getFieldValue && block.getFieldValue('NAME') === 'setup') {
+                    const initCode = generateVariableInitialization();
+                    if (initCode) {
+                        // Insert initialization right after "to setup" line
+                        procedureCode = procedureCode.replace(
+                            /to setup\s*\n/,
+                            `to setup\n${initCode}`
+                        );
+                    }
+                }
+                
+                code += procedureCode;
             }
         });
     }
@@ -77,7 +124,6 @@ export function generateCodePrefix() {
     if (TURTLE_BREEDS) {
         prefix += `${TURTLE_BREEDS}\n\n`;
     }
-
     // TODO: prefix code for link breeds
 
     let breedVariableCode = "";
@@ -93,6 +139,5 @@ export function generateCodePrefix() {
 
     return prefix;
 }
-
 
 export default netlogoGenerator;

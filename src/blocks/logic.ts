@@ -1,7 +1,7 @@
 // src/blocks/logic.ts
 import { BlockDefinition } from "./types";
 import { createStatementBlock, createComparisonOperatorBlock, createLogicalOperatorBlock, createValueBlock, Order, staticOptions, dynamicOptions } from "./utilities";
-
+import { getVariableInitialValues } from "../components/variablesTracker";
 const let_: BlockDefinition = function simple_local_declaration_statement(block, generator) {
 	// TODO: change to local_declaration_statement
 	const variable = block.getFieldValue("VAR");
@@ -61,21 +61,74 @@ const greater_than_or_equal_to: BlockDefinition = createComparisonOperatorBlock(
 
 // TODO: Add Breed
 
-const to: BlockDefinition = function procedures_defnoreturn(block: any, generator) { // TODO: remove any
+// const to: BlockDefinition = function procedures_defnoreturn(block: any, generator) { // TODO: remove any
+// 	let prefix = `to ${block.getFieldValue("NAME")}`;
+
+// 	let parameters = "";
+// 	if (block.arguments_.length) {
+// 		parameters += " [ "
+
+// 		for (const parameter of block.arguments_) {
+// 			parameters += `${parameter} `
+// 		}
+
+// 		parameters += "]"
+// 	}
+
+// 	const body = generator.statementToCode(block, "STACK");
+// 	if (body.includes("report")) {
+// 		prefix = `to-report ${block.getFieldValue("NAME")}`;
+// 	}
+
+// 	const suffix = "end";
+
+// 	return `\n${prefix}${parameters}\n${body}\n${suffix}\n`;
+// }
+const to: BlockDefinition = function procedures_defnoreturn(block: any, generator) {
 	let prefix = `to ${block.getFieldValue("NAME")}`;
 
 	let parameters = "";
 	if (block.arguments_.length) {
 		parameters += " [ "
-
 		for (const parameter of block.arguments_) {
 			parameters += `${parameter} `
 		}
-
 		parameters += "]"
 	}
 
-	const body = generator.statementToCode(block, "STACK");
+	let body = generator.statementToCode(block, "STACK");
+	
+	// Inject variable initialization AFTER clear-all if this is setup
+	const procedureName = block.getFieldValue("NAME");
+	if (procedureName.toLowerCase() === 'setup') {
+		const variableValues = getVariableInitialValues();
+		
+		if (variableValues.size > 0) {
+			let varInitialization = '';
+			for (const [name, value] of variableValues.entries()) {
+				if (typeof value === 'number') {
+					varInitialization += `  set ${name} ${value}\n`;
+				} else if (typeof value === 'boolean') {
+					varInitialization += `  set ${name} ${value ? 'true' : 'false'}\n`;
+				}
+			}
+			
+			// Find clear-all and insert AFTER it
+			const lines = body.split('\n');
+			const clearAllIndex = lines.findIndex(line => 
+				line.trim().toLowerCase() === 'clear-all'
+			);
+			
+			if (clearAllIndex !== -1) {
+				lines.splice(clearAllIndex + 1, 0, varInitialization);
+				body = lines.join('\n');
+			} else {
+				// No clear-all found, put at beginning
+				body = varInitialization + body;
+			}
+		}
+	}
+	
 	if (body.includes("report")) {
 		prefix = `to-report ${block.getFieldValue("NAME")}`;
 	}
