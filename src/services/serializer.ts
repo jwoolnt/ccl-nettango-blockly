@@ -198,7 +198,7 @@ export function uploadWorkspace(workspace: Workspace): Promise<string> {
   return new Promise((resolve, reject) => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.nettango,.json';
+    input.accept = '.ntango,.nettango,.json';
     
     input.onchange = async (e: Event) => {
       const file = (e.target as HTMLInputElement).files?.[0];
