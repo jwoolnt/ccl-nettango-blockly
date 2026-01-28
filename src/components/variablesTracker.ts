@@ -1,11 +1,23 @@
 import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable} from "../data/context";
 import {save} from "../services/serializer";
+import { runCode } from "../services/netlogoAPI"; // NEW: Import runCode
 
 import { openDialog, closeDialog, createDialogElement, createButton, createFormField, showAddVariableDialogFromBlock } from "./dialog";
 
 let workspace: any = null;
 let displayCodeCallback: (() => void) | null = null;
 let selectedVariable: string | null = null;
+
+interface VariableControl {
+  type: 'slider' | 'switch';
+  enabled: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+}
+
+const variableControls = new Map<string, VariableControl>();
+const variableValues = new Map<string, any>();
 
 export function initVariablesTracker(ws: any, callback: () => void) {
   workspace = ws;
@@ -19,14 +31,31 @@ export function initVariablesTracker(ws: any, callback: () => void) {
     return;
   }
 
-  // Update display initially
   updateVariablesDisplay();
 
-  // Listen for right-click on variable items
+  // Listen for clicks to create controls
+  trackerList.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement).closest('.variable-item');
+    if (target && !target.classList.contains('add-item-btn')) {
+      const variableName = target.getAttribute('data-variable');
+      if (variableName) {
+        if (variableControls.has(variableName)) {
+          // Toggle off - remove the control
+          variableControls.delete(variableName);
+          updateVariablesDisplay();
+        } else {
+          // Toggle on - create the control
+          handleVariableClick(variableName);
+        }
+      }
+    }
+  });
+
+  // Context menu handlers
   trackerList.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     const target = (e.target as HTMLElement).closest('.variable-item');
-    if (target) {
+    if (target && !target.classList.contains('add-item-btn')) {
       selectedVariable = target.getAttribute('data-variable') || null;
       if (selectedVariable) {
         showContextMenu(e.clientX, e.clientY);
@@ -34,12 +63,10 @@ export function initVariablesTracker(ws: any, callback: () => void) {
     }
   });
 
-  // Hide context menu on click outside
   document.addEventListener('click', () => {
     hideContextMenu();
   });
 
-  // Handle context menu actions
   const renameItem = document.getElementById('context-menu-rename');
   const removeItem = document.getElementById('context-menu-remove');
 
@@ -61,21 +88,68 @@ export function initVariablesTracker(ws: any, callback: () => void) {
     });
   }
 
-  // Listen for variable changes (you may need to add a custom event or poll)
-  // For now, we'll update on workspace changes
   ws.addChangeListener(() => {
     updateVariablesDisplay();
   });
+}
+
+function handleVariableClick(variableName: string) {
+  const currentValue = variableValues.get(variableName) ?? inferVariableType(variableName);
+  const varType = typeof currentValue;
+  
+  if (varType === 'number') {
+    const isInteger = Number.isInteger(currentValue);
+    variableControls.set(variableName, {
+      type: 'slider',
+      enabled: true,
+      min: 0,
+      max: Math.max(100, currentValue * 2),
+      step: isInteger ? 1 : 0.1
+    });
+    if (!variableValues.has(variableName)) {
+      variableValues.set(variableName, currentValue);
+    }
+  } else if (varType === 'boolean') {
+    variableControls.set(variableName, {
+      type: 'switch',
+      enabled: true
+    });
+    if (!variableValues.has(variableName)) {
+      variableValues.set(variableName, currentValue);
+    }
+  }
+  
+  updateVariablesDisplay();
+}
+
+function inferVariableType(variableName: string): number | boolean {
+  const name = variableName.toLowerCase();
+  if (name.includes('?') || name.startsWith('is-') || name.startsWith('has-')) {
+    return false;
+  }
+  return 0;
+}
+
+// In variablesTracker.ts - modify updateVariableValue
+function updateVariableValue(variableName: string, newValue: any) {
+  variableValues.set(variableName, newValue);
+  
+  // Regenerate the code to show new values
+  if (displayCodeCallback) {
+    displayCodeCallback();
+  }
+  
+  // Also update runtime (if model is already running)
+  const codeValue = typeof newValue === 'boolean' ? (newValue ? 'true' : 'false') : newValue;
+  runCode(`set ${variableName} ${codeValue}`);
 }
 
 function updateVariablesDisplay() {
   const trackerList = document.getElementById('variables-tracker-list');
   if (!trackerList) return;
 
-  // Clear existing items
   trackerList.innerHTML = '';
 
-  // Only show variables created by the user (exclude built-ins)
   const allVars = getUserVariables();
 
   if (allVars.length === 0) {
@@ -85,23 +159,98 @@ function updateVariablesDisplay() {
     emptyMsg.style.cssText = 'padding: 16px; color: #9ca3af; font-size: 13px; text-align: center; width: 100%;';
     trackerList.appendChild(emptyMsg);
   } else {
-    // Create variable items with scope/owner badge
     allVars.forEach(variableName => {
+      const control = variableControls.get(variableName);
+      const value = variableValues.get(variableName) ?? inferVariableType(variableName);
+      
       const item = document.createElement('div');
       item.className = 'variable-item';
       item.setAttribute('data-variable', variableName);
 
-      const nameSpan = document.createElement('span');
-      nameSpan.textContent = variableName;
+      if (control?.enabled) {
+        item.classList.add('has-control');
+        
+        const header = document.createElement('div');
+        header.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = variableName;
+        nameSpan.style.fontWeight = '500';
+        
+        header.appendChild(nameSpan);
+        item.appendChild(header);
+        
+        if (control.type === 'slider') {
+          const sliderContainer = document.createElement('div');
+          sliderContainer.style.cssText = 'display: flex; flex-direction: column; gap: 4px;';
+          
+          const valueDisplay = document.createElement('div');
+          valueDisplay.style.cssText = 'font-size: 12px; color: #6b7280; text-align: right;';
+          valueDisplay.textContent = String(value);
+          
+          const slider = document.createElement('input');
+          slider.type = 'range';
+          slider.min = String(control.min);
+          slider.max = String(control.max);
+          slider.step = String(control.step);
+          slider.value = String(value);
+          slider.style.cssText = 'width: 100%; cursor: pointer;';
+          
+          slider.addEventListener('input', (e) => {
+            const newValue = Number((e.target as HTMLInputElement).value);
+            valueDisplay.textContent = String(newValue);
+            updateVariableValue(variableName, newValue);
+          });
+          
+          sliderContainer.appendChild(valueDisplay);
+          sliderContainer.appendChild(slider);
+          item.appendChild(sliderContainer);
+        } else if (control.type === 'switch') {
+          const switchContainer = document.createElement('div');
+          switchContainer.style.cssText = 'display: flex; align-items: center; gap: 8px;';
+          
+          const switchInput = document.createElement('input');
+          switchInput.type = 'checkbox';
+          switchInput.checked = Boolean(value);
+          switchInput.style.cssText = 'width: 16px; height: 16px; cursor: pointer;';
+          
+          const label = document.createElement('span');
+          label.textContent = value ? 'true' : 'false';
+          label.style.cssText = 'font-size: 12px; color: #6b7280;';
+          
+          switchInput.addEventListener('change', (e) => {
+            const newValue = (e.target as HTMLInputElement).checked;
+            label.textContent = newValue ? 'true' : 'false';
+            updateVariableValue(variableName, newValue);
+          });
+          
+          switchContainer.appendChild(switchInput);
+          switchContainer.appendChild(label);
+          item.appendChild(switchContainer);
+        }
+        
+        const owner = getVariableOwner(variableName);
+        const badge = document.createElement('span');
+        badge.className = 'variable-scope-badge';
+        badge.textContent = owner ? owner : 'unknown';
+        badge.style.cssText = 'margin-top: 8px; display: inline-block; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
+        item.appendChild(badge);
+      } else {
+        item.style.cursor = 'pointer';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = variableName;
 
-      const owner = getVariableOwner(variableName);
-      const badge = document.createElement('span');
-      badge.className = 'variable-scope-badge';
-      badge.textContent = owner ? owner : 'unknown';
-      badge.style.cssText = 'margin-left: 8px; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
+        const owner = getVariableOwner(variableName);
+        const badge = document.createElement('span');
+        badge.className = 'variable-scope-badge';
+        badge.textContent = owner ? owner : 'unknown';
+        badge.style.cssText = 'margin-left: 8px; padding: 2px 6px; font-size: 11px; border: 1px solid #e5e7eb; border-radius: 9999px; color: #374151; background:#f9fafb;';
 
-      item.appendChild(nameSpan);
-      item.appendChild(badge);
+        item.appendChild(nameSpan);
+        item.appendChild(badge);
+      }
+      
       trackerList.appendChild(item);
     });
   }
@@ -122,7 +271,6 @@ function updateVariablesDisplay() {
   });
   trackerList.appendChild(addButton);
 }
-
 
 function showContextMenu(x: number, y: number) {
   const contextMenu = document.getElementById('variables-context-menu');
@@ -207,6 +355,10 @@ function showRemoveDialog(variableName: string) {
   } catch (error) {
     alert(`Error removing variable: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+// Export function to get variable values for code generation
+export function getVariableInitialValues(): Map<string, any> {
+  return new Map(variableValues);
 }
 
 // Export function to manually refresh the display

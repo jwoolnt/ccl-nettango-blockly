@@ -1,6 +1,7 @@
 // dialog.ts - Custom modal dialog components
 import { addBreed, addVariable, BreedType, getAllBreeds, refreshMITPlugin, removeBreed, removeVariable, updateVariable} from "../data/context";
 import { reset, save } from "../services/serializer";
+import { updateBreedsDisplay } from "./breedTracker";
 
 // Dialog DOM elements
 let dialogOverlay: HTMLDivElement | null = null;
@@ -442,6 +443,7 @@ function showAddBreedDialog(workspace: any, displayCodeCallback: () => void,    
             refreshMITPlugin();
             displayCodeCallback();
             save(workspace);
+            updateBreedsDisplay();
 
             // If triggered from a block, assign the new breed to it
             if (pendingBlock) {
@@ -477,7 +479,7 @@ export function showAddBreedDialogFromBlock(
     blockId?: string, 
     fieldName?: string
 ) {
-    showAddVariableDialog(workspace, displayCodeCallback, 
+    showAddBreedDialog(workspace, displayCodeCallback, 
         blockId && fieldName ? { blockId, fieldName } : undefined
     );
 }
@@ -507,6 +509,7 @@ function showRemoveBreedDialog(workspace: any, displayCodeCallback: () => void) 
             refreshMITPlugin();
             displayCodeCallback();
             save(workspace);
+            updateBreedsDisplay();
             closeDialog();
         } else {
             alert('Please enter a breed name');

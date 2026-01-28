@@ -272,7 +272,6 @@ export function addBreed(newBreed: Breed): void {
 				variableMap[variableName] = pluralName;
 			});
 		}
-		refreshMITPlugin();
 	} else {
 		console.error(`Invalid Breed: cannot reuse names ["${usedVariables.join(",\" \"")}"]`);
 	}

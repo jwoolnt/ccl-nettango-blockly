@@ -859,9 +859,9 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 12px 16px;
-  align-items: center;
-  min-height: 44px;
+  padding: 8px 16px;
+  align-items: flex-start;
+  min-height: auto;
 }
 
 .variable-item {
@@ -955,12 +955,46 @@ body {
 
 /* Empty state message - centered when no items */
 .variable-empty {
-  padding: 16px;
-  color: #9ca3af;
-  font-size: 13px;
-  text-align: center;
-  width: 100%;
-  font-style: italic;
+  display: none;
+}
+
+.variable-item.has-control {
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+  cursor: default;
+}
+
+.variable-item:not(.has-control):hover {
+  background: #f3f4f6;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
 }
 
 /* Context Menu */

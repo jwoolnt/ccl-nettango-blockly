@@ -61,7 +61,7 @@ export function initBreedTracker(ws: any, callback: () => void) {
   });
 }
 
-function updateBreedsDisplay() {
+export function updateBreedsDisplay() {
   const trackerList = document.getElementById('breeds-tracker-list');
   if (!trackerList) return;
 
