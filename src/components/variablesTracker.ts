@@ -1,7 +1,6 @@
 import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable} from "../data/context";
 import {save} from "../services/serializer";
-import { runCode } from "../services/netlogoAPI"; // NEW: Import runCode
-import { scheduleAutoCompile, isAutoCompiling, setUnsavedChangesFlag } from "../services/autoCompile";
+import { setGlobalVariable } from "../services/netlogoAPI";
 
 import { openDialog, closeDialog, createDialogElement, createButton, createFormField, showAddVariableDialogFromBlock } from "./dialog";
 
@@ -133,18 +132,10 @@ function inferVariableType(variableName: string): number | boolean {
 
 function updateVariableValue(variableName: string, newValue: any) {
   variableValues.set(variableName, newValue);
-  
-  // Regenerate the code to show new values
-  if (displayCodeCallback) {
-    displayCodeCallback();
-  }
-  
-  // Mark as having unsaved changes
-  setUnsavedChangesFlag(true);
-  
-  // Schedule auto-compile if enabled
-  if (isAutoCompiling) {
-    scheduleAutoCompile();
+
+  const updated = setGlobalVariable(variableName, newValue);
+  if (!updated) {
+    console.warn(`Could not update ${variableName}.`);
   }
 }
 

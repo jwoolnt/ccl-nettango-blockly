@@ -179,6 +179,31 @@ export function updateGlobalVariable(variableName: string, value: any): void {
   console.log(`Updated ${variableName} = ${value} in NetLogo`);
 }
 
+// setGlobalVariable: update a global variable directly via NetLogo Web runtime API
+// i.e. 0.contentWindow.world.observer.setGlobal('density', 20)
+export function setGlobalVariable(variableName: string, value: any): boolean {
+  const frame = getNetLogoFrame();
+  if (!frame) {
+    console.error("NetLogo Web iframe not found");
+    return false;
+  }
+
+  const world = (frame as any).world;
+  if (!world?.observer?.setGlobal) {
+    console.error("NetLogo world observer API not available");
+    return false;
+  }
+
+  try {
+    world.observer.setGlobal(variableName, value);
+    console.log(`Set global ${variableName} = ${value} via runtime API`);
+    return true;
+  } catch (error) {
+    console.error("Failed to set global via runtime API:", error);
+    return false;
+  }
+}
+
 // compileAndSetupModel: set code, compile it, and run setup (combined operation)
 export async function compileAndSetupModel(code: string): Promise<void> {
   const frame = getNetLogoFrame();
