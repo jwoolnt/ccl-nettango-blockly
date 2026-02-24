@@ -21,8 +21,6 @@ const variableControls = new Map<string, VariableControl>();
 const variableValues = new Map<string, any>();
 const widgetIds = new Map<string, number>();
 const sliderDebounceTimers = new Map<string, ReturnType<typeof setTimeout>>(); // Track debounce timers for slider updates
-const createdWidgets = new Set<string>();
-let nextWidgetId = 1000; // arbitrary starting ID
 
 export function registerWidgetId(variableName: string, id: number) {
   widgetIds.set(variableName, id);
@@ -150,6 +148,13 @@ function updateVariableValue(variableName: string, newValue: any) {
   variableValues.set(variableName, newValue);
   runCode(`set ${variableName} ${newValue}`);
 }
+// function updateVariableValue(variableName: string, newValue: any) {
+//   variableValues.set(variableName, newValue);
+//   const widgetId = widgetIds.get(variableName);
+//   if (widgetId !== undefined) {
+//     updateWidget(widgetId, { default: newValue });  // update the NLW widget directly
+//   }
+// }
 
 function inferVariableType(variableName: string): number | boolean {
   const name = variableName.toLowerCase();
@@ -446,6 +451,15 @@ export async function createSliderWidgets(): Promise<void> {
       } catch (e) {
         console.warn(`Failed to create slider for '${variableName}':`, e);
       }
+    }
+  }
+}
+
+export function syncSliderValuesToNetLogo() {
+  for (const [variableName, control] of variableControls.entries()) {
+    if (control.type === 'slider') {
+      const value = variableValues.get(variableName) ?? 0;
+      runCode(`set ${variableName} ${value}`);
     }
   }
 }

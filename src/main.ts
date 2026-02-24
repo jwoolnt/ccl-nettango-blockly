@@ -4,7 +4,7 @@ import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import { createDefaultProcedures } from "./services/defaultProcedures";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener, createHiddenSlider } from "./services/netlogoAPI";
+import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener} from "./services/netlogoAPI";
 import { scheduleAutoCompile, setIsAutoCompiling, isAutoCompiling, setUnsavedChangesFlag } from "./services/autoCompile";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
@@ -12,7 +12,7 @@ import { getUIVariables, refreshMITPlugin } from "./data/context";
 import { updateWorkspaceForDomain } from "./blocks/domain";
 
 import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./components/dialog";
-import { getVariableInitialValues, initVariablesTracker, createSliderWidgets } from "./components/variablesTracker";
+import { initVariablesTracker, createSliderWidgets, syncSliderValuesToNetLogo} from "./components/variablesTracker";
 import { initBreedTracker } from "./components/breedTracker";
 import { initUIModules } from "./components/modules";
 
@@ -375,6 +375,7 @@ function setupNetLogoIntegration() {
           
           // Clear unsaved banner on successful compile
           setUnsavedChangesFlag(false);
+          syncSliderValuesToNetLogo(); // Sync slider values to NetLogo after compilation
           if (status) {
             status.textContent = "Model compiled successfully! Click Setup to initialize.";
           }
@@ -393,20 +394,12 @@ function setupNetLogoIntegration() {
   // Setup Only Button - runs the setup procedure
   if (setupOnlyBtn) {
     setupOnlyBtn.addEventListener('click', () => {
-      try {
-        runSetup();
-        if (status) {
-          status.textContent = "Setup executed successfully!";
-        }
-      } catch (error) {
-        console.error("Error running setup:", error);
-        if (status) {
-          status.textContent = "Setup error. Check console.";
-        }
-      }
+      runSetup();
+      setTimeout(() => {
+        syncSliderValuesToNetLogo();  // re-sync after setup clears values
+      }, 500);  // small delay to let setup finish
     });
   }
-
   // Go Button - Runs the go procedure
   if (goBtn) {
     goBtn.addEventListener('click', () => {

@@ -61,7 +61,7 @@ export function sendToNetLogo(type: string, data?: any): void {
         return;
     }
     const message = { type, ...data };
-    console.log(`Sending to NetLogo (${type}):`, message);
+    // console.log(`Sending to NetLogo (${type}):`, message);
     try {
         frame.postMessage(message, "*");
     } catch (error) {
@@ -263,8 +263,8 @@ export function createHiddenSlider(
       }
     };
     window.addEventListener('message', handler);
-
-    createWidget('slider', 10000, 10000, {
+    // Position the slider off-screen to hide it from the user
+    createWidget('slider', -1000, -1000, {
       variable: variableName.toLowerCase(),
       display: variableName,
       default: initialValue,
