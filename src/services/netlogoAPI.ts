@@ -1,7 +1,26 @@
 // 
 // NetLogo Web API integration functions
 // Repo: https://github.com/NetLogo/Galapagos/blob/main/app/assets/javascripts/pages/simulation.js#L280-L310
+
+import { createSliderWidgets } from "../components/variablesTracker";
+
 // 
+export interface NetLogoWidget {
+  type: "slider" | "switch" | "chooser" | "inputBox";
+  id?: number;          // required for update/delete
+  variable: string;     // the global variable name, e.g. "density"
+  display?: string;     // label shown in UI
+  min?: number;         // slider min
+  max?: number;         // slider max
+  value?: number;       // current value
+  step?: number;        // slider increment
+  units?: string;
+  // set display size to near-zero so the widget is hidden from user
+  left?: number;
+  top?: number;
+  right?: number;
+  bottom?: number;
+}
 
 // get the iframe
 export function getNetLogoFrame(): Window | null {
@@ -35,29 +54,16 @@ export function setupErrorListener(): void {
 }
 
 // send a message
-// type: message type string
-// data: additional data object
 export function sendToNetLogo(type: string, data?: any): void {
     const frame = getNetLogoFrame();
     if (!frame) {
         console.error("NetLogo Web iframe not found");
         return;
     }
-
-    frame.postMessage({ type: 'nlw-request-model-state' }, "*");
-    window.addEventListener('message', function handler(event) {
-        console.log("Received model state response:", event.data);
-        // Remove listener after first response
-        window.removeEventListener('message', handler);
-    });
-
-    // combine type with any additional data
-    // this creates an object like { type: "nlw-command", command: "setup" }
     const message = { type, ...data };
     console.log(`Sending to NetLogo (${type}):`, message);
     try {
         frame.postMessage(message, "*");
-        console.log("postMessage call successful");
     } catch (error) {
         console.error("postMessage failed:", error);
     }
@@ -139,19 +145,17 @@ export async function compileModel(code: string): Promise<void> {
   }
 
   try {
-    // Set the model code
     setModelCode(code, false);
     await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Recompile
+    // widgets must exist before recompile so NLW knows the variables
+    await createSliderWidgets();
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
     recompile();
-    
-    // Wait for compilation (longer for errors)
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
     if (status) status.textContent = "Compiled (click Setup to initialize)";
     
-    console.log("Model compiled! Use Setup button to initialize.");
   } catch (error) {
     console.error("Compilation error:", error);
     if (status) {
@@ -162,21 +166,28 @@ export async function compileModel(code: string): Promise<void> {
   }
 }
 
-// updateGlobalVariable: update a global variable in the NetLogo runtime
-// For dynamic variable updates without recompiling
-export function updateGlobalVariable(variableName: string, value: any): void {
-  const frame = getNetLogoFrame();
-  if (!frame) {
-    console.error("NetLogo Web iframe not found");
-    return;
-  }
-  
-  sendToNetLogo("nlw-update-model-state", {
-    globalUpdate: {
-      [variableName]: value
+// compileAndSetupModel: set code, compile it, and run setup (combined operation)
+export async function compileAndSetupModel(code: string, createWidgets?: () => Promise<void>): Promise<void> {
+  try {
+    setModelCode(code, false);
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    if (createWidgets) await createWidgets();
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    recompile();
+    await new Promise(resolve => setTimeout(resolve, 500));  // wait for compile
+
+    runSetup();
+  } catch (error) {
+    console.error("Error in compileAndSetupModel:", error);
+    const status = document.getElementById('netlogo-status');
+    if (status) {
+      status.textContent = "Error during setup";
+      status.style.color = "red";
     }
-  });
-  console.log(`Updated ${variableName} = ${value} in NetLogo`);
+    throw error;
+  }
 }
 
 // setGlobalVariable: update a global variable directly via NetLogo Web runtime API
@@ -190,47 +201,108 @@ export function setGlobalVariable(variableName: string, value: any): boolean {
 
   const world = (frame as any).world;
   if (!world?.observer?.setGlobal) {
-    console.error("NetLogo world observer API not available");
+    console.error("NetLogo world observer not available");
     return false;
   }
 
   try {
     world.observer.setGlobal(variableName, value);
-    console.log(`Set global ${variableName} = ${value} via runtime API`);
+    // console.log(`Set global ${variableName} = ${value}`);
     return true;
   } catch (error) {
-    console.error("Failed to set global via runtime API:", error);
+    console.error("Failed to set global via runtime:", error);
     return false;
   }
 }
 
-// compileAndSetupModel: set code, compile it, and run setup (combined operation)
-export async function compileAndSetupModel(code: string): Promise<void> {
-  const frame = getNetLogoFrame();
-  if (!frame) {
-    console.error("NetLogo Web iframe not found");
-    return;
-  }
+// createWidget: correct NLW format
+// widgetType: 'slider' | 'switch' | 'monitor' | etc.
+// properties: widget-specific, see widget-properties.coffee
+// Posts back nlw-create-widget-response with newWidgetId
+export function createWidget(
+  widgetType: string,
+  x: number,
+  y: number,
+  properties: Record<string, any>
+): void {
+  sendToNetLogo("nlw-create-widget", { widgetType, x, y, properties });
+}
 
-  try {
-    // set the model code
-    setModelCode(code, false); 
-    
-    // wait a bit
-    // await new Promise(resolve => setTimeout(resolve, 500));
-    
-    // recompile the model
-    recompile();
-    
-    // wait for compilation to finish
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // run setup
-    runSetup();
-    
-    console.log("Model compiled and setup complete!");
-  } catch (error) {
-    console.error("Compile and setup error:", error);
-    throw error;
-  }
+// updateWidget: update properties of an existing widget by its NLW-assigned ID
+export function updateWidget(id: number, properties: Record<string, any>): void {
+  sendToNetLogo("nlw-update-widget", { id, properties });
+}
+
+// deleteWidget: remove a widget by its NLW-assigned ID
+export function deleteWidget(id: number): void {
+  sendToNetLogo("nlw-delete-widget", { id });
+}
+
+// createHiddenSlider: creates a slider widget off-screen.
+// Note: min/max/step must be STRINGS per NLW API.
+// Resolves with the NLW-assigned widget ID via nlw-create-widget-response.
+export function createHiddenSlider(
+  variableName: string,
+  initialValue: number,
+  min: number = 0,
+  max: number = 100,
+  step: number = 1
+): Promise<number> {
+  return new Promise((resolve, reject) => {
+    // Listen for the response before sending
+    const handler = (event: MessageEvent) => {
+      if (event.data?.type === 'nlw-create-widget-response') {
+        window.removeEventListener('message', handler);
+        if (event.data.success) {
+          console.log(`NLW created slider for '${variableName}', assigned id: ${event.data.newWidgetId}`);
+          resolve(event.data.newWidgetId);
+        } else {
+          console.error(`NLW failed to create slider for '${variableName}':`, event.data.error);
+          reject(event.data.error);
+        }
+      }
+    };
+    window.addEventListener('message', handler);
+
+    createWidget('slider', 10000, 10000, {
+      variable: variableName.toLowerCase(),
+      display: variableName,
+      default: initialValue,
+      min: String(min),
+      max: String(max),
+      step: String(step),
+      units: null,
+      direction: 'horizontal',
+    });
+  });
+}
+
+// testing
+const testWidgetBtn = document.getElementById('test-widget-btn');
+if (testWidgetBtn) {
+  testWidgetBtn.addEventListener('click', () => {
+  sendToNetLogo("nlw-create-widget", {
+    widgetType: 'slider',
+    x: 10,
+    y: 10,
+    properties: {
+      variable: 'density',
+      display: 'density',
+      default: 50,
+      min: "0",
+      max: "100",
+      step: "1",
+      units: null,
+      direction: 'horizontal'
+    }
+  });
+
+    // Listen once for the response
+    window.addEventListener('message', (e) => {
+      if (e.data?.type === 'nlw-create-widget-response') {
+        console.log('Widget creation result:', e.data);
+        alert(`Success: ${e.data.success}, ID: ${e.data.newWidgetId}`);
+      }
+    }, { once: true });
+  });
 }

@@ -1,12 +1,13 @@
-import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable} from "../data/context";
+import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable, addVariable} from "../data/context";
 import {save} from "../services/serializer";
-import { setGlobalVariable } from "../services/netlogoAPI";
+import { createHiddenSlider, runCode } from "../services/netlogoAPI";
 
 import { openDialog, closeDialog, createDialogElement, createButton, createFormField, showAddVariableDialogFromBlock } from "./dialog";
 
 let workspace: any = null;
 let displayCodeCallback: (() => void) | null = null;
 let selectedVariable: string | null = null;
+let previousVariableList: string[] = [];
 
 interface VariableControl {
   type: 'slider' | 'switch';
@@ -18,6 +19,18 @@ interface VariableControl {
 
 const variableControls = new Map<string, VariableControl>();
 const variableValues = new Map<string, any>();
+const widgetIds = new Map<string, number>();
+const sliderDebounceTimers = new Map<string, ReturnType<typeof setTimeout>>(); // Track debounce timers for slider updates
+const createdWidgets = new Set<string>();
+let nextWidgetId = 1000; // arbitrary starting ID
+
+export function registerWidgetId(variableName: string, id: number) {
+  widgetIds.set(variableName, id);
+}
+
+export function getWidgetId(variableName: string): number | undefined {
+  return widgetIds.get(variableName);
+}
 
 export function initVariablesTracker(ws: any, callback: () => void) {
   workspace = ws;
@@ -35,7 +48,15 @@ export function initVariablesTracker(ws: any, callback: () => void) {
 
   // Listen for clicks to create controls
   trackerList.addEventListener('click', (e) => {
-    const target = (e.target as HTMLElement).closest('.variable-item');
+    const clickedElement = e.target as HTMLElement;
+    
+    // Don't toggle if clicking directly on the slider or switch input elements
+    if (clickedElement.classList.contains('control-slider') ||
+        clickedElement.classList.contains('control-switch-input')) {
+      return;
+    }
+    
+    const target = clickedElement.closest('.variable-item');
     if (target && !target.classList.contains('add-item-btn')) {
       const variableName = target.getAttribute('data-variable');
       if (variableName) {
@@ -89,37 +110,45 @@ export function initVariablesTracker(ws: any, callback: () => void) {
   }
 
   ws.addChangeListener(() => {
-    updateVariablesDisplay();
+    // Only update display if the variable list has changed
+    const currentVars = getUserVariables();
+    const varsChanged = currentVars.length !== previousVariableList.length ||
+      currentVars.some((v, i) => v !== previousVariableList[i]);
+    
+    if (varsChanged) {
+      previousVariableList = [...currentVars];
+      updateVariablesDisplay();
+    }
   });
 }
 
 function handleVariableClick(variableName: string) {
   const currentValue = variableValues.get(variableName) ?? inferVariableType(variableName);
   const varType = typeof currentValue;
-  
+
   if (varType === 'number') {
-    const isInteger = Number.isInteger(currentValue);
-    variableControls.set(variableName, {
+    const control: VariableControl = {
       type: 'slider',
       enabled: true,
       min: 0,
-      max: Math.max(100, currentValue * 2),
-      step: isInteger ? 1 : 0.1
-    });
-    if (!variableValues.has(variableName)) {
-      variableValues.set(variableName, currentValue);
-    }
+      max: Math.max(100, (currentValue as number) * 2),
+      step: Number.isInteger(currentValue as number) ? 1 : 0.1
+    };
+    variableControls.set(variableName, control);
+    if (!variableValues.has(variableName)) variableValues.set(variableName, currentValue);
+
   } else if (varType === 'boolean') {
-    variableControls.set(variableName, {
-      type: 'switch',
-      enabled: true
-    });
-    if (!variableValues.has(variableName)) {
-      variableValues.set(variableName, currentValue);
-    }
+    variableControls.set(variableName, { type: 'switch', enabled: true });
+    if (!variableValues.has(variableName)) variableValues.set(variableName, currentValue);
   }
-  
+
   updateVariablesDisplay();
+  if (displayCodeCallback) displayCodeCallback();
+}
+
+function updateVariableValue(variableName: string, newValue: any) {
+  variableValues.set(variableName, newValue);
+  runCode(`set ${variableName} ${newValue}`);
 }
 
 function inferVariableType(variableName: string): number | boolean {
@@ -130,22 +159,40 @@ function inferVariableType(variableName: string): number | boolean {
   return 0;
 }
 
-function updateVariableValue(variableName: string, newValue: any) {
-  variableValues.set(variableName, newValue);
-
-  const updated = setGlobalVariable(variableName, newValue);
-  if (!updated) {
-    console.warn(`Could not update ${variableName}.`);
+// Debounced update for slider input events - prevents queuing of rapid updates
+function updateVariableValueDebounced(variableName: string, newValue: any, delay: number = 100): void {
+  // Clear existing timer if one is pending
+  const existingTimer = sliderDebounceTimers.get(variableName);
+  if (existingTimer) {
+    clearTimeout(existingTimer);
   }
+  
+  // Set new timer for the update
+  const timer = setTimeout(() => {
+    updateVariableValue(variableName, newValue);
+    sliderDebounceTimers.delete(variableName);
+  }, delay);
+  
+  sliderDebounceTimers.set(variableName, timer);
 }
 
 function updateVariablesDisplay() {
   const trackerList = document.getElementById('variables-tracker-list');
   if (!trackerList) return;
 
-  trackerList.innerHTML = '';
-
+  // Store previous variable list
   const allVars = getUserVariables();
+  previousVariableList = [...allVars];
+
+  // sees the new ui variable has no control yet - calls handleVariableClick automatically
+  // for (const variableName of allVars) {
+  //   const owner = getVariableOwner(variableName);
+  //   if (owner === 'ui' && !variableControls.has(variableName)) {
+  //     handleVariableClick(variableName);  // auto-toggle slider on
+  //   }
+  // }
+
+  trackerList.innerHTML = '';
 
   if (allVars.length === 0) {
     const emptyMsg = document.createElement('div');
@@ -192,6 +239,14 @@ function updateVariablesDisplay() {
           slider.addEventListener('input', (e) => {
             const newValue = Number((e.target as HTMLInputElement).value);
             valueDisplay.textContent = String(newValue);
+            variableValues.set(variableName, newValue);
+            // Update NetLogo runtime with debounced updates to prevent queueing
+            updateVariableValueDebounced(variableName, newValue);
+          });
+          
+          slider.addEventListener('change', (e) => {
+            const newValue = Number((e.target as HTMLInputElement).value);
+            // Ensure final value is applied immediately when slider is released
             updateVariableValue(variableName, newValue);
           });
           
@@ -214,6 +269,7 @@ function updateVariablesDisplay() {
           switchInput.addEventListener('change', (e) => {
             const newValue = (e.target as HTMLInputElement).checked;
             label.textContent = newValue ? 'true' : 'false';
+            variableValues.set(variableName, newValue);
             updateVariableValue(variableName, newValue);
           });
           
@@ -222,10 +278,20 @@ function updateVariablesDisplay() {
           item.appendChild(switchContainer);
         }
         
+        // Badge with ui/global distinction
         const owner = getVariableOwner(variableName);
         const badge = document.createElement('span');
         badge.className = 'control-scope-badge';
-        badge.textContent = owner ? owner : 'unknown';
+        badge.textContent = owner ?? 'unknown';
+
+        if (owner === 'ui') {
+          badge.classList.add('badge-ui');
+          badge.title = 'UI variable — survives setup/clear-all';
+        } else if (owner === 'globals') {
+          badge.classList.add('badge-global');
+          badge.title = 'Code global — reset by clear-all';
+        }
+
         item.appendChild(badge);
       } else {
         const nameSpan = document.createElement('span');
@@ -234,7 +300,15 @@ function updateVariablesDisplay() {
         const owner = getVariableOwner(variableName);
         const badge = document.createElement('span');
         badge.className = 'variable-scope-badge';
-        badge.textContent = owner ? owner : 'unknown';
+        badge.textContent = owner ?? 'unknown';
+
+        if (owner === 'ui') {
+          badge.classList.add('badge-ui');
+          badge.title = 'UI variable — survives setup/clear-all';
+        } else if (owner === 'globals') {
+          badge.classList.add('badge-global');
+          badge.title = 'Code global — reset by clear-all';
+        }
 
         item.appendChild(nameSpan);
         item.appendChild(badge);
@@ -353,4 +427,25 @@ export function getVariableInitialValues(): Map<string, any> {
 // Export function to manually refresh the display
 export function refreshVariablesDisplay() {
   updateVariablesDisplay();
+}
+export async function createSliderWidgets(): Promise<void> {
+  for (const [variableName, control] of variableControls.entries()) {
+    if (control.type === 'slider' && !widgetIds.has(variableName)) {
+      console.log(`Attempting to create slider for '${variableName}'`);
+      const value = variableValues.get(variableName) ?? 0;
+      try {
+        const id = await createHiddenSlider(
+          variableName,
+          value as number,
+          control.min!,
+          control.max!,
+          control.step!
+        );
+        registerWidgetId(variableName, id);
+        console.log(`Post-compile: created slider widget ${id} for '${variableName}'`);
+      } catch (e) {
+        console.warn(`Failed to create slider for '${variableName}':`, e);
+      }
+    }
+  }
 }

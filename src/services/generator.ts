@@ -1,11 +1,9 @@
 // services/generator.ts
 import { Generator } from "blockly";
 import { forBlocks } from "../blocks";
-import { getAllAgentSets, getVariables, getGlobalVariables } from "../data/context";
+import { getAllAgentSets, getVariables, getGlobalVariables, getUIVariables} from "../data/context";
 import { getTurtleBreeds } from "../data/context";
 import { DOMAIN_BLOCKS } from "../blocks/domain";
-import { getVariableInitialValues } from "../components/variablesTracker";
-
 
 const netlogoGenerator = new Generator('NetLogo');
 
@@ -48,52 +46,6 @@ netlogoGenerator.workspaceToCode = (workspace) => {
     return code;
 }
 
-// // Function to generate variable initialization code
-// export function generateVariableInitialization(): string {
-//   const variableValues = getVariableInitialValues();
-
-//   if (variableValues.size === 0) return '';
-
-//   let code = '  ; Variables initialized from UI controls\n';
-//   for (const [name, value] of variableValues.entries()) {
-//     if (typeof value === 'number') {
-//       code += `  set ${name} ${value}\n`;
-//     } else if (typeof value === 'boolean') {
-//       code += `  set ${name} ${value ? 'true' : 'false'}\n`;
-//     }
-//   }
-
-//   return code;
-// }
-
-// netlogoGenerator.workspaceToCode = (workspace) => {
-//     let code = "";
-
-//     if (workspace) {
-//         workspace.getTopBlocks(true).forEach(block => {
-//             if (block.type === "procedures_defnoreturn") {
-//                 let procedureCode = netlogoGenerator.blockToCode(block);
-                
-//                 // If this is the setup procedure, inject variable initialization
-//                 if (block.getFieldValue && block.getFieldValue('NAME') === 'setup') {
-//                     const initCode = generateVariableInitialization();
-//                     if (initCode) {
-//                         // Insert initialization right after "to setup" line
-//                         procedureCode = procedureCode.replace(
-//                             /to setup\s*\n/,
-//                             `to setup\n${initCode}`
-//                         );
-//                     }
-//                 }
-                
-//                 code += procedureCode;
-//             }
-//         });
-//     }
-
-//     return code;
-// }
-
 netlogoGenerator.scrub_ = (block, code, thisOnly) => {
     const nextBlock =
         block.nextConnection && block.nextConnection.targetBlock();
@@ -108,14 +60,20 @@ netlogoGenerator.scrub_ = (block, code, thisOnly) => {
 export function generateCodePrefix() {
     let prefix = "";
 
-    const UI_VARIABLES = getVariables("ui")?.join(" ");
-    if (UI_VARIABLES) {
-        prefix += `; ui [ ${UI_VARIABLES} ]\n\n`;
-    }
+    // const UI_VARIABLES = getVariables("ui") ?? [];
+    // const GLOBAL_VARIABLES = getGlobalVariables() ?? [];
 
-    const GLOBAL_VARIABLES = getGlobalVariables().join(" ");
-    if (GLOBAL_VARIABLES) {
-        prefix += `globals [ ${GLOBAL_VARIABLES} ]\n\n`;
+    // const allGlobals = [...UI_VARIABLES, ...GLOBAL_VARIABLES];
+    // if (allGlobals.length) {
+    //     prefix += `globals [ ${allGlobals.join(" ")} ]\n\n`;
+    // }
+    const UI_VARIABLES = getUIVariables();
+    if (UI_VARIABLES.length) {
+        prefix += `; ui [ ${UI_VARIABLES.join(" ")} ]\n\n`;
+    }
+    const GLOBAL_VARIABLES = getGlobalVariables();
+    if (GLOBAL_VARIABLES.length) {
+        prefix += `globals [ ${GLOBAL_VARIABLES.join(" ")} ]\n\n`;
     }
 
     const TURTLE_BREEDS = getTurtleBreeds().map(
@@ -126,8 +84,11 @@ export function generateCodePrefix() {
     }
     // TODO: prefix code for link breeds
 
+    const EXCLUDED_AGENT_SETS = new Set(['', '+ create new breed', 'turtles', 'patches', 'links', 'neighbors4']);
+
     let breedVariableCode = "";
     for (const TYPE of getAllAgentSets()) {
+        if (EXCLUDED_AGENT_SETS.has(TYPE)) continue; // skip built-ins and placeholders
         let breedVariables = getVariables(TYPE);
         if (breedVariables?.length) {
             breedVariableCode += `${TYPE}-own [ ${breedVariables.join(" ")} ]\n`;

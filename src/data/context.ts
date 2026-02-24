@@ -142,6 +142,10 @@ export function getGlobalVariables(): string[] {
 	return [...context.globals];
 }
 
+export function getUIVariables(): string[] {
+	return [...context.ui];
+}
+
 export function getVariables(type: string, includeBuiltIn: boolean = false): string[] | undefined {
 	if (isDefaultVariableType(type)) {
 		return includeBuiltIn ? [...BUILT_IN_CONTEXT[type], ...context[type]] : [...context[type]];

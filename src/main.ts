@@ -4,15 +4,15 @@ import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import { createDefaultProcedures } from "./services/defaultProcedures";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener } from "./services/netlogoAPI";
+import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener, createHiddenSlider } from "./services/netlogoAPI";
 import { scheduleAutoCompile, setIsAutoCompiling, isAutoCompiling, setUnsavedChangesFlag } from "./services/autoCompile";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
-import { refreshMITPlugin } from "./data/context";
+import { getUIVariables, refreshMITPlugin } from "./data/context";
 import { updateWorkspaceForDomain } from "./blocks/domain";
 
 import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./components/dialog";
-import { initVariablesTracker } from "./components/variablesTracker";
+import { getVariableInitialValues, initVariablesTracker, createSliderWidgets } from "./components/variablesTracker";
 import { initBreedTracker } from "./components/breedTracker";
 import { initUIModules } from "./components/modules";
 
@@ -343,8 +343,8 @@ function setupNetLogoIntegration() {
         console.log("Compiling and setting up model...");
 
         try {
-          await compileAndSetupModel(code);
-          
+          await compileAndSetupModel(code, createSliderWidgets);
+
           // Clear unsaved banner on successful setup
           setUnsavedChangesFlag(false);
           if (status) {
@@ -371,6 +371,7 @@ function setupNetLogoIntegration() {
 
         try {
           await compileModel(code);
+          await createSliderWidgets(); 
           
           // Clear unsaved banner on successful compile
           setUnsavedChangesFlag(false);
