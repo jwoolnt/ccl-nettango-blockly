@@ -287,6 +287,35 @@ export function createHiddenSlider(
   });
 }
 
+// createHiddenSwitch: creates a switch widget off-screen for boolean values.
+// Resolves with the NLW-assigned widget ID via nlw-create-widget-response.
+export function createHiddenSwitch(
+  variableName: string,
+  initialValue: boolean,
+  slotIndex: number = 0
+): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const handler = (event: MessageEvent) => {
+      if (event.data?.type === 'nlw-create-widget-response') {
+        window.removeEventListener('message', handler);
+        if (event.data.success) {
+          resolve(event.data.newWidgetId);
+        } else {
+          reject(event.data.error);
+        }
+      }
+    };
+    window.addEventListener('message', handler);
+
+    const WIDGET_HEIGHT = 60; // NLW widget height approx
+    createWidget('switch', 10, 10 + slotIndex * WIDGET_HEIGHT, {
+      variable: variableName.toLowerCase(),
+      display: variableName,
+      on: initialValue,
+    });
+  });
+}
+
 // testing
 const testWidgetBtn = document.getElementById('test-widget-btn');
 if (testWidgetBtn) {

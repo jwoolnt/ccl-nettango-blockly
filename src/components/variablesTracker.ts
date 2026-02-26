@@ -1,6 +1,6 @@
 import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable, addVariable, VariableControl, registerVariableTrackerSerializers} from "../data/context";
 import {save} from "../services/serializer";
-import { createHiddenSlider, runCode } from "../services/netlogoAPI";
+import { createHiddenSlider, createHiddenSwitch, runCode } from "../services/netlogoAPI";
 
 import { openDialog, closeDialog, createDialogElement, createButton, createFormField, showAddVariableDialogFromBlock } from "./dialog";
 
@@ -453,6 +453,19 @@ export async function createSliderWidgets(): Promise<void> {
       } catch (e) {
         console.warn(`Failed to create slider for '${variableName}':`, e);
       }
+    } else if (control.type === 'switch' && !widgetIds.has(variableName)) {
+      const value = variableValues.get(variableName) ?? false;
+      try {
+        const id = await createHiddenSwitch(
+          variableName,
+          Boolean(value),
+          slotIndex  // pass the index
+        );
+        registerWidgetId(variableName, id);
+        slotIndex++;
+      } catch (e) {
+        console.warn(`Failed to create switch for '${variableName}':`, e);
+      }
     }
   }
 }
@@ -462,6 +475,9 @@ export function syncSliderValuesToNetLogo() {
     if (control.type === 'slider') {
       const value = variableValues.get(variableName) ?? 0;
       runCode(`set ${variableName} ${value}`);
+    } else if (control.type === 'switch') {
+      const value = variableValues.get(variableName) ?? false;
+      runCode(`set ${variableName} ${Boolean(value)}`);
     }
   }
 }
