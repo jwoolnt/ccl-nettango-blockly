@@ -2,6 +2,7 @@
 import { addBreed, addVariable, BreedType, getAllBreeds, refreshMITPlugin, removeBreed, removeVariable, updateVariable} from "../data/context";
 import { reset, save } from "../services/serializer";
 import { updateBreedsDisplay } from "./breedTracker";
+import { refreshVariablesDisplay } from "./variablesTracker";
 
 // Dialog DOM elements
 let dialogOverlay: HTMLDivElement | null = null;
@@ -214,6 +215,7 @@ function showAddVariableDialog(workspace: any, displayCodeCallback: () => void, 
             workspace.updateToolbox(workspace.options.languageTree);
 
             addVariable(name, scope);
+            refreshVariablesDisplay();
             refreshMITPlugin();
             displayCodeCallback();
             save(workspace);
