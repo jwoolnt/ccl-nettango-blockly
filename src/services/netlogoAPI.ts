@@ -2,8 +2,6 @@
 // NetLogo Web API integration functions
 // Repo: https://github.com/NetLogo/Galapagos/blob/main/app/assets/javascripts/pages/simulation.js#L280-L310
 
-import { createSliderWidgets } from "../components/variablesTracker";
-
 // 
 export interface NetLogoWidget {
   type: "slider" | "switch" | "chooser" | "inputBox";
@@ -142,7 +140,7 @@ export function runGo(): void {
   runCode("go");
 }
 
-export async function compileModel(code: string): Promise<void> {
+export async function compileModel(code: string, createWidgets?: () => Promise<void>): Promise<void> {
   const frame = getNetLogoFrame();
   if (!frame) {
     console.error("NetLogo Web iframe not found");
@@ -160,7 +158,7 @@ export async function compileModel(code: string): Promise<void> {
     await new Promise(resolve => setTimeout(resolve, 300));
     
     // widgets must exist before recompile so NLW knows the variables
-    await createSliderWidgets();
+    if (createWidgets) await createWidgets();
     await new Promise(resolve => setTimeout(resolve, 300));
     
     recompile();
@@ -313,35 +311,5 @@ export function createHiddenSwitch(
       display: variableName,
       on: initialValue,
     });
-  });
-}
-
-// testing
-const testWidgetBtn = document.getElementById('test-widget-btn');
-if (testWidgetBtn) {
-  testWidgetBtn.addEventListener('click', () => {
-  sendToNetLogo("nlw-create-widget", {
-    widgetType: 'slider',
-    x: 10,
-    y: 10,
-    properties: {
-      variable: 'density',
-      display: 'density',
-      default: 50,
-      min: "0",
-      max: "100",
-      step: "1",
-      units: null,
-      direction: 'horizontal'
-    }
-  });
-
-    // Listen once for the response
-    window.addEventListener('message', (e) => {
-      if (e.data?.type === 'nlw-create-widget-response') {
-        console.log('Widget creation result:', e.data);
-        alert(`Success: ${e.data.success}, ID: ${e.data.newWidgetId}`);
-      }
-    }, { once: true });
   });
 }

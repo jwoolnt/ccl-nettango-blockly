@@ -8,11 +8,11 @@ import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener
 import { scheduleAutoCompile, setIsAutoCompiling, isAutoCompiling, setUnsavedChangesFlag } from "./services/autoCompile";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
-import { getUIVariables, refreshMITPlugin } from "./data/context";
+import { refreshMITPlugin } from "./data/context";
 import { updateWorkspaceForDomain } from "./blocks/domain";
 
 import { showAddVariableDialogFromBlock, showAddBreedDialogFromBlock} from "./components/dialog";
-import { initVariablesTracker, createSliderWidgets, syncSliderValuesToNetLogo} from "./components/variablesTracker";
+import { initVariablesTracker, createSliderWidgetsFromTracker, syncSliderValuesToNetLogo} from "./components/variablesTracker";
 import { initBreedTracker } from "./components/breedTracker";
 import { initUIModules } from "./components/modules";
 
@@ -362,7 +362,7 @@ function setupNetLogoIntegration() {
         console.log("Compiling and setting up model...");
 
         try {
-          await compileAndSetupModel(code, createSliderWidgets);
+          await compileAndSetupModel(code, createSliderWidgetsFromTracker);
 
           // Clear unsaved banner on successful setup
           setUnsavedChangesFlag(false);
@@ -390,7 +390,7 @@ function setupNetLogoIntegration() {
 
         try {
           await compileModel(code);
-          await createSliderWidgets(); 
+          await createSliderWidgetsFromTracker(); 
           
           // Clear unsaved banner on successful compile
           setUnsavedChangesFlag(false);
