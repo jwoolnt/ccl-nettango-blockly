@@ -28,6 +28,17 @@ export function getNetLogoFrame(): Window | null {
     return iframe ? iframe.contentWindow : null;
 }
 
+// Reset the NetLogo iframe to clear any previous state
+export function resetNetLogoFrame(): void {
+    const iframe = document.getElementById("netlogo-iframe") as HTMLIFrameElement;
+    if (!iframe) {
+        console.error("NetLogo iframe not found");
+        return;
+    }
+    // Reload the iframe to clear its state
+    iframe.src = iframe.src;
+}
+
 // Listen for compilation errors from NetLogo Web
 let errorListener: ((event: MessageEvent) => void) | null = null;
 

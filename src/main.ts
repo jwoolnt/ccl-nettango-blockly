@@ -4,7 +4,7 @@ import activeBlocks from "./blocks";
 import { save, load, downloadWorkspace, uploadWorkspace, reset } from "./services/serializer";
 import { createDefaultProcedures } from "./services/defaultProcedures";
 import netlogoGenerator, { generateCodePrefix } from "./services/generator";
-import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener} from "./services/netlogoAPI";
+import { runGo, runSetup, compileAndSetupModel, compileModel, setupErrorListener, resetNetLogoFrame} from "./services/netlogoAPI";
 import { scheduleAutoCompile, setIsAutoCompiling, isAutoCompiling, setUnsavedChangesFlag } from "./services/autoCompile";
 //@ts-expect-error
 import { LexicalVariablesPlugin } from '@mit-app-inventor/blockly-block-lexical-variables';
@@ -253,6 +253,23 @@ function initWorkspaceSelector(workspace: Blockly.WorkspaceSvg, displayCodeCallb
 
 // Initialize file operations (save, load, clear)
 function initFileOperations(workspace: Blockly.WorkspaceSvg, displayCodeCallback: () => void) {
+  // New workspace
+  const newBtn = document.getElementById('newBtn');
+  if (newBtn) {
+    newBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to create a new workspace?\n\nAll unsaved changes will be lost.')) {
+        try {
+          reset(workspace);
+          resetNetLogoFrame(); // Reset iframe for new workspace
+          displayCodeCallback(); // Refresh the generated code
+          showNotification('New workspace created', 'success');
+        } catch (error) {
+          showNotification('Error creating new workspace: ' + (error instanceof Error ? error.message : 'Unknown error'), 'error');
+        }
+      }
+    });
+  }
+
   // Save workspace to file
   const saveBtn = document.getElementById('saveBtn');
   if (saveBtn) {
@@ -275,6 +292,7 @@ function initFileOperations(workspace: Blockly.WorkspaceSvg, displayCodeCallback
     loadBtn.addEventListener('click', async () => {
       try {
         const filename = await uploadWorkspace(workspace);
+        resetNetLogoFrame(); // Reset iframe when loading a new model
         displayCodeCallback(); // Refresh the generated code
         showNotification(`Workspace "${filename}" loaded successfully!`, 'success');
       } catch (error) {
@@ -292,6 +310,7 @@ function initFileOperations(workspace: Blockly.WorkspaceSvg, displayCodeCallback
       if (confirm('Are you sure you want to clear the workspace?\n\nThis will delete all blocks and cannot be undone.\n\nSaving your work first.')) {
         try {
           reset(workspace);
+          resetNetLogoFrame(); // Reset iframe when clearing workspace
           displayCodeCallback(); // Refresh the generated code
           showNotification('Workspace cleared', 'info');
         } catch (error) {
