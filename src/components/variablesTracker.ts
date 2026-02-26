@@ -434,9 +434,10 @@ export function refreshVariablesDisplay() {
   updateVariablesDisplay();
 }
 export async function createSliderWidgets(): Promise<void> {
+  let slotIndex = 0;
+  
   for (const [variableName, control] of variableControls.entries()) {
     if (control.type === 'slider' && !widgetIds.has(variableName)) {
-      console.log(`Attempting to create slider for '${variableName}'`);
       const value = variableValues.get(variableName) ?? 0;
       try {
         const id = await createHiddenSlider(
@@ -444,10 +445,11 @@ export async function createSliderWidgets(): Promise<void> {
           value as number,
           control.min!,
           control.max!,
-          control.step!
+          control.step!,
+          slotIndex  // pass the index
         );
         registerWidgetId(variableName, id);
-        console.log(`Post-compile: created slider widget ${id} for '${variableName}'`);
+        slotIndex++;
       } catch (e) {
         console.warn(`Failed to create slider for '${variableName}':`, e);
       }

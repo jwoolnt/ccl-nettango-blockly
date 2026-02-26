@@ -13,11 +13,12 @@ export interface Breed {
 }
 
 export interface VariableControl {
-	type: 'slider' | 'switch';
+	type: 'slider' | 'switch' | 'input' | 'chooser';
 	enabled: boolean;
 	min?: number;
 	max?: number;
 	step?: number;
+	options?: string[]; // For chooser type
 }
 
 interface NetlogoContext {

@@ -246,25 +246,24 @@ export function createHiddenSlider(
   initialValue: number,
   min: number = 0,
   max: number = 100,
-  step: number = 1
+  step: number = 1,
+  slotIndex: number = 0
 ): Promise<number> {
   return new Promise((resolve, reject) => {
-    // Listen for the response before sending
     const handler = (event: MessageEvent) => {
       if (event.data?.type === 'nlw-create-widget-response') {
         window.removeEventListener('message', handler);
         if (event.data.success) {
-          console.log(`NLW created slider for '${variableName}', assigned id: ${event.data.newWidgetId}`);
           resolve(event.data.newWidgetId);
         } else {
-          console.error(`NLW failed to create slider for '${variableName}':`, event.data.error);
           reject(event.data.error);
         }
       }
     };
     window.addEventListener('message', handler);
-    // Position the slider off-screen to hide it from the user
-    createWidget('slider', -1000, -1000, {
+
+    const SLIDER_HEIGHT = 60; // NLW slider widget height approx
+    createWidget('slider', 10, 10 + slotIndex * SLIDER_HEIGHT, {
       variable: variableName.toLowerCase(),
       display: variableName,
       default: initialValue,
