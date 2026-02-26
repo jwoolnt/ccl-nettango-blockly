@@ -77,6 +77,29 @@ export function generateCodePrefix() {
     }
     // TODO: prefix code for link breeds
 
+    // Generate turtles-own, patches-own, and links-own variables
+    let agentOwnVariables = "";
+    
+    const turtlesOwn = getVariables("turtles");
+    if (turtlesOwn?.length) {
+        agentOwnVariables += `turtles-own [ ${turtlesOwn.join(" ")} ]\n`;
+    }
+    
+    const patchesOwn = getVariables("patches");
+    if (patchesOwn?.length) {
+        agentOwnVariables += `patches-own [ ${patchesOwn.join(" ")} ]\n`;
+    }
+    
+    const linksOwn = getVariables("links");
+    if (linksOwn?.length) {
+        agentOwnVariables += `links-own [ ${linksOwn.join(" ")} ]\n`;
+    }
+    
+    if (agentOwnVariables) {
+        prefix += `${agentOwnVariables}\n`;
+    }
+
+    // Generate breed-own variables
     const EXCLUDED_AGENT_SETS = new Set(['', '+ create new breed', 'turtles', 'patches', 'links', 'neighbors4']);
 
     let breedVariableCode = "";
