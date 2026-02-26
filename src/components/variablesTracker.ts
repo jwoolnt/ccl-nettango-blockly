@@ -1,4 +1,4 @@
-import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable, addVariable} from "../data/context";
+import {refreshMITPlugin, getUserVariables, getVariableOwner, removeVariable, updateVariable, addVariable, VariableControl, registerVariableTrackerSerializers} from "../data/context";
 import {save} from "../services/serializer";
 import { createHiddenSlider, runCode } from "../services/netlogoAPI";
 
@@ -8,14 +8,6 @@ let workspace: any = null;
 let displayCodeCallback: (() => void) | null = null;
 let selectedVariable: string | null = null;
 let previousVariableList: string[] = [];
-
-interface VariableControl {
-  type: 'slider' | 'switch';
-  enabled: boolean;
-  min?: number;
-  max?: number;
-  step?: number;
-}
 
 const variableControls = new Map<string, VariableControl>();
 const variableValues = new Map<string, any>();
@@ -33,6 +25,14 @@ export function getWidgetId(variableName: string): number | undefined {
 export function initVariablesTracker(ws: any, callback: () => void) {
   workspace = ws;
   displayCodeCallback = callback;
+  
+  // Register serialization functions for saving/loading variable controls and values
+  registerVariableTrackerSerializers(
+    getVariableControlsData,
+    getVariableValuesData,
+    setVariableControlsData,
+    setVariableValuesData
+  );
   
   const trackerList = document.getElementById('variables-tracker-list');
   const contextMenu = document.getElementById('variables-context-menu');
@@ -461,5 +461,44 @@ export function syncSliderValuesToNetLogo() {
       const value = variableValues.get(variableName) ?? 0;
       runCode(`set ${variableName} ${value}`);
     }
+  }
+}
+
+// Export functions to get/set variable controls and values for serialization
+export function getVariableControlsData(): Record<string, VariableControl> {
+  const data: Record<string, VariableControl> = {};
+  variableControls.forEach((control, name) => {
+    data[name] = { ...control };
+  });
+  return data;
+}
+
+export function getVariableValuesData(): Record<string, any> {
+  const data: Record<string, any> = {};
+  variableValues.forEach((value, name) => {
+    data[name] = value;
+  });
+  return data;
+}
+
+export function setVariableControlsData(data: Record<string, VariableControl>) {
+  variableControls.clear();
+  Object.entries(data).forEach(([name, control]) => {
+    variableControls.set(name, control);
+  });
+  // Trigger UI update after restoring controls
+  if (workspace) {
+    updateVariablesDisplay();
+  }
+}
+
+export function setVariableValuesData(data: Record<string, any>) {
+  variableValues.clear();
+  Object.entries(data).forEach(([name, value]) => {
+    variableValues.set(name, value);
+  });
+  // Trigger UI update after restoring values
+  if (workspace) {
+    updateVariablesDisplay();
   }
 }

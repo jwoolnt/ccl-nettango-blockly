@@ -12,6 +12,14 @@ export interface Breed {
 	variables?: string[]
 }
 
+export interface VariableControl {
+	type: 'slider' | 'switch';
+	enabled: boolean;
+	min?: number;
+	max?: number;
+	step?: number;
+}
+
 interface NetlogoContext {
 	ui: string[];
 	globals: string[];
@@ -19,6 +27,8 @@ interface NetlogoContext {
 	patches: string[];
 	links: string[];
 	breeds?: Breed[];
+	variableControls?: Record<string, VariableControl>;
+	variableValues?: Record<string, any>;
 }
 
 const DEFAULT_VARIABLE_TYPES: DefaultVariableTypes[] = ["ui", "globals", "turtles", "patches", "links"];
@@ -91,12 +101,38 @@ let variableMap: Record<string, string> = { ...DEFAULT_VARIABLE_MAP };
 
 export let refreshMITPlugin = () => { };
 
+// Registry for variable tracker serialization functions
+let getVariableControlsDataFn: (() => Record<string, VariableControl>) | null = null;
+let getVariableValuesDataFn: (() => Record<string, any>) | null = null;
+let setVariableControlsDataFn: ((data: Record<string, VariableControl>) => void) | null = null;
+let setVariableValuesDataFn: ((data: Record<string, any>) => void) | null = null;
+
+export function registerVariableTrackerSerializers(
+	getControls: () => Record<string, VariableControl>,
+	getValues: () => Record<string, any>,
+	setControls: (data: Record<string, VariableControl>) => void,
+	setValues: (data: Record<string, any>) => void
+) {
+	getVariableControlsDataFn = getControls;
+	getVariableValuesDataFn = getValues;
+	setVariableControlsDataFn = setControls;
+	setVariableValuesDataFn = setValues;
+}
+
 
 export const CONTEXT_SERIALIZER: serialization.ISerializer = {
 	priority: serialization.priorities.VARIABLES,
 	clear: (workspace: Workspace) => {
 		context = { ...DEFAULT_CONTEXT };
 		variableMap = { ...DEFAULT_VARIABLE_MAP };
+
+		// Clear variable controls and values
+		if (setVariableControlsDataFn) {
+			setVariableControlsDataFn({});
+		}
+		if (setVariableValuesDataFn) {
+			setVariableValuesDataFn({});
+		}
 
 		//@ts-expect-error
 		workspace.getWarningHandler().cacheGlobalNames = true;
@@ -132,9 +168,29 @@ export const CONTEXT_SERIALIZER: serialization.ISerializer = {
 			)
 		);
 
+		// Restore variable controls and values if available
+		if (state.variableControls && setVariableControlsDataFn) {
+			setVariableControlsDataFn(state.variableControls);
+		}
+		if (state.variableValues && setVariableValuesDataFn) {
+			setVariableValuesDataFn(state.variableValues);
+		}
+
 		refreshMITPlugin();
 	},
-	save: () => context
+	save: () => {
+		const savedContext: NetlogoContext = { ...context };
+		
+		// Include variable controls and values if available
+		if (getVariableControlsDataFn) {
+			savedContext.variableControls = getVariableControlsDataFn();
+		}
+		if (getVariableValuesDataFn) {
+			savedContext.variableValues = getVariableValuesDataFn();
+		}
+		
+		return savedContext;
+	}
 }
 
 
