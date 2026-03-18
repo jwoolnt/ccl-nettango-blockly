@@ -155,6 +155,13 @@ if (blockEditor && codeOutput) {
     save(ws);
   };
 
+  // Initialize variables tracker BEFORE loading workspace
+  // so that the serializers are registered and can restore saved values
+  initVariablesTracker(ws, displayCode);
+
+  // Initialize breeds tracker
+  initBreedTracker(ws, displayCode);
+
   load(ws);
 
   // Add default procedures for new/empty workspaces
@@ -166,12 +173,6 @@ if (blockEditor && codeOutput) {
 
   // Initialize UI modules (dialogs, file menu)
   initUIModules(ws, displayCode);
-
-  // Initialize variables tracker
-  initVariablesTracker(ws, displayCode);
-
-  // Initialize breeds tracker
-  initBreedTracker(ws, displayCode);
 
   // Initialize workspace selector
   initWorkspaceSelector(ws, displayCode);
@@ -389,8 +390,7 @@ function setupNetLogoIntegration() {
         console.log("Compiling model only...");
 
         try {
-          await compileModel(code);
-          await createSliderWidgetsFromTracker(); 
+          await compileModel(code, createSliderWidgetsFromTracker);
           
           // Clear unsaved banner on successful compile
           setUnsavedChangesFlag(false);

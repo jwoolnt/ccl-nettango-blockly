@@ -11,6 +11,7 @@ import {
 } from "../data/context";
 import { runCode } from "../services/netlogoAPI";
 import { createSliderWidgets } from "../services/widgets/widgetCreation";
+import { save } from "../services/serializer";
 import {
   renderVariablesList,
   inferVariableType,
@@ -190,6 +191,8 @@ function updateVariableValue(
   } else {
     variableValues.set(variableName, newValue);
     runCode(`set ${variableName} ${newValue}`);
+    // Save workspace to persist slider values
+    if (workspace) save(workspace);
   }
 }
 
@@ -207,6 +210,8 @@ function updateVariableValueDebounced(
     variableValues.set(variableName, newValue);
     runCode(`set ${variableName} ${newValue}`);
     sliderDebounceTimers.delete(variableName);
+    // Save workspace to persist slider values
+    if (workspace) save(workspace);
   }, delay);
 
   sliderDebounceTimers.set(variableName, timer);

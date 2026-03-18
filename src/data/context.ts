@@ -203,6 +203,13 @@ export function getUIVariables(): string[] {
 	return [...context.ui];
 }
 
+export function getVariableControls(): Record<string, VariableControl> {
+	if (getVariableControlsDataFn) {
+		return getVariableControlsDataFn();
+	}
+	return {};
+}
+
 export function getVariables(type: string, includeBuiltIn: boolean = false): string[] | undefined {
 	if (isDefaultVariableType(type)) {
 		return includeBuiltIn ? [...BUILT_IN_CONTEXT[type], ...context[type]] : [...context[type]];

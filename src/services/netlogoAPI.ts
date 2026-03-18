@@ -178,15 +178,16 @@ export async function compileModel(code: string, createWidgets?: () => Promise<v
 // compileAndSetupModel: set code, compile it, and run setup (combined operation)
 export async function compileAndSetupModel(code: string, createWidgets?: () => Promise<void>): Promise<void> {
   try {
+    // Set code
     setModelCode(code, false);
     await new Promise(resolve => setTimeout(resolve, 300));
-
+    // Create widgets (before compilation so compiler knows variables exist)
     if (createWidgets) await createWidgets();
     await new Promise(resolve => setTimeout(resolve, 300));
-
+    // Compile
     recompile();
     await new Promise(resolve => setTimeout(resolve, 500));  // wait for compile
-
+    // Set up model
     runSetup();
   } catch (error) {
     console.error("Error in compileAndSetupModel:", error);
